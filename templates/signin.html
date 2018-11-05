@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>signin</title>
+</head>
+<body>
+<form action="" method="POST">
+    {% csrf_token %}
+    姓名:<input type="text" name="name">
+    密码:<input type="password" name="password">
+    <input type="submit" value="提交">
+</form>
+</body>
+</html>

@@ -8,7 +8,9 @@
 <form action="" method="POST">
     {% csrf_token %}
     注册姓名:<input type="text" name="name">
-    注册密码:<input type="password" name="password">
+    注册密码:<input type="password" name="password1">
+    确认密码:<input type="password" name="password2">
+    注册类型:<input type="text" name="type">
     <input type="submit" value="提交">
 </form>
 </body>

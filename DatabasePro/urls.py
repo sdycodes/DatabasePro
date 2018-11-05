@@ -20,5 +20,6 @@ from bookdeal import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     url('index/', views.index),
-    url('signup/', views.signup)
+    url('signup/', views.signup),
+    url('signin/', views.signin)
 ]

@@ -17,7 +17,7 @@ class Normal(User):
 
 
 class Retailer(User):
-    sale = models.IntegerField()
+    sale = models.IntegerField(default=0)
 
 
 class Admin(models.Model):
