@@ -50,24 +50,6 @@ def signin(request):
             return render(request, 'result.html', {'func': 'signin', 'res': 'fail!'})
 
 
-'''
-        normal_user = Normal.objects.filter(name=name)
-        if normal_user:
-            if normal_user[0].passwd == passwd:
-                return render(request, 'result.html', {'func': 'signin', 'res': normal_user[0].name})
-            else:
-                return render(request, 'result.html', {'func': 'sign', 'res': 'wrong password!!'})
-        else:
-            retail_user = Retailer.objects.filter(name=name)
-            if retail_user:
-                if retail_user[0].passwd == passwd:
-                    return render(request, 'result.html', {'func': 'signin', 'res': retail_user[0].name})
-                else:
-                    return render(request, 'result.html', {'func': 'sign', 'res': 'wrong password!!'})
-            else:
-                return render(request, 'result.html', {'func': 'signin', 'res': 'not exists!'})
-        '''
-
 def add_book(request):
     if request.method == 'GET':
         return render(request, 'addbook.html')
@@ -80,15 +62,31 @@ def add_book(request):
             return render(request, 'result.html', {'func': 'add_book', 'res': 'illegal input !!'})
         if cover.name.split('.')[1].lower() not in ['jpeg', 'jpg', 'png'] or cover.size > 10000000:
             return render(request, 'result.html', {'func': 'add_book', 'res': 'illegal cover !!'})
-        Book.objects.create(name=book_name, info=info, price=price, cover=cover, owner=request.user.username)
+        Book.objects.create(name=book_name, info=info, price=price, cover=cover, owner=request.user)
         return render(request, 'result.html', {'func': 'add_book', 'res': 'add success!'})
 
 
-'''
+def list_mysell(request):
+    books = Book.objects.filter(owner=request.user, isDelete=False)
+    if books:
+        return render(request, 'list.html', {'books': books})
+    return render(request, 'result.html', {'func': 'list_mysell', 'res': 'None!'})
+
 
 def delete_book(request):
-    pass
+    if request.method == 'GET':
+        return render(request, 'deletebook.html')
+    if request.method == 'POST':
+        book_name = request.POST.get('book_name')
+        tar = Book.objects.filter(name=book_name, owner=request.user)
+        if tar:
+            book = tar[0]
+            book.isDelete = True
+            book.save()
+            return render(request, 'result.html', {'func': 'delete_book', 'res': book.name})
+        return render(request, 'result.html', {'func': 'delete_book', 'res': 'fail!'})
+
 
 def search_book(request):
     pass
-'''
+
