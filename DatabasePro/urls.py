@@ -21,5 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     url('index/', views.index),
     url('signup/', views.signup),
-    url('signin/', views.signin)
+    url('signin/', views.signin),
+    url('addbook/', views.add_book)
 ]

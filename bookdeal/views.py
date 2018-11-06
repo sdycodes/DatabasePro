@@ -25,15 +25,15 @@ def signup(request):
             return render(request, 'result.html', {'func': 'signup', 'res': 'cannot be null'})
         if passwd1 != passwd2:
             return render(request, 'result.html', {'func': 'signup', 'res': 'passwd not equal'})
-        res = User.objects.filter(name=name)
+        res = User.objects.filter(username=name)
         if res:
             return render(request, 'result.html', {'func': 'signup', 'res': 'name already exists!'})
         # sign up
         if typ == 'n':
-            Normal.objects.create(name=name, passwd=passwd1)
+            Normal.objects.create_user(username=name, password=passwd1)
         else:
-            Retailer.objects.create(name=name, passwd=passwd1)
-            return render(request, 'result.html', {'func': 'signup', 'res': 'success'})
+            Retailer.objects.create_user(username=name, password=passwd1)
+        return render(request, 'result.html', {'func': 'signup', 'res': 'success'})
 
 
 def signin(request):
@@ -42,6 +42,15 @@ def signin(request):
     if request.method == 'POST':
         name = request.POST.get('name')
         passwd = request.POST.get('password')
+        user = auth.authenticate(username=name, password=passwd)
+        if user is not None and user.is_active:
+            auth.login(request, user)
+            return render(request, 'result.html', {'func': 'signin', 'res': name})
+        else:
+            return render(request, 'result.html', {'func': 'signin', 'res': 'fail!'})
+
+
+'''
         normal_user = Normal.objects.filter(name=name)
         if normal_user:
             if normal_user[0].passwd == passwd:
@@ -57,15 +66,29 @@ def signin(request):
                     return render(request, 'result.html', {'func': 'sign', 'res': 'wrong password!!'})
             else:
                 return render(request, 'result.html', {'func': 'signin', 'res': 'not exists!'})
-
+        '''
 
 def add_book(request):
-    pass
+    if request.method == 'GET':
+        return render(request, 'addbook.html')
+    if request.method == 'POST':
+        book_name = request.POST.get('name')
+        info = request.POST.get('info')
+        price = float(request.POST.get('price'))
+        cover = request.FILES.get('cover')
+        if book_name == "" or len(info) < 10 or price > 10000 or price < 0:
+            return render(request, 'result.html', {'func': 'add_book', 'res': 'illegal input !!'})
+        if cover.name.split('.')[1].lower() not in ['jpeg', 'jpg', 'png'] or cover.size > 10000000:
+            return render(request, 'result.html', {'func': 'add_book', 'res': 'illegal cover !!'})
+        Book.objects.create(name=book_name, info=info, price=price, cover=cover, owner=request.user.username)
+        return render(request, 'result.html', {'func': 'add_book', 'res': 'add success!'})
 
+
+'''
 
 def delete_book(request):
     pass
 
 def search_book(request):
     pass
-
+'''

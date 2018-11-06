@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="format-detection" content="telephone=no">
+	<title>add book</title>
+</head>
+
+<body>
+	<form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        book name<input type="text" name="name">
+        info<input type="text" name="info">
+        price<input type="number"  min="0.01" max="10000.00" step="0.01" name="price">
+		cover<input type="file" name="cover"/>
+		<input type="submit" value="add"/>
+	</form>
+	<a href="index.html"><button onclick="">返回</button></a>
+</body>
+</html>

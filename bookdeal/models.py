@@ -1,22 +1,20 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 # Create your models here.
 
 
-class User(models.Model):
-    name = models.CharField(max_length=20, primary_key=True)
-    passwd = models.CharField(max_length=20)
+class Normal(User):
     credit = models.DecimalField(max_digits=2, decimal_places=1, default=5.0)
     info = models.CharField(max_length=50, blank=True)
     isDelete = models.BooleanField(default=False)
-
-
-class Normal(User):
     dept = models.CharField(max_length=20, blank=True)
     grade = models.IntegerField(blank=True, default=0)
 
 
 class Retailer(User):
+    credit = models.DecimalField(max_digits=2, decimal_places=1, default=5.0)
+    info = models.CharField(max_length=50, blank=True)
+    isDelete = models.BooleanField(default=False)
     sale = models.IntegerField(default=0)
 
 
@@ -29,13 +27,13 @@ class Admin(models.Model):
 class Book(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
-    cover = models.ImageField()
+    cover = models.ImageField(upload_to='covers')
     info = models.CharField(max_length=500)
     price = models.DecimalField(max_digits=7, decimal_places=2)
     owner = models.ForeignKey(User,
                               related_name='owner',
                               on_delete=models.CASCADE)
-    isDelete = models.BooleanField()
+    isDelete = models.BooleanField(default=False)
 
 
 class Rlist(models.Model):
