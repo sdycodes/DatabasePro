@@ -1,0 +1,510 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+<title>Home</title>
+
+{% include 'interface/styles.html' %}
+{% include 'front/loader.html' %}
+<!-- start-smoth-scrolling -->
+</head>
+	
+<body>
+
+
+{% include 'interface/banner.html' %}
+
+<div class="header-top">
+		<div class="container">
+			<div class="header-top-left">
+				<p>But who has any right to find fault with a man.</p>
+			</div>
+			<div class="header-top-right">
+				<form>
+					<i class="glyphicon glyphicon-search" aria-hidden="true"></i><input type="text" value="Search Here..." onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search Here...';}" required="">
+				</form>
+			</div>
+			<div class="clearfix"> </div>
+		</div>
+	</div>
+
+<!-- banner -->
+	<div class="banner">
+		<div class="container">
+			<div class="banner-info">
+				<h1>Change is the end result<span> of all true learning.</span></h1>
+				<p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+					eiusmod tempor.</p>
+				<ul class="social-icons">
+					<li><a href="#" class="facebook"></a></li>
+					<li><a href="#" class="twitter"></a></li>
+					<li><a href="#" class="be"></a></li>
+					<li><a href="#" class="p"></a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+<!-- //banner -->
+
+<!-- banner-bottom -->
+	<div class="banner-bottom">
+		<div class="container">
+			<div class="banner-bottom-grids">
+				<div class="col-md-6 banner-bottom-grid-left">
+					<h3>vel illum qui dolorem eum fugiat quo voluptas nulla pariatur magna aliqua</h3>
+					<div class="banner-bottom-grid-left-grids">
+						<div class="col-md-6 banner-bottom-grid-left-grdl">
+							<div class="banner-bottom-grid-fig">
+								<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+							</div>
+							<p>To take a trivial example, which of us ever undertakes 
+								laborious physical exercise.</p>
+						</div>
+						<div class="col-md-6 banner-bottom-grid-left-grdl">
+							<div class="banner-bottom-grid-fig">
+								<span class="glyphicon glyphicon-education" aria-hidden="true"></span>
+							</div>
+							<p>To take a trivial example, which of us ever undertakes 
+								laborious physical exercise.</p>
+						</div>
+						<div class="clearfix"> </div>
+					</div>
+					<div class="more">
+						<a href="#" class="hvr-shadow-radial">For More Info...</a>
+					</div>
+				</div>
+				<div class="col-md-6 banner-bottom-grid-right">
+					<div class="banner-bottom-grid-right1">
+						<div class="col-xs-4 banner-bottom-grid-right1-left">
+							<span class="glyphicon glyphicon-blackboard" aria-hidden="true"></span>
+						</div>
+						<div class="col-xs-8 banner-bottom-grid-right1-right">
+							<h4>which of us ever undertakes 
+								laborious physical exercise</h4>
+						</div>
+						<div class="clearfix"></div>
+						<p>But I must explain to you how all this mistaken idea of denouncing 
+							pleasure and praising pain was born.</p>
+					</div>
+					<div class="banner-bottom-grid-right2">
+						<div class="col-md-6 banner-bottom-grid-right2-grid1">
+							<span class="glyphicon glyphicon-send" aria-hidden="true"></span>
+							<p>But I must explain to you how all this mistaken idea.</p>
+						</div>
+						<div class="col-md-6 banner-bottom-grid-right2-grid2">
+							<span class="glyphicon glyphicon-book" aria-hidden="true"></span>
+							<p>But I must explain to you how all this mistaken idea.</p>
+						</div>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+<!-- //banner-bottom -->
+<!-- about -->
+	<div class="about" id="about">
+		<div class="container">
+			<div class="about-grids">
+				<div class="col-md-6 about-grid-left">
+					<img src="{% static 'images/1.jpg' %}" alt=" " class="img-responsive" />
+				</div>
+				<div class="col-md-6 about-grid-right">
+					<h3>To take a trivial example, which of us ever
+						physical exercise, except exercitationem</h3>
+					<p>Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit 
+						laboriosam, nisi ut aliquid ex ea commodi consequatur nihil molestiae consequatur, 
+						vel illum.</p>
+					<div class="more">
+						<a href="#" class="hvr-shadow-radial">Learn More</a>
+					</div>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+	</div>
+<!-- //about -->
+<!-- testimonials -->
+	<div class="testimonials">
+		<div class="container">
+			<h3>Testimonials</h3>
+			<div class="testimonials-grids">
+				<ul id="flexiselDemo1">			
+					<li>
+						<div class="testimonials-grid">
+							<div class="col-xs-5 testimonials-grid-left">
+								<img src="{% static 'images/1.png' %}" alt=" " class="img-responsive" />
+							</div>
+							<div class="col-xs-7 testimonials-grid-right">
+								<div class="rating">
+									<span>☆</span>
+									<span>☆</span>
+									<span>☆</span>
+									<span>☆</span>
+									<span>☆</span>
+								</div>
+								<p>Itaque earum rerum hic tenetur a sapiente delectus.<span>Laura</span></p>
+							</div>
+							<div class="clearfix"> </div>
+						</div>
+					</li>
+					<li>
+						<div class="testimonials-grid">
+							<div class="col-xs-5 testimonials-grid-left">
+								<img src="{% static 'images/3.png' %}" alt=" " class="img-responsive" />
+							</div>
+							<div class="col-xs-7 testimonials-grid-right">
+								<div class="rating">
+									<span>☆</span>
+									<span>☆</span>
+									<span>☆</span>
+									<span>☆</span>
+									<span>☆</span>
+								</div>
+								<p>Itaque earum rerum hic tenetur a sapiente delectus.<span>James</span></p>
+							</div>
+							<div class="clearfix"> </div>
+						</div>
+					</li>
+					<li>
+						<div class="testimonials-grid">
+							<div class="col-xs-5 testimonials-grid-left">
+								<img src="{% static 'images/2.png' %}" alt=" " class="img-responsive" />
+							</div>
+							<div class="col-xs-7 testimonials-grid-right">
+								<div class="rating">
+									<span>☆</span>
+									<span>☆</span>
+									<span>☆</span>
+									<span>☆</span>
+									<span>☆</span>
+								</div>
+								<p>Itaque earum rerum hic tenetur a sapiente delectus.<span>williumson</span></p>
+							</div>
+							<div class="clearfix"> </div>
+						</div>
+					</li>
+				</ul>
+            </div>
+		</div>
+	</div>
+<!-- //testimonials -->
+<!-- news -->
+	<div class="news" id="news">
+		<div class="container">
+			<h3>News & Events</h3>
+			<div class="latest-news">
+				<div class="latest-news-grids">
+					<div class="col-md-6 latest-news-grid">
+						<div class="col-xs-4 latest-news-grid-left">
+							<img src="{% static 'images/13.jpg' %}" alt=" " class="img-responsive" />
+						</div>
+						<div class="col-xs-8 latest-news-grid-right">
+							<p><i class="glyphicon glyphicon-calendar" aria-hidden="true"></i><span>September 25th 2015</span></p>
+							<h4>fugiat quo voluptas nulla pariatur</h4>
+							<p class="man">But who has any right to find fault with a man who 
+							chooses to enjoy.</p>
+						</div>
+						<div class="clearfix"> </div>
+					</div>
+					<div class="col-md-6 latest-news-grid">
+						<div class="col-xs-4 latest-news-grid-left">
+							<img src="{% static 'images/14.jpg' %}" alt=" " class="img-responsive" />
+						</div>
+						<div class="col-xs-8 latest-news-grid-right">
+							<p><i class="glyphicon glyphicon-calendar" aria-hidden="true"></i><span>September 25th 2015</span></p>
+							<h4>fugiat quo voluptas nulla pariatur</h4>
+							<p class="man">But who has any right to find fault with a man who 
+							chooses to enjoy.</p>
+						</div>
+						<div class="clearfix"> </div>
+					</div>
+					<div class="clearfix"> </div>
+				</div>
+				<div class="latest-news-grids">
+					<div class="col-md-6 latest-news-grid">
+						<div class="col-xs-4 latest-news-grid-left">
+							<img src="{% static 'images/15.jpg' %}" alt=" " class="img-responsive" />
+						</div>
+						<div class="col-xs-8 latest-news-grid-right">
+							<p><i class="glyphicon glyphicon-calendar" aria-hidden="true"></i><span>September 25th 2015</span></p>
+							<h4>fugiat quo voluptas nulla pariatur</h4>
+							<p class="man">But who has any right to find fault with a man who 
+							chooses to enjoy.</p>
+						</div>
+						<div class="clearfix"> </div>
+					</div>
+					<div class="col-md-6 latest-news-grid">
+						<div class="col-xs-4 latest-news-grid-left">
+							<img src="{% static 'images/16.jpg' %}" alt=" " class="img-responsive" />
+						</div>
+						<div class="col-xs-8 latest-news-grid-right">
+							<p><i class="glyphicon glyphicon-calendar" aria-hidden="true"></i><span>September 25th 2015</span></p>
+							<h4>fugiat quo voluptas nulla pariatur</h4>
+							<p class="man">But who has any right to find fault with a man who 
+							chooses to enjoy.</p>
+						</div>
+						<div class="clearfix"> </div>
+					</div>
+					<div class="clearfix"> </div>
+				</div>
+			</div>
+			<div class="news-grid">
+				<div class="col-md-4 news-grid-left">
+					<div class="news-grid-left1">
+						<div class="news-grid-left-top">
+							<p><i class="glyphicon glyphicon-calendar" aria-hidden="true"></i><span>September 25th 2015 at 10:30 AM</span></p>
+						</div>
+						<h4>perferendis doloribus asperiores</h4>
+						<p class="vel">Quis autem vel eum iure reprehenderit qui in ea voluptate velit 
+							esse quam nihil molestiae consequatur.</p>
+						<div class="news-pos">
+							<p>Vel illum qui dolorem eum 
+								fugiat quo voluptas nulla pariatur</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4 news-grid-left">
+					<div class="news-grid-left2">
+						<div class="news-grid-left-top">
+							<p><i class="glyphicon glyphicon-calendar" aria-hidden="true"></i><span>September 25th 2015 at 10:30 AM</span></p>
+						</div>
+						<h4>perferendis doloribus asperiores</h4>
+						<p class="vel">Quis autem vel eum iure reprehenderit qui in ea voluptate velit 
+							esse quam nihil molestiae consequatur.</p>
+						<div class="news-pos">
+							<p>Vel illum qui dolorem eum 
+								fugiat quo voluptas nulla pariatur</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4 news-grid-left">
+					<div class="news-grid-left3">
+						<div class="news-grid-left-top">
+							<p><i class="glyphicon glyphicon-calendar" aria-hidden="true"></i><span>September 25th 2015 at 10:30 AM</span></p>
+						</div>
+						<h4>perferendis doloribus asperiores</h4>
+						<p class="vel">Quis autem vel eum iure reprehenderit qui in ea voluptate velit 
+							esse quam nihil molestiae consequatur.</p>
+						<div class="news-pos">
+							<p>Vel illum qui dolorem eum 
+								fugiat quo voluptas nulla pariatur</p>
+						</div>
+					</div>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+			<div class="newsletter">
+				<form>
+					<input type="text" value="Enter Your Mail..." onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Enter Your Mail...';}" required="">
+					<input type="submit" value="Subscribe" >
+				</form>
+			</div>
+		</div>
+	</div>
+<!-- //news -->
+<!-- gallery -->
+	<div id="gallery" class="gallery">
+		<div class="container">
+			<h3>Photo Gallery</h3>
+			<div class="gallery-grids">
+				<div class="gallery-grid">
+					<div class="gallery-grid1">
+						<figure class="effect-bubba">
+							<a href="{% static 'images/5.jpg' %}" rel="title" class="b-link-stripe b-animate-go  thickbox">
+								<img src="{% static 'images/5.jpg' %}" alt=" " class="img-responsive" />
+								<figcaption>
+									<h4>Enimet pulvinar posuere</h4>
+									<p>In sit amet sapien eros Integer dolore magna aliqua</p>	
+								</figcaption>
+							</a>
+						</figure>
+					</div>
+					<div class="gallery-grid1">
+						<figure class="effect-bubba">
+							<a href="{% static 'images/9.jpg' %}" rel="title" class="b-link-stripe b-animate-go  thickbox">
+								<img src="{% static 'images/9.jpg' %}" alt=" " class="img-responsive" />
+								<figcaption>
+									<h4 class="hjk">Enimet pulvinar</h4>
+									<p>In sit amet sapien eros</p>	
+								</figcaption>
+							</a>
+						</figure>
+					</div>
+				</div>
+				<div class="gallery-grid">
+					<div class="gallery-grid1">
+						<figure class="effect-bubba">
+							<a href="{% static 'images/10.jpg' %}" rel="title" class="b-link-stripe b-animate-go  thickbox">
+								<img src="{% static 'images/10.jpg' %}" alt=" " class="img-responsive" />
+								<figcaption>
+									<h4 class="hjk">Enimet pulvinar</h4>
+									<p>In sit amet sapien eros</p>	
+								</figcaption>
+							</a>
+						</figure>
+					</div>
+					<div class="gallery-grid1">
+						<figure class="effect-bubba">
+							<a href="{% static 'images/6.jpg' %}" rel="title" class="b-link-stripe b-animate-go  thickbox">
+								<img src="{% static 'images/6.jpg' %}" alt=" " class="img-responsive" />
+								<figcaption>
+									<h4>Enimet pulvinar posuere</h4>
+									<p>In sit amet sapien eros Integer dolore magna aliqua</p>	
+								</figcaption>
+							</a>
+						</figure>
+					</div>
+				</div>
+				<div class="gallery-grid">
+					<div class="gallery-grid1">
+						<figure class="effect-bubba">
+							<a href="{% static 'images/7.jpg' %}" rel="title" class="b-link-stripe b-animate-go  thickbox">
+								<img src="{% static 'images/7.jpg' %}" alt=" " class="img-responsive" />
+								<figcaption>
+									<h4>Enimet pulvinar posuere</h4>
+									<p>In sit amet sapien eros Integer dolore magna aliqua</p>	
+								</figcaption>
+							</a>
+						</figure>
+					</div>
+					<div class="gallery-grid1">
+						<figure class="effect-bubba">
+							<a href="{% static 'images/11.jpg' %}" rel="title" class="b-link-stripe b-animate-go  thickbox">
+								<img src="{% static 'images/11.jpg' %}" alt=" " class="img-responsive" />
+								<figcaption>
+									<h4 class="hjk">Enimet pulvinar</h4>
+									<p>In sit amet sapien eros</p>	
+								</figcaption>
+							</a>
+						</figure>
+					</div>
+				</div>
+				<div class="gallery-grid">
+					<div class="gallery-grid1">
+						<figure class="effect-bubba">
+							<a href="{% static 'images/13.jpg' %}" rel="title" class="b-link-stripe b-animate-go  thickbox">
+								<img src="{% static 'images/13.jpg' %}" alt=" " class="img-responsive" />
+								<figcaption>
+									<h4 class="hjk">Enimet pulvinar</h4>
+									<p>In sit amet sapien eros</p>	
+								</figcaption>
+							</a>
+						</figure>
+					</div>
+					<div class="gallery-grid1">
+						<figure class="effect-bubba">
+							<a href="{% static 'images/8.jpg' %}" rel="title" class="b-link-stripe b-animate-go  thickbox">
+								<img src="{% static 'images/8.jpg' %}" alt=" " class="img-responsive" />
+								<figcaption>
+									<h4>Enimet pulvinar posuere</h4>
+									<p>In sit amet sapien eros Integer dolore magna aliqua</p>	
+								</figcaption>
+							</a>
+						</figure>
+					</div>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+	</div>
+<!-- //gallery -->
+<!-- contact -->
+	<div id="contact" class="contact">
+		<div class="container">
+			<h3>How To Find Us</h3>
+			<div class="col-md-4 contact-left">
+				<h4>Address</h4>
+				<p>est eligendi optio cumque nihil impedit quo minus id quod maxime
+					<span>26 56D Rescue,US</span></p>
+				<ul>
+					<li>Free Phone :+1 078 4589 2456</li>
+					<li>Telephone :+1 078 4589 2456</li>
+					<li>Fax :+1 078 4589 2456</li>
+					<li><a href="mailto:info@example.com">info@example.com</a></li>
+				</ul>
+			</div>
+			<div class="col-md-8 contact-left">
+				<h4>Contact Form</h4>
+				<form>
+					<input type="text" value="Name" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Name';}" required="">
+					<input type="email" value="Email" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Email';}" required="">
+					<input type="text" value="Telephone" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Telephone';}" required="">
+					<textarea type="text"  onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Message...';}" required="">Message...</textarea>
+					<input type="submit" value="Submit" >
+					<input type="reset" value="Clear" >
+
+				</form>
+			</div>
+			<div class="clearfix"> </div>
+		</div>
+	</div>
+<!-- //contact -->
+<!-- footer -->
+	<div class="footer">	
+		<div class="container">
+			<div class="footer-grids">
+				<div class="col-md-3 footer-grid">
+					<h3 class="title">Services</h3>
+					<ul>
+						<li><a href="#">Rerum hic tenetur</a></li>
+						<li><a href="#">Molestiae non recusandae</a></li>
+						<li><a href="#">Voluptates repudiandae</a></li>
+						<li><a href="#">Necessitatibus saepe</a></li>
+						<li><a href="#">Debitis aut rerum</a></li>
+					</ul>
+				</div>
+				<div class="col-md-3 footer-grid">
+					<h3 class="title">Information</h3>
+					 <ul>
+						<li><a href="#">Quibusdam et aut</a></li>
+						<li><a href="#">Testimonals</a></li>
+						<li><a href="#">Archives</a></li>
+						<li><a href="#">Our Staff</a></li>
+					</ul>
+				</div>
+				<div class="col-md-3 footer-grid">
+					<h3 class="title">More details</h3>
+					<ul>
+						<li><a href="#">About us</a></li>
+						<li><a href="#">Privacy Policy</a></li>
+						<li><a href="#">Terms &amp; Conditions</a></li>
+						<li><a href="#">Sitemap</a></li>
+					</ul>
+				</div>
+				<div class="col-md-3 footer-grid contact-grid">
+						<h3 class="title">Contact us</h3>
+						<ul>
+							<li><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>Newyork Still Road.</li>							
+							<li class="adrs">756 gt globel Place</li>
+							<li><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span>+000 100 444 1111</li>
+							<li><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span><a href="mailto:example@mail.com">mail@example.com</a></li>
+						</ul>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+	</div>
+	<div class="copy">
+		<div class="container">
+			<div class="copy-left">
+				<p>Copyright &copy; 2016.Company name All rights reserved.More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></p>
+			</div>
+			<div class="copy-left-right">
+				<ul>
+					<li><a href="#" class="facebook"></a></li>
+					<li><a href="#" class="twitter"></a></li>
+					<li><a href="#" class="be"></a></li>
+					<li><a href="#" class="p"></a></li>					
+				</ul>	
+			</div>
+			<div class="clearfix"> </div>
+		</div>
+	</div>
+<!--//footer-->
+<!-- for bootstrap working -->
+<!-- //for bootstrap working -->
+<!-- here stars scrolling icon -->
+<!-- //here ends scrolling icon -->
+</body>
+</html>
