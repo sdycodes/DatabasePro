@@ -19,6 +19,8 @@ from django.conf.urls import url
 from bookdeal import views
 urlpatterns = [
     path('admin/', admin.site.urls),
+    url('front/', views.front),
+    url('panel/', views.panel),
     url('index/', views.index),
     url('signup/', views.signup),
     url('signin/', views.signin),

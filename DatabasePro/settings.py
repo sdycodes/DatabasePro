@@ -73,18 +73,18 @@ WSGI_APPLICATION = 'DatabasePro.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'books',
         'USER': 'root',
-        'PASSWORD': 'adminadmin',
+        'PASSWORD': 'Bxy19980316',
         'HOST': 'localhost',
         'PORT': '3306'
     }
 }
-
+"""
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -123,6 +123,19 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
+STATICFILES_DIRS = (
+    ('css', os.path.join(STATIC_ROOT, 'css')),
+    ('images', os.path.join(STATIC_ROOT, 'images')),
+    ('js', os.path.join(STATIC_ROOT, 'js')),
+    ('fonts', os.path.join(STATIC_ROOT, 'fonts')),
+)
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
 
 MEDIA_ROOT = './Data/'
 
