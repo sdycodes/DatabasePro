@@ -9,17 +9,8 @@
 <body>
 <!-- Left side content -->
 <div id="leftSide">
-    <div class="logo"><a href="/panel/" style="font-size:medium; color:#FFF"><img style="width:25%" src="{% static 'images/logo.png' %}" alt="" /> 交易管理平台</a></div> <!--  -->
+    <div class="logo"><a href="/panel/" style="font-size:medium; color:#FFF"><img style="width:25%" src="{% static 'images/logo.png' %}" alt="" /> Find Books!</a></div> <!--  -->
 
-    <div class="sidebarSep mt0"></div>
-    
-    <!-- Search widget -->
-    <form action="" class="sidebarSearch">
-        <input type="text" name="search" placeholder="search..." id="ac" />
-        <input type="submit" value="" />
-    </form>
-    
-    <div class="sidebarSep"></div>
 
     <!-- General balance widget -->
     <div class="genBalance">
@@ -31,7 +22,7 @@
             <strong class="sPositive">+0.6%</strong>
         </a>
     </div>
-    
+
     <!-- Next update progress widget -->
     <div class="nextUpdate">
         <ul>
@@ -40,13 +31,13 @@
         </ul>
         <div class="pWrapper"><div class="progressG" title="78%"></div></div>
     </div>
-    
+
     <div class="sidebarSep"></div>
-    
+
     <!-- Left navigation -->
     <ul id="menu" class="nav">
-        <li class="dash"><a href="index.html" title="" class="active"><span>Dashboard</span></a></li>
-        <li class="charts"><a href="charts.html" title=""><span>Statistics and charts</span></a></li>
+        <li class="dash"><a href="/panel/" title="" class="active"><span>Dashboard</span></a></li>
+        <li class="charts"><a href="/market/" title=""><span>Market</span></a></li>
         <li class="forms"><a href="#" title="" class="exp"><span>Forms stuff</span><strong>4</strong></a>
             <ul class="sub">
                 <li><a href="forms.html" title="">Form elements</a></li>
@@ -94,29 +85,7 @@
 <!-- Right side -->
 <div id="rightSide">
 
-    <!-- Top fixed navigation -->
-    <div class="topNav">
-        <div class="wrapper">
-            <div class="welcome"><a href="#" title=""><img src="{% static 'images/userPic.png' %}" alt="" /></a><span>Howdy, Eugene!</span></div>
-            <div class="userNav">
-                <ul>
-                    <li><a href="#" title=""><img src="{% static 'images/icons/topnav/profile.png' %}" alt="" /><span>Profile</span></a></li>
-                    <li><a href="#" title=""><img src="{% static 'images/icons/topnav/tasks.png' %}" alt="" /><span>Tasks</span></a></li>
-                    <li class="dd"><a title=""><img src="{% static 'images/icons/topnav/messages.png' %}" alt="" /><span>Messages</span><span class="numberTop">8</span></a>
-                        <ul class="userDropdown">
-                            <li><a href="#" title="" class="sAdd">new message</a></li>
-                            <li><a href="#" title="" class="sInbox">inbox</a></li>
-                            <li><a href="#" title="" class="sOutbox">outbox</a></li>
-                            <li><a href="#" title="" class="sTrash">trash</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#" title=""><img src="{% static 'images/icons/topnav/settings.png' %}" alt="" /><span>Settings</span></a></li>
-                    <li><a href="login.html" title=""><img src="{% static 'images/icons/topnav/logout.png' %}" alt="" /><span>Logout</span></a></li>
-                </ul>
-            </div>
-            <div class="clear"></div>
-        </div>
-    </div>
+    {% include 'panel/top_bar.html' %}
     
 
     
@@ -958,9 +927,7 @@
     </div>
     
     <!-- Footer line -->
-    <div id="footer">
-        <div class="wrapper">As usually all rights reserved.More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></div>
-    </div>
+    {% include 'panel/footer.html' %}
 
 </div>
 

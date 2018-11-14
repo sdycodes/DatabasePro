@@ -21,6 +21,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     url('front/', views.front),
     url('panel/', views.panel),
+    url('market/', views.market),
+    url('login/', views.login),
     url('index/', views.index),
     url('signup/', views.signup),
     url('signin/', views.signin),

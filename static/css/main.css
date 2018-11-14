@@ -131,7 +131,7 @@ select[multiple] { border: 1px solid #ddd; box-shadow: 0 0 0 2px #f4f4f4; -webki
 .loginInput { width: 190px; float: right; margin-right: 14px!important; }
 
 .rememberMe { float: left; margin-top: 6px; }
-.rememberMe label { width: auto; display: block; white-space: nowrap; margin: -2px 14px 0 14px; float: left; cursor: pointer; } 
+.rememberMe label { width: auto; display: block; white-space: nowrap; margin: 1px 14px 0 14px; float: left; cursor: pointer; }
 
 .backTo { border-left: 1px solid #39454f; border-right: 1px solid #39454f; float: left; }
 .backTo .inner { border-left: 1px solid #1c262b; border-right: 1px solid #1c262b; float: left; }
@@ -169,7 +169,7 @@ text-shadow: 0 1px 0 #ccc,
 
 /* ==========  Numeric data designs  ========== */
 
-.numberTop, .numberMiddle, .numberRight, .groupNum { text-align: center; background: url(../images/backgrounds/numberBg.png) repeat-x; display: inline-block; padding: 1px 5px; color: #fff; -moz-border-radius: 2px; -webkit-border-radius: 2px; -khtml-border-radius: 2px; border-radius: 2px; float: right; margin: 10px 15px 10px -5px; font-size: 11px; line-height: 14px; width: auto; height: auto!important; }
+.numberTop, .numberMiddle, .numberRight, .groupNum { text-align: center; background: url(../images/backgrounds/numberBg.png) repeat-x; display: inline-block; padding: 1px 5px; color: #fff; -moz-border-radius: 2px; -webkit-border-radius: 2px; border-radius: 2px; float: right; margin: 10px 15px 10px -5px; font-size: 11px; line-height: 14px; width: auto; height: auto!important; }
 .numberTop { margin: 6px 12px 6px -5px; padding: 1px 5px!important; }
 .numberMiddle { margin: 0; position: absolute; top: -8px; right: -1px; font-size: 11px; }
 .numberRight { margin: 1px 3px; background: #1B232A; border: 1px solid #333c45; padding: 2px 5px; -moz-border-radius: 3px; -webkit-border-radius: 3px; -khtml-border-radius: 3px; border-radius: 3px; color: #d5d5d5; }
@@ -389,16 +389,16 @@ ul.sub li ul li { padding-left: 10px; }
 .fixed { box-shadow: inset 0 0 1px #748a9b; -moz-box-shadow: inset 0 0 1px #748a9b; -webkit-box-shadow: inset 0 0 1px #748a9b; }
 
 .middleNav, .widget, .sItem, .statsDetailed, .statsContent, .nav li a strong, .controlB ul li, .toggle, .smalldd ul li a strong
-{ -moz-border-radius: 3px; -webkit-border-radius: 3px; -khtml-border-radius: 3px; border-radius: 3px; }
+{ -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; }
 
 .widget, .middleNav, .sItem, .statsDetailed 
 { box-shadow: 0 1px 0 #fff; -moz-box-shadow: 0 1px 0 #fff; -webkit-box-shadow: 0 1px 0 #fff; }
 
 .wButton, .nNote, .widget .num a, .tag, a.sButton, .tooltip, .tPagination ul li a, .bc, .pages li a, .smallButton, .search-choice, .horControlB ul li, .gallery ul li, .iconsGroup, .logMeIn, .wContentButton
-{ -moz-border-radius: 2px; -webkit-border-radius: 2px; -khtml-border-radius: 2px; border-radius: 2px; }
+{ -moz-border-radius: 2px; -webkit-border-radius: 2px; border-radius: 2px; }
 
 .contentProgress, .invoicesBar, .barG, .barO, .barB 
-{ -moz-border-radius: 6px; -webkit-border-radius: 6px; -khtml-border-radius: 6px; border-radius: 6px; }
+{ -moz-border-radius: 6px; -webkit-border-radius: 6px; border-radius: 6px; }
 
 .widget .title:first-child, ul.tabs, .toggle .title:first-child
 { -webkit-border-top-right-radius: 3px; -webkit-border-top-left-radius: 3px; -moz-border-radius-topright: 3px; -moz-border-radius-topleft: 3px; }
@@ -459,7 +459,7 @@ ul.sub li ul li { padding-left: 10px; }
 .statsRow { background: url(../images/backgrounds/titleRowBg.png); }
 .statsItems { padding: 20px 0 14px 0; overflow: visible; text-align: center; }
 
-.sItem { width: /*15%*/; margin: 0 1%; display: inline-block; border: 1px solid #d5d5d5; position: relative; background: #eee url(../images/backgrounds/stats.png) repeat-x; }
+.sItem { margin: 0 1%; display: inline-block; border: 1px solid #d5d5d5; position: relative; background: #eee url(../images/backgrounds/stats.png) repeat-x; }
 .sItem:first-child {  }
 .sItem > span { display: block; color: #626262;  }
 .sItem > h2 { float: left; }
@@ -797,10 +797,7 @@ html ul.tabs li.activeTab a { color: #2E6B9B; }
 .contentStats li:first-child { border-top: none; }
 .contentStats li:hover { background-color: #fafafa; }
 .contentStats h5 { display: block; float: left; margin-right: 6px; padding-left: 32px; padding-top: 1px; }
-.contentStats .nComments { background: url(../images/icons/dialog.png) no-repeat 0; }
-.contentStats .nSubscribers { background: url(../images/icons/sub.png) no-repeat 0 2px; }
 .contentStats .nFollowers { background: url(../images/icons/dark/twitter.png) no-repeat 0; }
-.contentStats .nAffiliates { background: url(../images/icons/plusS.png) no-repeat 0 2px; }
 .contentStats .nUploads { background: url(../images/icons/add.png) no-repeat 0 2px; }
 
 
@@ -902,8 +899,6 @@ html ul.tabs li.activeTab a { color: #2E6B9B; }
 .nSuccess { background: #effeb9 url(../images/icons/notifications/accept.png) no-repeat 15px center; border: 1px solid #c1d779; color: #3C5A01; }
 .nFailure { background: #fccac1 url(../images/icons/notifications/exclamation.png) no-repeat 15px center; border: 1px solid #e18b7c; color: #AC260F; }
 .nInformation { background: #deeefa url(../images/icons/notifications/information.png) no-repeat 15px center; border: 1px solid #afd3f2; color: #235685; }
-.nLightbulb { background: #FEF0CB url(../images/icons/notifications/lightbulb.png) no-repeat 15px center; border: 1px solid #D3A350; color: #835F21; }
-.nMessages { background: #9DDFFF url(../images/icons/notifications/email.png) no-repeat 15px center; border: 1px solid #42B4FF; color: #835F21; }
 
 
 
@@ -1143,7 +1138,7 @@ div.radio span.checked { background-position: center bottom; }
 /* ===== File uploader ===== */
 
 div.uploader { width: 250px; position: relative; overflow: hidden; box-shadow: 0 0 0 2px #f4f4f4; -webkit-box-shadow: 0 0 0 2px #f4f4f4; -moz-box-shadow: 0 0 0 2px #f4f4f4; border: 1px solid #DDD; background: white; padding: 2px 2px 2px 8px; }
-div.uploader span.action { width: 22px; background: #fff url(../images/addFiles.png) no-repeat 0 0; height: 22px; font-size: 11px; font-weight: bold; cursor: pointer; float: right; text-indent: -9999px; display: inline; overflow: hidden; cursor: pointer; }
+div.uploader span.action { width: 22px; background: #fff url(../images/addFiles.png) no-repeat 0 0; height: 22px; font-size: 11px; font-weight: bold; cursor: pointer; float: right; text-indent: -9999px; display: inline; overflow: hidden; }
 div.uploader:hover span.action { background-position: 0 -27px; }
 div.uploader:active span.action { background-position: 0 -54px; }
 div.uploader span.filename { color: #777; max-width: 200px; font-size: 11px; line-height: 22px; float: left; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: default; }
@@ -1331,36 +1326,7 @@ position: relative;
 .colorpicker_slider { background-position: bottom; }
 
 
-/* ===== Growl notifications ===== */
 
-div.jGrowl { z-index: 9999; color: #fff; font-size: 12px; }
-div.ie6.top-right { 
-	right: 				auto;
-	bottom: 			auto;
-	left: 				expression( ( 0 - jGrowl.offsetWidth + ( document.documentElement.clientWidth ? document.documentElement.clientWidth : document.body.clientWidth ) + ( ignoreMe2 = document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft ) ) + 'px' );
-	top: 				expression( ( 0 + ( ignoreMe = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop ) ) + 'px' );
-}
-
-div.ie6.top-left {
-	left: 				expression( ( 0 + ( ignoreMe2 = document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft ) ) + 'px' );
-	top: 				expression( ( 0 + ( ignoreMe = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop ) ) + 'px' );
-}
-
-div.ie6.bottom-right {
-	left: 				expression( ( 0 - jGrowl.offsetWidth + ( document.documentElement.clientWidth ? document.documentElement.clientWidth : document.body.clientWidth ) + ( ignoreMe2 = document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft ) ) + 'px' );
-	top: 				expression( ( 0 - jGrowl.offsetHeight + ( document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight ) + ( ignoreMe = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop ) ) + 'px' );
-}
-
-div.ie6.bottom-left {
-	left: 				expression( ( 0 + ( ignoreMe2 = document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft ) ) + 'px' );
-	top: 				expression( ( 0 - jGrowl.offsetHeight + ( document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight ) + ( ignoreMe = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop ) ) + 'px' );
-}
-
-div.ie6.center {
-	left: 				expression( ( 0 + ( ignoreMe2 = document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft ) ) + 'px' );
-	top: 				expression( ( 0 + ( ignoreMe = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop ) ) + 'px' );
-	width: 				100%;
-}
 
 /** Normal Style Positions **/
 div.jGrowl { position: absolute; }
@@ -1497,8 +1463,6 @@ color: #656565;
 .chzn-container .chzn-results-scroll { background: white; margin: 0 4px; position: absolute; text-align: center; width: 321px; /* This should be dynamic with js */ z-index: 1; }
 .chzn-container .chzn-results-scroll span { display: inline-block; height: 17px; text-indent: -5000px; width: 9px; }
 .chzn-container .chzn-results-scroll-down { bottom: 0; }
-.chzn-container .chzn-results-scroll-down span { background: url('chosen-sprite.png') no-repeat -4px -3px; }
-.chzn-container .chzn-results-scroll-up span { background: url('chosen-sprite.png') no-repeat -22px -3px; }
 
 /*.chzn-container-active .chzn-single { border: 1px solid #5897fb; }
 .chzn-container-active .chzn-single-with-drop { border: 1px solid #aaa; background-color: #eee; }*/

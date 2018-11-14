@@ -51,6 +51,21 @@ def signin(request):
             return render(request, 'test/result.html', {'func': 'signin', 'res': 'fail!'})
 
 
+def login(request):
+    if request.method == 'GET':
+        return render(request, 'panel/login.html')
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        passwd = request.POST.get('password')
+        user = auth.authenticate(username=name, password=passwd)
+        if user is not None and user.is_active:
+            auth.login(request, user)
+            return render(request, 'panel/index.html', {'func': 'signin', 'res': name})
+        else:
+            return render(request, 'panel/login.html', {'func': 'signin', 'res': 'fail!'})
+
+
+
 def add_book(request):
     if request.method == 'GET':
         return render(request, 'test/addbook.html')
@@ -65,6 +80,10 @@ def add_book(request):
             return render(request, 'test/result.html', {'func': 'add_book', 'res': 'illegal cover !!'})
         Book.objects.create(name=book_name, info=info, price=price, cover=cover, owner=request.user)
         return render(request, 'test/result.html', {'func': 'add_book', 'res': 'add success!'})
+
+
+def market(request):
+    return render(request, 'panel/market.html')
 
 
 def list_mysell(request):

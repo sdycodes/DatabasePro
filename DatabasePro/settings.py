@@ -86,12 +86,12 @@ DATABASES = {
 }
 """
 
-DATABASES = {
+DATABASES0 = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'books',
         'USER': 'root',
-        'PASSWORD': 'adminadmin',
+        'PASSWORD': 'Bxy19980316',
         'HOST': 'localhost',
         'PORT': '3306'
     }
