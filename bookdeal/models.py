@@ -9,6 +9,7 @@ class Normal(User):
     isDelete = models.BooleanField(default=False)
     dept = models.CharField(max_length=20, blank=True)
     grade = models.IntegerField(blank=True, default=0)
+    sale = models.IntegerField(default=0)
 
 
 class Retailer(User):
@@ -46,8 +47,8 @@ class Order(models.Model):
     id = models.AutoField(primary_key=True)
     buyer = models.CharField(max_length=20)
     book_id = models.ForeignKey(Book, related_name='book_id', on_delete=models.CASCADE)
-    brate = models.DecimalField(max_digits=1, decimal_places=1)
-    srate = models.DecimalField(max_digits=1, decimal_places=1)
+    brate = models.DecimalField(max_digits=2, decimal_places=1, default=0)
+    srate = models.DecimalField(max_digits=2, decimal_places=1, default=0)
     date = models.DateTimeField(auto_now_add=True)
     isFinish = models.BooleanField(default=False)
 
@@ -65,7 +66,13 @@ class Report(models.Model):
 
 class Correct(models.Model):
     id = models.AutoField(primary_key=True)
-    correcter = models.ForeignKey(User,
+    corrector = models.ForeignKey(User,
                                   on_delete=models.CASCADE,
-                                  related_name='correcter')
+                                  related_name='corrector')
     info = models.CharField(max_length=1000)
+
+
+class Car(models.Model):
+    id = models.AutoField(primary_key=True)
+    item = models.IntegerField()
+    user = models.ForeignKey(Normal, on_delete=models.CASCADE, related_name='user')
