@@ -73,7 +73,6 @@ WSGI_APPLICATION = 'DatabasePro.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -84,8 +83,8 @@ DATABASES = {
         'PORT': '3306'
     }
 }
-"""
 
+"""
 DATABASES0 = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -96,6 +95,7 @@ DATABASES0 = {
         'PORT': '3306'
     }
 }
+"""
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators

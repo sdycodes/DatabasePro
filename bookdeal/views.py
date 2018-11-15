@@ -60,7 +60,7 @@ def login(request):
         user = auth.authenticate(username=name, password=passwd)
         if user is not None and user.is_active:
             auth.login(request, user)
-            return render(request, 'panel/index.html', {'func': 'signin', 'res': name})
+            return render(request, 'test/result.html', {'func': 'signin', 'res': name})
         else:
             return render(request, 'panel/login.html', {'func': 'signin', 'res': 'fail!'})
 

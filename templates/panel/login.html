@@ -29,7 +29,8 @@
     <div class="loginLogo"><img src = {% static 'images/loginLogo.png' %} alt="" /></div>
     <div class="widget">
         <div class="title"><img src = {% static 'images/icons/dark/files.png' %} alt="" class="titleIcon" /><h6>Login panel</h6></div>
-        <form action="index.html" id="validate" class="form">
+        <form action="" id="validate" class="form" method="post">
+            {% csrf_token %}
             <fieldset>
                 <div class="formRow">
                     <label for="login">Username:</label>
