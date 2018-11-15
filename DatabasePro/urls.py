@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url
 from bookdeal import views
+from django.conf.urls.static import static
+from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     url('front/', views.front),
@@ -26,7 +28,10 @@ urlpatterns = [
     url('index/', views.index),
     url('signup/', views.signup),
     url('signin/', views.signin),
-    url('addbook/', views.add_book),
+    # url('addbook/', views.add_book),
+    url('addbook/', views.addbook),
     url('deletebook/', views.delete_book),
     url('list_mysell', views.list_mysell)
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

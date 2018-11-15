@@ -5,7 +5,7 @@
 <title>Crown - premium responsive admin template for backend systems</title>
     <link href="{% static 'css/main.css' %}" rel="stylesheet" type="text/css" />
     {% include 'panel/loader.html' %}
-
+    <style type="text/css">.CRZ{table-layout:fixed;}.CRZ td,.CRZ th{overflow:hidden}.CRC{height:0px;position:relative;}.CRG{margin-left:-5px;position:absolute;z-index:5;}.CRG .CRZ{position:absolute;background-color:red;filter:alpha(opacity=1);opacity:0;width:10px;height:100%;top:0px}.CRL{position:absolute;width:1px}.CRD{ border-left:1px dotted black}</style>
 <body>
 <!-- Left side content -->
 <div id="leftSide">
@@ -86,9 +86,9 @@
 <div id="rightSide">
 
     {% include 'panel/top_bar.html' %}
-    
 
-    
+
+
     <!-- Title area -->
     <div class="titleArea">
         <div class="wrapper">
@@ -126,9 +126,9 @@
             <div class="clear"></div>
         </div>
     </div>
-    
+
     <div class="line"></div>
-    
+
     <!-- Page statistics and control buttons area -->
     <div class="statsRow">
         <div class="wrapper">
@@ -145,171 +145,124 @@
             </div>
         </div>
     </div>
-    
+
     <div class="line"></div>
-    
+
     <!-- Main content wrapper -->
     <div class="wrapper">
-    
+
         <!-- Note -->
         <div class="nNote nInformation hideit">
             <p><strong>INFORMATION: </strong>Top buttons area has 3 versions - 2 kinds of buttons and statistics. All of them could be viewed on <a href="ui_elements.html" title="">Interface elements page</a></p>
         </div>
-        
-        <!-- Chart -->
-        <div class="widget chartWrapper">
-            <div class="title"><img src="{% static 'images/icons/dark/stats.png' %}" alt="" class="titleIcon" /><h6>Chart</h6></div>
-            <div class="body"><div class="chart"></div></div>
-        </div>
-        
+
+
+
         <!-- Widgets -->
-        <div class="widgets">
-            <div class="oneTwo">
-            
-                <!-- Partners list widget -->
-                <div class="widget">
-                    <div class="title"><img src="{% static 'images/icons/dark/users.png' %}" alt="" class="titleIcon" /><h6>Partners list</h6></div>
-                    <ul class="partners">
-                        <li>
-                            <a href="#" title="" class="floatL"><img src="{% static 'images/user.png' %}" alt="" /></a>
-                            <div class="pInfo">
-                                <a href="#" title=""><strong>Dave Armstrong</strong></a>
-                                <i>Creative director at Google Inc. Zurich</i>	
-                            </div>
-                            <div class="pLinks">
-                                <a href="#" title="Direct call" class="tipW"><img src="{% static 'images/icons/pSkype.png' %}" alt="" /></a>
-                                <a href="#" title="Send an email" class="tipW"><img src="{% static 'images/icons/pEmail.png' %}" alt="" /></a>
-                            </div>
-                            <div class="clear"></div>
-                        </li>
-                        <li>
-                            <a href="#" title="" class="floatL"><img src="{% static 'images/user.png' %}" alt="" /></a>
-                                <div class="pInfo">
-                                <a href="#" title=""><strong>Nora McDonald</strong></a>
-                                <i>Lead developer, Alaska</i>	
-                            </div>
-                            <div class="pLinks">
-                                <a href="#" title="Direct call" class="tipW"><img src="{% static 'images/icons/pSkype.png' %}" alt="" /></a>
-                                <a href="#" title="Send an email" class="tipW"><img src="{% static 'images/icons/pEmail.png' %}" alt="" /></a>
-                            </div>
-                            <div class="clear"></div>
-                        </li>
-                        <li>
-                            <a href="#" title="" class="floatL"><img src="{% static 'images/user.png' %}" alt="" /></a>
-                            <div class="pInfo">
-                                <a href="#" title=""><strong>Natalie Zimmerman</strong></a>
-                                <i>Actually it's a guy. Yeah, unexpected</i>	
-                            </div>
-                            <div class="pLinks">
-                                <a href="#" title="Direct call" class="tipW"><img src="{% static 'images/icons/pSkype.png' %}" alt="" /></a>
-                                <a href="#" title="Send an email" class="tipW"><img src="{% static 'images/icons/pEmail.png' %}" alt="" /></a>
-                            </div>
-                            <div class="clear"></div>
-                        </li>
-                        <li>
-                            <a href="#" title="" class="floatL"><img src="{% static 'images/user.png' %}" alt="" /></a>
-                            <div class="pInfo">
-                                <a href="#" title=""><strong>Maria Paradeux</strong></a>
-                                <i>Very hot secretary, Playboy rockstar</i>	
-                            </div>
-                            <div class="pLinks">
-                                <a href="#" title="Direct call" class="tipW"><img src="{% static 'images/icons/pSkype.png' %}" alt="" /></a>
-                                <a href="#" title="Send an email" class="tipW"><img src="{% static 'images/icons/pEmail.png' %}" alt="" /></a>
-                            </div>
-                            <div class="clear"></div>
-                        </li>
-                    </ul>
-                </div>
-            
-                <!-- Website stats widget -->
-                <div class="widget">
-                    <div class="title"><img src="{% static 'images/icons/dark/stats.png' %}" alt="" class="titleIcon" /><h6>Website statistics</h6></div>
-                    <table cellpadding="0" cellspacing="0" width="100%" class="sTable">
-                        <thead>
-                            <tr>
-                                <td width="80">Amount</td>
-                                <td>Description</td>
-                                <td width="80">Changes</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td align="center"><a href="#" title="" class="webStatsLink">980</a></td>
-                                <td>returned visitors</td>
-                                <td><span class="statsPlus">0.32%</span></td>
-                            </tr>
-                            <tr>
-                                <td align="center"><a href="#" title="" class="webStatsLink">1545</a></td>
-                                <td>new registrations</td>
-                                <td><span class="statsMinus">82.3%</span></td>
-                            </tr>
-                            <tr>
-                                <td align="center"><a href="#" title="" class="webStatsLink">457</a></td>
-                                <td>new affiliates registrations</td>
-                                <td><span class="statsPlus">100%</span></td>
-                            </tr>
-                            <tr>
-                                <td align="center"><a href="#" title="" class="webStatsLink">9543</a></td>
-                                <td>new visitors</td>
-                                <td><span class="statsPlus">4.99%</span></td>
-                            </tr>
-                            <tr>
-                                <td align="center"><a href="#" title="" class="webStatsLink">354</a></td>
-                                <td>new pending comments</td>
-                                <td><span class="statsMinus">9.67%</span></td>
-                            </tr>
-                        </tbody>
-                    </table>   
-                </div>
-            
-                <!-- Latest update widget -->
-                <div class="widget">
-                    <div class="title"><img src="{% static 'images/icons/dark/refresh4.png' %}" alt="" class="titleIcon" /><h6>Latest updates</h6></div>
-                    
-                    <div class="updates">
-                    	<div class="newUpdate">
-                            <div class="uDone">
-                                <a href="#" title=""><strong>A new server is on the board!</strong></a>
-                                <span>We've just set up a new server. Our gurus ...</span>
-                            </div>
-                            <div class="uDate"><span class="uDay">08</span>feb</div>
-                            <div class="clear"></div>
-                        </div>
-                        
-                    	<div class="newUpdate">
-                            <span class="uAlert">
-                                <a href="#" title=""><strong>[ URGENT ] ex.ua was closed by government</strong></a>
-                                <span>But already everything was solved. It will ...</span>
-                            </span>
-                            <span class="uDate"><span class="uDay">08</span>feb</span>
-                            <div class="clear"></div>
-                        </div>
-                        
-                    	<div class="newUpdate">
-                            <span class="uDone">
-                                <a href="#" title=""><strong>The goal was reached!</strong></a>
-                                <span>We just passed 1000 sales! Congrats to all</span>
-                            </span>
-                            <span class="uDate"><span class="uDay">07</span>feb</span>
-                            <div class="clear"></div>
-                        </div>
-                        
-                    	<div class="newUpdate">
-                            <span class="uNotice">
-                                <a href="#" title=""><strong>Meat a new team member - Don Corleone</strong></a>
-                                <span>Very dyplomatic and flexible sales manager</span>
-                            </span>
-                            <span class="uDate"><span class="uDay">06</span>feb</span>
-                            <div class="clear"></div>
-                        </div>
-                        
+        <form action class="form">
+            <fieldset>
+        <div class="widget">
+                    <div class="title"><img src="{% static 'images/icons/dark/list.png' %}" alt="" class="titleIcon"><h6>Input text fields</h6></div>
+                    <div class="formRow">
+                        <label>Usual text input:</label>
+                        <div class="formRight"><input type="text" value=""></div>
+                        <div class="clear"></div>
                     </div>
+                    <div class="formRow">
+                        <label for="labelFor">Label for attribute</label>
+                        <div class="formRight"><input type="text" id="labelFor" value=""></div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="formRow">
+                        <label>Password input</label>
+                        <div class="formRight"><input type="password" value=""></div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="formRow">
+                        <label>Text input with notice:</label>
+                        <div class="formRight"><input type="text" value=""><span class="formNote">This is a sample note</span></div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="formRow">
+                        <label>Read only input</label>
+                        <div class="formRight"><input type="text" readonly="readonly" value="Read only"></div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="formRow">
+                        <label>Disabled text input</label>
+                        <div class="formRight"><input type="text" disabled="disabled" value="Disabled field"></div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="formRow">
+                        <label>Input with placeholder</label>
+                        <div class="formRight"><input type="text" placeholder="Text input placeholder attribute" value=""></div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="formRow">
+                        <label>Input field with value</label>
+                        <div class="formRight"><input type="text" value="This is the value"></div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="formRow">
+                        <label>Input with tooltip:</label>
+                        <div class="formRight"><input type="text" value="" class="tipN" original-title="Awesome stuff"></div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="formRow">
+                        <label>Input with max characters:</label>
+                        <div class="formRight"><input type="text" value="" maxlength="10" placeholder="Max 10 characters here"></div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="formRow">
+                    	<label><img src="{% static 'images/icons/dark/stats.png' %}" alt="" class="labelImg tipS" original-title="Some title...">With icons:</label>
+                        <div class="formRight"><input type="text" value=""><a href="#" title=""><img src="{% static 'images/icons/dark/download.png' %}" alt="" class="inputImg tipS" original-title="Some title..."></a></div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="formRow dnone">
+                    	<label>Inputs grid:</label>
+                        <div class="formRight">
+                            <span class="oneTwo"><input type="text" value="one two"></span>
+                            <span class="oneTwo"><input type="text" value="one two"></span>
+                        </div>
+                        <div class="formRight mt12">
+                            <span class="oneThree"><input type="text" value="one three"></span>
+                            <span class="oneThree"><input type="text" value="one three"></span>
+                            <span class="oneThree"><input type="text" value="one three"></span>
+                        </div>
+                        <div class="formRight mt12">
+                            <span class="oneFour"><input type="text" value="one four"></span>
+                            <span class="oneFour"><input type="text" value="one four"></span>
+                            <span class="oneFour"><input type="text" value="one four"></span>
+                            <span class="oneFour"><input type="text" value="one four"></span>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="formRow">
+                        <label>Usual textarea:</label>
+                        <div class="formRight"><textarea rows="8" cols="" name="textarea"></textarea></div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="formRow">
+                        <label>Autogrowing textarea:</label>
+                        <div class="formRight"><textarea rows="8" cols="" name="growingTextarea" class="autoGrow" style="height: auto; overflow: hidden;"></textarea></div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="formRow">
+                        <label>Input limiter:</label>
+                        <div class="formRight"><textarea rows="8" cols="" name="growingTextarea" class="autoGrow lim" placeholder="Type something" style="height: auto; overflow: hidden;"></textarea></div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="formRow">
+                        <label for="tags">Tags:</label>
+                        <div class="formRight"><input type="text" id="tags" name="tags" class="tags" value="these,are,sample,tags" style="display: none;"><div id="tags_tagsinput" class="tagsinput" style="width: 100%;"><span class="tag"><span>these&nbsp;&nbsp;</span><a href="#" title="Removing tag">x</a></span><span class="tag"><span>are&nbsp;&nbsp;</span><a href="#" title="Removing tag">x</a></span><span class="tag"><span>sample&nbsp;&nbsp;</span><a href="#" title="Removing tag">x</a></span><span class="tag"><span>tags&nbsp;&nbsp;</span><a href="#" title="Removing tag">x</a></span><div id="tags_addTag"><input id="tags_tag" value="" data-default="add a tag" style="color: rgb(102, 102, 102); width: 80px;"></div><div class="tags_clear"></div></div></div>
+                        <div class="clear"></div>
+                    </div>
+
                 </div>
-            </div>
-        
+
         	<!-- 2 columns widgets -->
             <div class="oneTwo">
-            
+
                 <!-- Search -->
                 <div class="searchWidget">
                     <form action="">
@@ -317,7 +270,7 @@
                         <input type="submit" name="find" value="" />
                     </form>
                 </div>
-            
+
                 <!-- Purchase info widget -->
                 <div class="widget">
                     <div class="title">
@@ -342,9 +295,9 @@
                             </ul>
                             <div class="clear"></div>
                         </div>
-                    
+
                         <div class="cLine"></div>
-                        
+
                         <div class="orderRow">
                             <ul class="leftList">
                                 <li>Date and time:</li>
@@ -358,12 +311,12 @@
                             </ul>
                             <div class="clear"></div>
                         </div>
-                        
+
                         <div class="cLine"></div>
                         <div class="totalAmount"><h6 class="floatL blue">Total:</h6><h6 class="floatR blue">$12,157.99</h6><div class="clear"></div></div>
                     </div>
-                </div>                
-        
+                </div>
+
                 <!-- New users widget -->
                 <div class="widget">
                     <div class="title"><img src="{% static 'images/icons/dark/add.png' %}" alt="" class="titleIcon" /><h6>New users</h6></div>
@@ -379,9 +332,9 @@
                         </ul>
                         <div class="clear"></div>
                     </div>
-                    
+
                     <div class="cLine"></div>
-                    
+
                     <div class="wUserInfo">
                         <a href="#" title="" class="wUserPic"><img src="{% static 'images/user.png' %}" alt="" /></a>
                         <ul class="leftList">
@@ -394,9 +347,9 @@
                         </ul>
                         <div class="clear"></div>
                     </div>
-                    
+
                     <div class="cLine"></div>
-                    
+
                     <div class="wUserInfo">
                         <a href="#" title="" class="wUserPic"><img src="{% static 'images/user.png' %}" alt="" /></a>
                         <ul class="leftList">
@@ -409,9 +362,9 @@
                         </ul>
                         <div class="clear"></div>
                     </div>
-                    
+
                     <div class="cLine"></div>
-                    
+
                     <div class="wUserInfo">
                         <a href="#" title="" class="wUserPic"><img src="{% static 'images/user.png' %}" alt="" /></a>
                         <ul class="leftList">
@@ -425,7 +378,7 @@
                         <div class="clear"></div>
                     </div>
                 </div>
-                
+
             	<!-- My tasks table widget -->
                 <div class="widget">
                     <div class="title"><img src="{% static 'images/icons/dark/timer.png' %}" alt="" class="titleIcon" /><h6>My tasks</h6><div class="num"><a href="#" class="blueNum">+245</a></div></div>
@@ -459,20 +412,22 @@
                                 <td class="actBtns"><a href="#" title="Update" class="tipS"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a><a href="#" title="Remove" class="tipS"><img src="{% static 'images/icons/remove.png' %}" alt="" /></a></td>
                             </tr>
                         </tbody>
-                    </table> 
+                    </table>
                 </div>
                 <div class="clear"></div>
 
             </div>
             <div class="clear"></div>
         </div>
-    	
+    </fieldset>
+    </form>
+
         <!-- Events calendar -->
         <div class="widget">
             <div class="title"><img src="{% static 'images/icons/dark/monthCalendar.png' %}" alt="" class="titleIcon" /><h6>Events</h6></div>
             <div class="calendar"></div>
         </div>
-    
+
         <!-- Media table -->
         <div class="widget">
             <div class="title"><span class="titleIcon"><input type="checkbox" id="titleCheck" name="titleCheck" /></span><h6>Media table</h6></div>
@@ -560,10 +515,10 @@
                 </tbody>
             </table>
         </div>
-    
+
     	<!-- Dynamic table -->
         <div class="widget">
-            <div class="title"><img src="{% static 'images/icons/dark/full2.png' %}" alt="" class="titleIcon" /><h6>Dynamic table</h6></div>                          
+            <div class="title"><img src="{% static 'images/icons/dark/full2.png' %}" alt="" class="titleIcon" /><h6>Dynamic table</h6></div>
             <table cellpadding="0" cellspacing="0" border="0" class="display dTable">
             <thead>
             <tr>
@@ -921,11 +876,11 @@
             <td class="center">-</td>
             </tr>
             </tbody>
-            </table>  
+            </table>
         </div>
-    
+
     </div>
-    
+
     <!-- Footer line -->
     {% include 'panel/footer.html' %}
 

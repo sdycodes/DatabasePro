@@ -60,9 +60,9 @@ def login(request):
         user = auth.authenticate(username=name, password=passwd)
         if user is not None and user.is_active:
             auth.login(request, user)
-            return render(request, 'test/result.html', {'func': 'signin', 'res': name})
+            return render(request, 'panel/index.html', {'username': request.user.username, 'res': name})
         else:
-            return render(request, 'panel/login.html', {'func': 'signin', 'res': 'fail!'})
+            return render(request, 'panel/login.html', {'username': 'signin', 'res': 'fail!'})
 
 
 
@@ -82,8 +82,29 @@ def add_book(request):
         return render(request, 'test/result.html', {'func': 'add_book', 'res': 'add success!'})
 
 
+def addbook(request):
+    if request.method == 'GET':
+        return render(request, 'panel/addbook.html')
+    if request.method == 'POST':
+        book_name = request.POST.get('name')
+        info = request.POST.get('info')
+        price = float(request.POST.get('price'))
+        cover = request.FILES.get('cover')
+        if book_name == "" or len(info) < 10 or price > 10000 or price < 0:
+            return render(request, 'panel/index.html', {'TYPE':"Success", 'msg':"addbook", "username":request.user.username})
+        if cover.name.split('.')[1].lower() not in ['jpeg', 'jpg', 'png'] or cover.size > 10000000:
+            return render(request, 'panel/result.html', {'TYPE': "Warning", 'msg': "illegal cover"})
+        Book.objects.create(name=book_name, info=info, price=price, cover=cover, owner=request.user)
+        return render(request, 'panel/result.html', {'func': 'add_book', 'res': 'add success!'})
+
 def market(request):
-    return render(request, 'panel/market.html')
+    if request.method == 'GET':
+        return render(request, 'panel/market.html', {'username': request.user.username})
+    if request.method == 'POST':
+        tar = request.POST.get('name')
+        res = Book.objects.filter(name__contains=tar)
+
+        return render(request, 'panel/market.html', {'username': request.user.username, 'res': res})
 
 
 def list_mysell(request):
