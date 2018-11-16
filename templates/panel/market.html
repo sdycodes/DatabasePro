@@ -145,8 +145,9 @@
                         <td align="center"><a href="{{ book.cover.url }}" title="" rel="lightbox"><img src="{{ book.cover.url }}" alt="" style="width:60px" /></a></td>
                         <td style="width:50px;text-align:center"><a href="#" title="">{{ book.name }}</a></td>
                         <td align="center">{{ book.info }}</td>
-                        <td class="fileInfo"><span><strong>Price:</strong> {{ book.price }}</span><span><strong>Source:</strong> .jpg</span></td>
-                        {% if book %}<td class="actBtns"><a href="#" title="Add to Cart" class="tipS"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a>{% else %}<a href="#" title="Remove" class="tipS"><img src="{% static 'images/icons/remove.png' %}" alt="" /></a></td>{% endif %}
+                        <td class="fileInfo"><span><strong>¥ </strong> {{ book.price }}</span></td>
+
+                       <td class="actBtns"><a href="?add={{ book.id }}&q={{ query }}&page={{ books.number }}" title="Add to Cart" class="tipS" type="submit"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a></td>
 
                    </tr>
                    {% endfor %}

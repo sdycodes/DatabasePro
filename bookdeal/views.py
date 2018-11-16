@@ -99,26 +99,10 @@ def addbook(request):
         return render(request, 'panel/index.html', {'TYPE': "Success", 'msg': 'Successfully Add Book ' + book_name + '!', "username":request.user.username})
 
 
-def listing(request):
-    contact_list = Contacts.objects.all()
-    paginator = Paginator(contact_list, 25)  # Show 25 contacts per page
-
-    page = request.GET.get('page')
-    try:
-        contacts = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        contacts = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        contacts = paginator.page(paginator.num_pages)
-
-    return render(request, 'list.html', {'contacts': contacts})
-
-
 def market(request):
     tar = request.POST.get('name')
     q = request.GET.get('q')
+    user = request.user
     if tar is None and q is None:
         return render(request, 'panel/market.html', {'username': request.user.username})
     else:
@@ -136,17 +120,102 @@ def market(request):
         except EmptyPage:
             # If page is out of range (e.g. 9999), deliver last page of results.
             books = paginator.page(paginator.num_pages)
+        add = request.GET.get('add')
+        if add:
+            try:
+                useroutlet = Normal.objects.get(username=user)
+            except Normal.DoesNotExist:
+                return render(request, 'panel/index.html',
+                              {'username': request.user.username, 'TYPE': "Warning",
+                               'msg': "Please Login First!"})
+            check = Car.objects.filter(user=useroutlet, item=add)
+            if check:
+                return render(request, 'panel/market.html',
+                              {'username': request.user.username, 'books': books, 'query': q, 'TYPE': "Failure",
+                               'msg': "Add to Cart Failed, Book Exists!"})
+
+            Car.objects.create(item=add, user=useroutlet)
+            return render(request, 'panel/market.html',
+                          {'username': request.user.username, 'books': books, 'query': q, 'TYPE': "Success", 'msg': "Add to Cart Successfully!"})
 
         return render(request, 'panel/market.html', {'username': request.user.username, 'books': books, 'query': q})
 
 
 def info(request):
-    if request.method == 'GET':
-        res = Book.objects.filter(name__contains='')    # TODO Add Shopping Cart
-        return render(request, 'panel/info.html', {'username': request.user.username, 'res': res})
-    if request.method == 'POST':
-        res = Book.objects.filter(name__contains='')  # TODO Renew Shopping Cart
-        return render(request, 'panel/info.html', {'username': request.user.username, 'res': res})
+    if request.method == 'GET' or request.method == 'POST':
+        user = request.user
+        try:
+            useroutlet = Normal.objects.get(username=user)
+        except Normal.DoesNotExist:
+            return render(request, 'panel/index.html',
+                        {'username': request.user.username, 'TYPE': "Warning",
+                       'msg': "Please Login First!"})
+        ids = Car.objects.filter(user=useroutlet)
+        print(ids)
+        idset = []
+        for idi in ids:
+            idset.append(idi.item)
+        books = Book.objects.filter(id__in=idset).order_by('id')
+        paginator = Paginator(books, 3)  # Show 2 contacts per page
+
+        page = request.GET.get('page')
+        try:
+            books = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            books = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            books = paginator.page(paginator.num_pages)
+        delete = request.GET.get('del')
+        if delete:
+            useroutlet = Normal.objects.get(username=user)
+            check = Car.objects.filter(user=useroutlet, item=delete)
+            if not check:
+                return render(request, 'panel/market.html',
+                              {'username': request.user.username, 'books': books, 'query': q, 'TYPE': "Failure",
+                               'msg': "Remove from Cart Failed, Book Not Exists!"})
+            Car.objects.get(item=delete, user=useroutlet).delete()
+            ids = Car.objects.filter(user=user).order_by('id')
+
+            books = Book.objects.filter(id__in=ids).order_by('id')
+
+            paginator = Paginator(books, 3)  # Show 2 contacts per page
+
+            page = request.GET.get('page')
+            try:
+                books = paginator.page(page)
+            except PageNotAnInteger:
+                # If page is not an integer, deliver first page.
+                books = paginator.page(1)
+            except EmptyPage:
+                # If page is out of range (e.g. 9999), deliver last page of results.
+                books = paginator.page(paginator.num_pages)
+
+            return render(request, 'panel/market.html',
+                          {'username': request.user.username, 'books': books,
+                           'TYPE': "Success", 'msg': "Remove from Cart Successfully!"})
+
+        return render(request, 'panel/info.html', {'username': request.user.username, 'books': books})
+
+
+def addcar(request):
+    user = request.user
+    book_id = request.POST.get('id')
+    check = Car.objects.filter(item=book_id, user=user)
+    if check:
+        return HttpResponse('Already Add This Book!')
+    Car.objects.create(item=book_id, user=user)
+    return HttpResponse('Add Successfully!')
+
+
+def removecar(request):
+    user = request.user
+    book_id = request.POST.get('id')
+    check = Car.objects.filter(item=book_id, user=user)
+    if check:
+
+        return HttpResponse('Add Successfully!')
 
 
 def list_mysell(request):
