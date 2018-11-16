@@ -78,7 +78,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'books',
         'USER': 'root',
-        'PASSWORD': 'Bxy19980316',
+        'PASSWORD': 'adminadmin',
         'HOST': 'localhost',
         'PORT': '3306'
     }
@@ -148,5 +148,5 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
-MEDIA_ROOT = './Data/'
-
+MEDIA_ROOT = os.path.join(BASE_DIR, 'cover')
+MEDIA_URL = '/cover/'

@@ -95,21 +95,38 @@
         <div style="padding-top:20px"></div>
         <!-- Note -->
         <div class="nNote nInformation hideit">
-            <p><strong>INFORMATION: </strong>Welcome to the Market</p>
+            <p><strong>{{ TYPE }}</strong>{{ msg }}</p>
+        </div>
+
+
+        <!-- Notifications -->
+        <div class="nNote n{{ "Success" }}  hideit">
+            <p><strong>WARNING: </strong>This is a warning message. You can use this to warn users on any events</p>
+        </div>
+        <div class="nNote nInformation hideit">
+            <p><strong>INFORMATION: </strong>This is a message for information, can be any general information.</p>
+        </div>
+        <div class="nNote nSuccess hideit">
+            <p><strong>SUCCESS: </strong>Success message! hoooraaay!!!!</p>
+        </div>
+        <div class="nNote nFailure hideit">
+            <p><strong>FAILURE: </strong>Oops sorry. That action is not valid, or our servers have gone bonkers</p>
         </div>
 
         <!-- Widgets -->
         <div class="widgets">
             <!-- Search -->
                 <div class="searchWidget">
-                    <form action="">
-                        <input type="text" name="search" placeholder="Which book are you looking for?" />
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <input type="text" name="name" placeholder="Which book are you looking for?" />
                         <input type="submit" name="find" value="" />
                     </form>
                 </div>
         </div>
 
         <!-- Media table -->
+    {% if res %}
         <div class="widget">
             <div class="title"><span class="titleIcon"><input type="checkbox" id="titleCheck" name="titleCheck" /></span><h6>Media table</h6></div>
             <table cellpadding="0" cellspacing="0" width="100%" class="sTable withCheck mTable" id="checkAll">
@@ -118,12 +135,13 @@
                         <td><img src="{% static 'images/icons/tableArrows.png' %}" alt="" /></td>
                         <td>Image</td>
                         <td class="sortCol"><div>Description<span></span></div></td>
-                        <td class="sortCol"><div>Date<span></span></div></td>
-                        <td>File info</td>
+                        <td class="sortCol"><div>Info<span></span></div></td>
+                        <td>Price</td>
                         <td>Actions</td>
                     </tr>
                 </thead>
                 <tfoot>
+
                     <tr>
                         <td colspan="6">
                             <div class="itemActions">
@@ -153,50 +171,22 @@
                     </tr>
                 </tfoot>
                 <tbody>
-                    <tr>
-                        <td><input type="checkbox" id="titleCheck2" name="checkRow" /></td>
-                        <td align="center"><a href="{% static 'images/big.png' %}" title="" rel="lightbox"><img src="{% static 'images/user.png' %}" alt="" /></a></td>
-                        <td><a href="#" title="">Image1 description</a></td>
-                        <td align="center">Feb 12, 2012. 12:28</td>
-                        <td class="fileInfo"><span><strong>Size:</strong> 215 Kb</span><span><strong>Format:</strong> .jpg</span></td>
+                {% for book in res %}
+
+                   <tr>
+                     <td><input type="checkbox" id="titleCheck2" name="checkRow" /></td>
+                        <td align="center"><a href="{{ book.cover.url }}" title="" rel="lightbox"><img src="{{ book.cover.url }}" alt="" style="width:60px" /></a></td>
+                        <td><a href="#" title="">{{ book.name }}</a></td>
+                        <td align="center">{{ book.info }}</td>
+                        <td class="fileInfo"><span><strong>Price:</strong> {{ book.price }}</span><span><strong>Source:</strong> .jpg</span></td>
                         <td class="actBtns"><a href="#" title="Update" class="tipS"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a><a href="#" title="Remove" class="tipS"><img src="{% static 'images/icons/remove.png' %}" alt="" /></a></td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" id="titleCheck3" name="checkRow" /></td>
-                        <td align="center"><a href="{% static 'images/big.png' %}" title="" rel="lightbox"><img src="{% static 'images/user.png' %}" alt="" /></a></td>
-                        <td><a href="#" title="">Image2 description</a></td>
-                        <td align="center">Feb 12, 2012. 12:30</td>
-                        <td class="fileInfo"><span><strong>Size:</strong> 215 Kb</span><span><strong>Format:</strong> .jpg</span></td>
-                        <td class="actBtns"><a href="#" title="Update" class="tipS"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a><a href="#" title="Remove" class="tipS"><img src="{% static 'images/icons/remove.png' %}" alt="" /></a></td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" id="titleCheck4" name="checkRow" /></td>
-                        <td align="center"><a href="{% static 'images/big.png' %}" title="" rel="lightbox"><img src="{% static 'images/user.png' %}" alt="" /></a></td>
-                        <td><a href="#" title="">Image3 description</a></td>
-                        <td align="center">Feb 11, 2012. 02:30</td>
-                        <td class="fileInfo"><span><strong>Size:</strong> 215 Kb</span><span><strong>Format:</strong> .jpg</span></td>
-                        <td class="actBtns"><a href="#" title="Update" class="tipS"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a><a href="#" title="Remove" class="tipS"><img src="{% static 'images/icons/remove.png' %}" alt="" /></a></td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" id="titleCheck5" name="checkRow" /></td>
-                        <td align="center"><a href="{% static 'images/big.png' %}" title="" rel="lightbox"><img src="{% static 'images/user.png' %}" alt="" /></a></td>
-                        <td><a href="#" title="">Image4 description</a></td>
-                        <td align="center">Feb 12, 2012. 12:28</td>
-                        <td class="fileInfo"><span><strong>Size:</strong> 215 Kb</span><span><strong>Format:</strong> .jpg</span></td>
-                        <td class="actBtns"><a href="#" title="Update" class="tipS"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a><a href="#" title="Remove" class="tipS"><img src="{% static 'images/icons/remove.png' %}" alt="" /></a></td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" id="titleCheck6" name="checkRow" /></td>
-                        <td align="center"><a href="{% static 'images/big.png' %}" title="" rel="lightbox"><img src="{% static 'images/user.png' %}" alt="" /></a></td>
-                        <td><a href="#" title="">Image5 description</a></td>
-                        <td align="center">Feb 12, 2012. 12:28</td>
-                        <td class="fileInfo"><span><strong>Size:</strong> 215 Kb</span><span><strong>Format:</strong> .jpg</span></td>
-                        <td class="actBtns"><a href="#" title="Update" class="tipS"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a><a href="#" title="Remove" class="tipS"><img src="{% static 'images/icons/remove.png' %}" alt="" /></a></td>
-                    </tr>
+
+                   </tr>
+                   {% endfor %}
                 </tbody>
             </table>
         </div>
-
+    {% endif %}
 
         <div class="widgets">
             <div class="oneTwo">
