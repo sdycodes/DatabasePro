@@ -151,7 +151,6 @@ def info(request):
                         {'username': request.user.username, 'TYPE': "Warning",
                        'msg': "Please Login First!"})
         ids = Car.objects.filter(user=useroutlet)
-        print(ids)
         idset = []
         for idi in ids:
             idset.append(idi.item)
@@ -172,13 +171,15 @@ def info(request):
             useroutlet = Normal.objects.get(username=user)
             check = Car.objects.filter(user=useroutlet, item=delete)
             if not check:
-                return render(request, 'panel/market.html',
+                return render(request, 'panel/info.html',
                               {'username': request.user.username, 'books': books, 'query': q, 'TYPE': "Failure",
                                'msg': "Remove from Cart Failed, Book Not Exists!"})
             Car.objects.get(item=delete, user=useroutlet).delete()
-            ids = Car.objects.filter(user=user).order_by('id')
-
-            books = Book.objects.filter(id__in=ids).order_by('id')
+            ids = Car.objects.filter(user=useroutlet)
+            idset = []
+            for idi in ids:
+                idset.append(idi.item)
+            books = Book.objects.filter(id__in=idset).order_by('id')
 
             paginator = Paginator(books, 3)  # Show 2 contacts per page
 
@@ -192,7 +193,7 @@ def info(request):
                 # If page is out of range (e.g. 9999), deliver last page of results.
                 books = paginator.page(paginator.num_pages)
 
-            return render(request, 'panel/market.html',
+            return render(request, 'panel/info.html',
                           {'username': request.user.username, 'books': books,
                            'TYPE': "Success", 'msg': "Remove from Cart Successfully!"})
 

@@ -156,7 +156,7 @@
                         <td align="center"><a href="{{ book.cover.url }}" title="" rel="lightbox"><img src="{{ book.cover.url }}" alt="" style="width:60px" /></a></td>
                         <td style="width:50px;text-align:center"><a href="#" title="">{{ book.name }}</a></td>
                         <td align="center">{{ book.info }}</td>
-                        <td class="fileInfo"><span><strong>Price:</strong> {{ book.price }}</span><span><strong>Source:</strong> .jpg</span></td>
+                        <td class="fileInfo"><span><strong>¥ </strong> {{ book.price }}</span></td>
                         <td class="actBtns"><a href="?del={{ book.id }}&page={{ books.number }}" title="Remove" class="tipS"><img src="{% static 'images/icons/remove.png' %}" alt="" /></a></td>
 
                    </tr>
