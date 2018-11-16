@@ -25,10 +25,11 @@ urlpatterns = [
     url('panel/', views.panel),
     url('market/', views.market),
     url('login/', views.login),
+    url('info/', views.info),
     url('index/', views.index),
     url('signup/', views.signup),
     url('signin/', views.signin),
-    # url('addbook/', views.add_book),
+    url('newbook/', views.add_book),
     url('addbook/', views.addbook),
     url('deletebook/', views.delete_book),
     url('list_mysell', views.list_mysell)

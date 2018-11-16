@@ -9,7 +9,7 @@
 <body>
 <!-- Left side content -->
 <div id="leftSide">
-    <div class="logo"><a href="/panel/" style="font-size:medium; color:#FFF"><img style="width:25%" src="{% static 'images/logo.png' %}" alt="" /> Find Books!</a></div> <!--  -->
+    <div class="logo"><a href="/panel/" style="font-size:medium; color:#FFF"><img style="width:25%" src="{% static 'images/logo.png' %}"" alt="" /> Find Books!</a></div> <!--  -->
 
 
     <!-- General balance widget -->
@@ -17,8 +17,8 @@
 
     <!-- Left navigation -->
     <ul id="menu" class="nav">
-        <li class="dash"><a href="/panel/" title=""><span>Dashboard</span></a></li>
-        <li class="charts"><a href="/market/" title="" class="active"><span>Market</span></a></li>
+        <li class="dash"><a href="/panel/" title="" class="active"><span>Dashboard</span></a></li>
+        <li class="charts"><a href="/market/" title=""><span>Market</span></a></li>
         <li class="forms"><a href="#" title="" class="exp"><span>Forms stuff</span><strong>4</strong></a>
             <ul class="sub">
                 <li><a href="forms.html" title="">Form elements</a></li>
@@ -69,34 +69,27 @@
     {% include 'panel/top_bar.html' %}
 
 
+
+    <!-- Title area -->
+    {% load static %}
+        <div class="titleArea">
+        <div class="wrapper">
+            <div class="pageTitle">
+                <h5>{{ username }}</h5>
+                <span>Welcome to your own space!</span>
+            </div>
+        </div>
+        </div>
+    <div class="clear"></div>
     <div class="line"></div>
+
 
     <!-- Main content wrapper -->
     <div class="wrapper">
-        <div style="padding-top:20px"></div>
-        <!-- Note -->
-        {% if msg %}
-        <div class="nNote n{{ TYPE }} hideit">
-            <p><strong>INFORMATION:</strong>{{ msg }}</p>
-        </div>
-        {% endif %}
-
-        <!-- Widgets -->
-        <div class="widgets">
-            <!-- Search -->
-                <div class="searchWidget">
-                    <form action="" method="POST">
-                        {% csrf_token %}
-                        <input type="text" name="name" placeholder="Which book are you looking for?" />
-                        <input type="submit" name="find" value="" />
-                    </form>
-                </div>
-        </div>
-
-        <!-- Media table -->
-    {% if res %}
+        {% if res %}
+            <form method="POST" action="">
         <div class="widget">
-            <div class="title"><span class="titleIcon"><input type="checkbox" id="titleCheck" name="titleCheck" /></span><h6>Book Shop</h6></div>
+            <div class="title"><span class="titleIcon"><input type="checkbox" id="titleCheck" name="titleCheck" /></span><h6>My Shopping Cart</h6></div>
             <table cellpadding="0" cellspacing="0" width="100%" class="sTable withCheck mTable" id="checkAll">
                 <thead>
                     <tr>
@@ -109,11 +102,9 @@
                     </tr>
                 </thead>
                 <tfoot>
-
                     <tr>
                         <td colspan="6">
-
-                            <div class="tPagination">
+                        <div class="tPagination">
                                 <ul>
                                     <li class="prev"><a href="#" title=""></a></li>
                                     <li><a href="#" title="">1</a></li>
@@ -126,6 +117,25 @@
                                     <li><a href="#" title="">20</a></li>
                                     <li class="next"><a href="#" title=""></a></li>
                                 </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">
+                            <div class="itemActions" style="margin:20px">
+                                <label>Apply action:</label>
+                                <select>
+                                    <option value="">Select action...</option>
+                                    <option value="Edit">Edit</option>
+                                    <option value="Delete">Delete</option>
+                                    <option value="Move">Move somewhere</option>
+                                </select>
+                            </div>
+                            <div class="wizButtons">
+                                <div class="status" id="status1"></div>
+                                <span class="wNavButtons">
+                                    <input class="blueB ml10" id="next1" value="Submit" type="submit" />
+                                </span>
                             </div>
                         </td>
                     </tr>
@@ -146,102 +156,46 @@
                 </tbody>
             </table>
         </div>
+
+            </form>
     {% endif %}
-
-        <div class="widgets">
-            <div class="oneTwo">
-
-                <!-- Partners list widget -->
+        <!-- My tasks table widget -->
                 <div class="widget">
-                    <div class="title"><img src="{% static 'images/icons/dark/users.png' %}" alt="" class="titleIcon" /><h6>Authorized Retailer</h6></div>
-                    <ul class="partners">
-                        <li>
-                            <a href="#" title="" class="floatL"><img src="{% static 'images/user.png' %}" alt="" /></a>
-                            <div class="pInfo">
-                                <a href="#" title=""><strong>Dave Armstrong</strong></a>
-                                <i>Creative director at Google Inc. Zurich</i>
-                            </div>
-                            <div class="pLinks">
-                                <a href="#" title="Direct call" class="tipW"><img src="{% static 'images/icons/pSkype.png' %}" alt="" /></a>
-                                <a href="#" title="Send an email" class="tipW"><img src="{% static 'images/icons/pEmail.png' %}" alt="" /></a>
-                            </div>
-                            <div class="clear"></div>
-                        </li>
-                        <li>
-                            <a href="#" title="" class="floatL"><img src="{% static 'images/user.png' %}" alt="" /></a>
-                                <div class="pInfo">
-                                <a href="#" title=""><strong>Nora McDonald</strong></a>
-                                <i>Lead developer, Alaska</i>
-                            </div>
-                            <div class="pLinks">
-                                <a href="#" title="Direct call" class="tipW"><img src="{% static 'images/icons/pSkype.png' %}" alt="" /></a>
-                                <a href="#" title="Send an email" class="tipW"><img src="{% static 'images/icons/pEmail.png' %}" alt="" /></a>
-                            </div>
-                            <div class="clear"></div>
-                        </li>
-                        <li>
-                            <a href="#" title="" class="floatL"><img src="{% static 'images/user.png' %}" alt="" /></a>
-                            <div class="pInfo">
-                                <a href="#" title=""><strong>Natalie Zimmerman</strong></a>
-                                <i>Actually it's a guy. Yeah, unexpected</i>
-                            </div>
-                            <div class="pLinks">
-                                <a href="#" title="Direct call" class="tipW"><img src="{% static 'images/icons/pSkype.png' %}" alt="" /></a>
-                                <a href="#" title="Send an email" class="tipW"><img src="{% static 'images/icons/pEmail.png' %}" alt="" /></a>
-                            </div>
-                            <div class="clear"></div>
-                        </li>
-                        <li>
-                            <a href="#" title="" class="floatL"><img src="{% static 'images/user.png' %}" alt="" /></a>
-                            <div class="pInfo">
-                                <a href="#" title=""><strong>Maria Paradeux</strong></a>
-                                <i>Very hot secretary, Playboy rockstar</i>
-                            </div>
-                            <div class="pLinks">
-                                <a href="#" title="Direct call" class="tipW"><img src="{% static 'images/icons/pSkype.png' %}" alt="" /></a>
-                                <a href="#" title="Send an email" class="tipW"><img src="{% static 'images/icons/pEmail.png' %}" alt="" /></a>
-                            </div>
-                            <div class="clear"></div>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Website stats widget -->
-                <div class="widget">
-                    <div class="title"><img src="{% static 'images/icons/dark/stats.png' %}" alt="" class="titleIcon" /><h6>Website Statistics</h6></div>
-                    <table cellpadding="0" cellspacing="0" width="100%" class="sTable">
+                    <div class="title"><img src="{% static 'images/icons/dark/timer.png' %}" alt="" class="titleIcon" /><h6>My Orders</h6><div class="num"><a href="#" class="blueNum">+245</a></div></div>
+                    <table cellpadding="0" cellspacing="0" width="100%" class="sTable taskWidget">
                         <thead>
                             <tr>
-                                <td width="80">Amount</td>
                                 <td>Description</td>
-                                <td width="80">Changes</td>
+                                <td width="100">Status</td>
+                                <td width="60">Acts</td>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td align="center"><a href="#" title="" class="webStatsLink">980</a></td>
-                                <td>Current Users</td>
-                                <td><span class="statsPlus">0.32%</span></td>
+                                <td class="taskPr"><a href="#" title="">Finish design</a></td>
+                                <td><span class="green f11">in progress</span></td>
+                                <td class="actBtns"><a href="#" title="Update" class="tipS"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a><a href="#" title="Remove" class="tipS"><img src="{% static 'images/icons/remove.png' %}" alt="" /></a></td>
                             </tr>
                             <tr>
-                                <td align="center"><a href="#" title="" class="webStatsLink">1545</a></td>
-                                <td>Books Available</td>
-                                <td><span class="statsMinus">82.3%</span></td>
+                                <td class="taskP"><a href="#" title="">Get HTML done</a></td>
+                                <td><span class="lGrey f11">pending</span></td>
+                                <td class="actBtns"><a href="#" title="Update" class="tipS"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a><a href="#" title="Remove" class="tipS"><img src="{% static 'images/icons/remove.png' %}" alt="" /></a></td>
                             </tr>
-
+                            <tr>
+                                <td class="taskP"><a href="#" title="">Connect jQuery stuff</a></td>
+                                <td><span class="lGrey f11">pending</span></td>
+                                <td class="actBtns"><a href="#" title="Update" class="tipS"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a><a href="#" title="Remove" class="tipS"><img src="{% static 'images/icons/remove.png' %}" alt="" /></a></td>
+                            </tr>
+                            <tr>
+                                <td class="taskD"><a href="#" title="">Start beta testing</a></td>
+                                <td><span class="red f11">done</span></td>
+                                <td class="actBtns"><a href="#" title="Update" class="tipS"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a><a href="#" title="Remove" class="tipS"><img src="{% static 'images/icons/remove.png' %}" alt="" /></a></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
 
-
-            </div>
-
-        	<!-- 2 columns widgets -->
-            <div class="oneTwo">
-
-
-
-                <!-- Purchase info widget -->
+        <!-- Purchase info widget -->
                 <div class="widget">
                     <div class="title">
                     	<img src="{% static 'images/icons/dark/money.png' %}" alt="" class="titleIcon" />
@@ -286,52 +240,8 @@
                         <div class="totalAmount"><h6 class="floatL blue">Total:</h6><h6 class="floatR blue">$12,157.99</h6><div class="clear"></div></div>
                     </div>
                 </div>
-                <!-- Latest update widget -->
-                <div class="widget">
-                    <div class="title"><img src="{% static 'images/icons/dark/refresh4.png' %}" alt="" class="titleIcon" /><h6>Latest updates</h6></div>
 
-                    <div class="updates">
-                    	<div class="newUpdate">
-                            <div class="uDone">
-                                <a href="#" title=""><strong>A new server is on the board!</strong></a>
-                                <span>We've just set up a new server. Our gurus ...</span>
-                            </div>
-                            <div class="uDate"><span class="uDay">08</span>feb</div>
-                            <div class="clear"></div>
-                        </div>
 
-                    	<div class="newUpdate">
-                            <span class="uAlert">
-                                <a href="#" title=""><strong>[ URGENT ] ex.ua was closed by government</strong></a>
-                                <span>But already everything was solved. It will ...</span>
-                            </span>
-                            <span class="uDate"><span class="uDay">08</span>feb</span>
-                            <div class="clear"></div>
-                        </div>
-
-                    	<div class="newUpdate">
-                            <span class="uDone">
-                                <a href="#" title=""><strong>The goal was reached!</strong></a>
-                                <span>We just passed 1000 sales! Congrats to all</span>
-                            </span>
-                            <span class="uDate"><span class="uDay">07</span>feb</span>
-                            <div class="clear"></div>
-                        </div>
-
-                    	<div class="newUpdate">
-                            <span class="uNotice">
-                                <a href="#" title=""><strong>Meat a new team member - Don Corleone</strong></a>
-                                <span>Very dyplomatic and flexible sales manager</span>
-                            </span>
-                            <span class="uDate"><span class="uDay">06</span>feb</span>
-                            <div class="clear"></div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            <div class="clear"></div>
-        </div>
 
     </div>
 

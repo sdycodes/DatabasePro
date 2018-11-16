@@ -937,7 +937,7 @@ html ul.tabs li.activeTab a { color: #2E6B9B; }
 .sTable thead td { border-bottom: 1px solid #cbcbcb; border-left: 1px solid #cbcbcb; background: #efefef url(../images/backgrounds/titleBg.png) repeat-x; color: #878787; font-size: 11px; color: #878787; font-weight: normal; padding: 3px 8px 2px 8px; }
 
 table thead td.sortCol > div { cursor: pointer; position: relative; }
-table thead td span { background: url(../images/icons/sort.png) no-repeat 0; display: block; position: absolute; right: 3px; top: 2px; width: 16px; height: 16px; }
+table thead td span { background: url(../images/icons/sort.png) no-repeat 0; display: block; position: absolute; top: 2px; width: 16px; height: 16px; }
 table thead td.headerSortUp span { background: url(../images/icons/sortUp.png) no-repeat 0; }
 table thead td.headerSortDown span { background: url(../images/icons/sortDown.png) no-repeat 0; }
 
