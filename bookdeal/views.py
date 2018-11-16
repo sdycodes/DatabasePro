@@ -1,6 +1,7 @@
 from django.shortcuts import render,render_to_response
 from django import forms
 from django.http import HttpResponse,HttpResponseRedirect
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.template import RequestContext
 from django.views import generic
 from django.contrib import auth
@@ -98,14 +99,45 @@ def addbook(request):
         return render(request, 'panel/index.html', {'TYPE': "Success", 'msg': 'Successfully Add Book ' + book_name + '!', "username":request.user.username})
 
 
-def market(request):
-    if request.method == 'GET':
-        return render(request, 'panel/market.html', {'username': request.user.username})
-    if request.method == 'POST':
-        tar = request.POST.get('name')
-        res = Book.objects.filter(name__contains=tar)
+def listing(request):
+    contact_list = Contacts.objects.all()
+    paginator = Paginator(contact_list, 25)  # Show 25 contacts per page
 
-        return render(request, 'panel/market.html', {'username': request.user.username, 'res': res})
+    page = request.GET.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        contacts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contacts = paginator.page(paginator.num_pages)
+
+    return render(request, 'list.html', {'contacts': contacts})
+
+
+def market(request):
+    tar = request.POST.get('name')
+    q = request.GET.get('q')
+    if tar is None and q is None:
+        return render(request, 'panel/market.html', {'username': request.user.username})
+    else:
+        if q is None:
+            q = tar
+        books = Book.objects.filter(name__contains=q).order_by('id')
+        paginator = Paginator(books, 2)  # Show 2 contacts per page
+
+        page = request.GET.get('page')
+        try:
+            books = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            books = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            books = paginator.page(paginator.num_pages)
+
+        return render(request, 'panel/market.html', {'username': request.user.username, 'books': books, 'query': q})
 
 
 def info(request):

@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 {% load static %}
 <head>
-<title>Crown - premium responsive admin template for backend systems</title>
-<link href="{% static 'css/main.css' %}" rel="stylesheet" type="text/css" />
+{% include 'panel/header.html' %}
 {% include 'panel/loader.html' %}
 </head>
 
@@ -55,9 +54,7 @@
 </div>    
 
 <!-- Footer line -->
-<div id="footer">
-    <div class="wrapper">As usually all rights reserved.More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></div>
-</div>
+{% include 'panel/footer.html' %}
 
 
 </body>

@@ -2,9 +2,9 @@
 {% load static %}
 <html>
 <head>
-<title>Crown - premium responsive admin template for backend systems</title>
-    <link href="{% static 'css/main.css' %}" rel="stylesheet" type="text/css" />
-    {% include 'panel/loader.html' %}
+{% include 'panel/header.html' %}
+{% include 'panel/loader.html' %}
+
 
 <body>
 <!-- Left side content -->
@@ -146,7 +146,7 @@
                    <tr>
                      <td><input type="checkbox" id="titleCheck2" name="checkRow" /></td>
                         <td align="center"><a href="{{ book.cover.url }}" title="" rel="lightbox"><img src="{{ book.cover.url }}" alt="" style="width:60px" /></a></td>
-                        <td><a href="#" title="">{{ book.name }}</a></td>
+                        <td style="width:50px;text-align:center"><a href="#" title="">{{ book.name }}</a></td>
                         <td align="center">{{ book.info }}</td>
                         <td class="fileInfo"><span><strong>Price:</strong> {{ book.price }}</span><span><strong>Source:</strong> .jpg</span></td>
                         <td class="actBtns"><a href="#" title="Update" class="tipS"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a><a href="#" title="Remove" class="tipS"><img src="{% static 'images/icons/remove.png' %}" alt="" /></a></td>

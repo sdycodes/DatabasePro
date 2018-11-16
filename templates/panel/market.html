@@ -2,9 +2,8 @@
 {% load static %}
 <html>
 <head>
-<title>Crown - premium responsive admin template for backend systems</title>
-    <link href="{% static 'css/main.css' %}" rel="stylesheet" type="text/css" />
-    {% include 'panel/loader.html' %}
+{% include 'panel/header.html' %}
+{% include 'panel/loader.html' %}
 
 <body>
 <!-- Left side content -->
@@ -94,7 +93,7 @@
         </div>
 
         <!-- Media table -->
-    {% if res %}
+    {% if books %}
         <div class="widget">
             <div class="title"><span class="titleIcon"><input type="checkbox" id="titleCheck" name="titleCheck" /></span><h6>Book Shop</h6></div>
             <table cellpadding="0" cellspacing="0" width="100%" class="sTable withCheck mTable" id="checkAll">
@@ -114,32 +113,40 @@
                         <td colspan="6">
 
                             <div class="tPagination">
-                                <ul>
-                                    <li class="prev"><a href="#" title=""></a></li>
-                                    <li><a href="#" title="">1</a></li>
-                                    <li><a href="#" title="">2</a></li>
-                                    <li><a href="#" title="">3</a></li>
-                                    <li><a href="#" title="">4</a></li>
-                                    <li><a href="#" title="">5</a></li>
-                                    <li><a href="#" title="">6</a></li>
-                                    <li>...</li>
-                                    <li><a href="#" title="">20</a></li>
-                                    <li class="next"><a href="#" title=""></a></li>
-                                </ul>
+                            <span class="step-links">
+                            <ul class="pagination">
+                                    {% if books.has_previous %}
+                                        <li class="prev"><a href="?q={{ query }}&page={{ books.previous_page_number }}" title=""></a></li>
+                                    {% endif %}
+
+
+                                    {% for page in books.paginator.page_range %}
+                                        {% if books.number == page %}
+                                            <li><a href="?q={{ query }}&page={{ page }}" title="" class="active">{{ page }}</a></li>
+                                        {% else %}
+                                            <li><a href="?q={{ query }}&page={{ page }}" title="">{{ page }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if books.has_next %}
+                                        <li class="next"><a href="?q={{ query }}&page={{ contacts.next_page_number }}" title=""></a></li>
+                                    {% endif %}
+                            </ul>
+                            </span>
                             </div>
                         </td>
                     </tr>
                 </tfoot>
                 <tbody>
-                {% for book in res %}
+                {% for book in books %}
 
                    <tr>
                      <td><input type="checkbox" id="titleCheck2" name="checkRow" /></td>
                         <td align="center"><a href="{{ book.cover.url }}" title="" rel="lightbox"><img src="{{ book.cover.url }}" alt="" style="width:60px" /></a></td>
-                        <td><a href="#" title="">{{ book.name }}</a></td>
+                        <td style="width:50px;text-align:center"><a href="#" title="">{{ book.name }}</a></td>
                         <td align="center">{{ book.info }}</td>
                         <td class="fileInfo"><span><strong>Price:</strong> {{ book.price }}</span><span><strong>Source:</strong> .jpg</span></td>
-                        <td class="actBtns"><a href="#" title="Update" class="tipS"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a><a href="#" title="Remove" class="tipS"><img src="{% static 'images/icons/remove.png' %}" alt="" /></a></td>
+                        {% if book %}<td class="actBtns"><a href="#" title="Add to Cart" class="tipS"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a>{% else %}<a href="#" title="Remove" class="tipS"><img src="{% static 'images/icons/remove.png' %}" alt="" /></a></td>{% endif %}
 
                    </tr>
                    {% endfor %}

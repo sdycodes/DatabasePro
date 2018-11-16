@@ -980,11 +980,11 @@ table thead td.headerSortDown span { background: url(../images/icons/sortDown.pn
 .tPagination ul li a { color: #595959; background: #fefefe url(../images/backgrounds/tPagination.png) repeat-x; padding: 3px 7px; border: 1px solid #ddd; font-size: 11px; }
 .tPagination ul li.prev a { background: url(../images/icons/prev.png) no-repeat 0; border: none; }
 .tPagination ul li.next a { background: url(../images/icons/next.png) no-repeat 100%; border: none; }	
-
+.tPagination ul li .active { background: url(../images/backgrounds/sideGradient.png) repeat-x; color: #fff; border-color: #424852; }
+.tPagination ul li .active:hover { background: #2a313d; }
 
 /* ========== Content pagination ========== */
 
-.pagination { margin: auto; width: auto; text-align: center; margin-top: 30px; }
 .pages {  }
 .pages li.prev { margin-right: 15px; }
 .pages li.next { margin-left: 15px; }
