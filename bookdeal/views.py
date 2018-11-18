@@ -38,6 +38,31 @@ def signup(request):
         return render(request, 'test/result.html', {'func': 'signup', 'res': 'success'})
 
 
+def adduser(request):
+    if request.method == 'GET':
+        return render(request, 'panel/adduser.html')
+    if request.method == 'POST':
+        # get the information
+        name = request.POST.get('name')
+        passwd1 = request.POST.get('password1')
+        passwd2 = request.POST.get('password2')
+        typ = request.POST.get('type')
+        # check if they are legal
+        res = User.objects.filter(username=name)
+        if res:
+            return render(request, 'panel/index.html',
+                          {'TYPE': "Failure", 'msg': 'User ' + name + ' Already Exists!',
+                           "username": request.user.username})
+        # sign up
+        if typ == 'n':
+            Normal.objects.create_user(username=name, password=passwd1)
+        else:
+            Retailer.objects.create_user(username=name, password=passwd1)
+        return render(request, 'panel/index.html',
+                      {'TYPE': "Success", 'msg': 'User ' + name + ' Successfully Added!',
+                       "username": request.user.username})
+
+
 def signin(request):
     if request.method == 'GET':
         return render(request, 'test/signin.html')
@@ -93,7 +118,7 @@ def addbook(request):
         cover = request.FILES.get('cover')
         if book_name == "" or len(info) < 10 or price > 10000 or price < 0:
             return render(request, 'panel/index.html', {'TYPE':"Failure", 'msg':"addbook", "username":request.user.username})
-        if cover.name.split('.')[1].lower() not in ['jpeg', 'jpg', 'png'] or cover.size > 10000000:
+        if cover is None or cover.name.split('.')[1].lower() not in ['jpeg', 'jpg', 'png'] or cover.size > 10000000:
             return render(request, 'panel/index.html', {'TYPE': "Warning", 'msg': "illegal cover", "username":request.user.username})
         Book.objects.create(name=book_name, info=info, price=price, cover=cover, owner=request.user)
         return render(request, 'panel/index.html', {'TYPE': "Success", 'msg': 'Successfully Add Book ' + book_name + '!', "username":request.user.username})

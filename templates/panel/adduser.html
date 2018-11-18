@@ -80,34 +80,37 @@
 
 
         <!-- Widgets -->
-        <form id="usualValidate" action="" class="form" method="POST" enctype="multipart/form-data">
+        <form action="" id="validate" class="form" method="POST" enctype="multipart/form-data">
             <fieldset>
                 {% csrf_token %}
-                    <div class="widget">
-                    <div class="title"><img src="{% static 'images/icons/dark/list.png' %}" alt="" class="titleIcon"><h6>Add A New Book</h6></div>
+                <div class="widget">
+                    <div class="title"><img src="{% static 'images/icons/dark/transfer.png' %}" alt="" class="titleIcon" /><h6>Sign Up</h6></div>
                     <div class="formRow">
-                        <label>Book Name:<span class="req">*</span></label>
-                        <div class="formRight"><input type="text" name="name" class="required"/></div>
-                        <div class="clear"></div>
+                        <label>User Name:<span class="req">*</span></label>
+                        <div class="formRight"><input type="text" class="validate[required]" name="name" id="req"/></div><div class="clear"></div>
                     </div>
                     <div class="formRow">
-                        <label>Book Info:<span class="req">*</span></label>
-                        <div class="formRight"><textarea rows="8" cols="" name="info" class="autoGrow required" style="height: auto; overflow: hidden;"></textarea></div>
-                        <div class="clear"></div>
+                        <label>Password:<span class="req">*</span></label>
+                        <div class="formRight"><input type="password" class="validate[required]" name="password1" id="password1" /></div><div class="clear"></div>
                     </div>
                     <div class="formRow">
-                        <label>Price Tag:<span class="req">*</span></label>
-                        <div class="formRight"><input type="number"  min="0.01" max="10000.00" step="0.01" name="price" class="required"/><span class="formNote">Number Specific to ¥RMB</span></div>
-                        <div class="clear"></div>
+                        <label>Repeat password:<span class="req">*</span></label>
+                        <div class="formRight"><input type="password" class="validate[required,equals[password1]]" name="password2" id="password2" /></div><div class="clear"></div>
                     </div>
                     <div class="formRow">
-                    	<label><img src="{% static 'images/icons/dark/stats.png' %}" alt="" class="labelImg tipS" original-title="Book Cover:">Book Cover Image:<span class="req">*</span></label>
-                        <div class="formRight"><input type="file" name="cover" /><img src="{% static 'images/icons/dark/download.png' %}" alt="" class="inputImg tipS" original-title="Select an image..."/></div>
-                        <div class="clear"></div>
-                    </div>
-                    <div class="formSubmit"><input type="submit" value="Submit" class="blueB" /></div>
+                        <label>Identity:<span class="req">*</span></label>
+                        <div class="formRight">
+                            <div class="floatL">
+                                <select name="typ" id="selectReq" class="validate[required]" >
+                                    <option value="n">Customer</option>
+                                    <option value="a">Retailer</option>
+                                </select>
+                            </div>
 
-                <div class="clear"></div>
+                        </div><div class="clear"></div>
+                    </div>
+                    <div class="formSubmit"><input type="submit" value="submit" class="redB" /></div>
+                    <div class="clear"></div>
                 </div>
                 </fieldset>
 

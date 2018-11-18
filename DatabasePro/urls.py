@@ -31,6 +31,7 @@ urlpatterns = [
     url('signin/', views.signin),
     url('newbook/', views.add_book),
     url('addbook/', views.addbook),
+    url('adduser/', views.adduser),
     url('deletebook/', views.delete_book),
     url('list_mysell', views.list_mysell)
 ]

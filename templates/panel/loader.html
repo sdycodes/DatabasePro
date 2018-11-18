@@ -56,16 +56,3 @@
 
 <script type="text/javascript" src="{% static 'js/charts/chart.js' %}"></script>
 
-<script>
-
-$(document).ready(function(){
- $("#gobtn").click(function(){
-  var ip=$("#ip").val();                //获取输入框中的ip
-  $.post("/process/",{'hostip':ip},     //post函数到后端
-    function(data,status){              //回调函数
-         $("#pstable").html(data);      //将id为pstable的标签的html替换为返回的data
-         $("#ip").val(ip)               //将输入框的值改为查询的ip
-  });
-});
-});
-</script>
