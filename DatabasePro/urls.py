@@ -21,19 +21,25 @@ from django.conf.urls.static import static
 from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
+    url(r'^$', views.panel),
     url('front/', views.front),
     url('panel/', views.panel),
     url('market/', views.market),
     url('login/', views.login),
     url('info/', views.info),
-    url('index/', views.index),
     url('signup/', views.signup),
-    url('signin/', views.signin),
-    url('newbook/', views.add_book),
+    url('signin/', views.login),
     url('addbook/', views.addbook),
+<<<<<<< HEAD
     url('adduser/', views.adduser),
     url('deletebook/', views.delete_book),
+=======
+>>>>>>> 30c947d2478ebb2a100c93d16915a4ce2547cdbe
     url('list_mysell', views.list_mysell)
+    # url('deletebook/', views.delete_book),
+    # url('index/', views.index),
+    # url('newbook/', views.add_book),
+# url('list_mysell', views.list_mysell),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
