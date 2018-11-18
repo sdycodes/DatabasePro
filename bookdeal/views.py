@@ -376,7 +376,24 @@ def front(request):
 
 
 def panel(request):
-    return render(request, 'panel/index.html')
+    if request.user.username:
+        return render(request, 'panel/index.html', {'username': request.user.username, 'TYPE': "Success", 'msg': "Welcome Back!"})
+    else:
+        return render(request, 'panel/index.html', {'TYPE': "Warning", 'msg': "Please Login First!"})
+
+
+def delete_book(request):
+    if request.method == 'GET':
+        return render(request, 'test/deletebook.html')
+    if request.method == 'POST':
+        book_name = request.POST.get('book_name')
+        tar = Book.objects.filter(name=book_name, owner=request.user)
+        if tar:
+            book = tar[0]
+            book.isDelete = True
+            book.save()
+            return render(request, 'test/result.html', {'func': 'delete_book', 'res': book.name})
+        return render(request, 'test/result.html', {'func': 'delete_book', 'res': 'fail!'})
 
 
 """
@@ -419,16 +436,4 @@ def signin(request):
         else:
             return render(request, 'test/result.html', {'func': 'signin', 'res': 'fail!'})
             
-def delete_book(request):
-    if request.method == 'GET':
-        return render(request, 'test/deletebook.html')
-    if request.method == 'POST':
-        book_name = request.POST.get('book_name')
-        tar = Book.objects.filter(name=book_name, owner=request.user)
-        if tar:
-            book = tar[0]
-            book.isDelete = True
-            book.save()
-            return render(request, 'test/result.html', {'func': 'delete_book', 'res': book.name})
-        return render(request, 'test/result.html', {'func': 'delete_book', 'res': 'fail!'})
 """
