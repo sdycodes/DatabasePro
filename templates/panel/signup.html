@@ -22,12 +22,20 @@
     </div>
 </div>
 
+<!-- Note -->
+{% if msg %}
+    <div class="nNote n{{ TYPE }} hideit">
+        <p><strong>INFORMATION:</strong>{{ msg }}</p>
+    </div>
+{% endif %}
+
 
 <!-- Main content wrapper -->
 <div class="loginWrapper">
     <div class="loginLogo"><img src = {% static 'images/loginLogo.png' %} alt="" /></div>
     <div class="widget">
-        <div class="title"><img src = {% static 'images/icons/dark/files.png' %} alt="" class="titleIcon" /><h6>Login</h6></div>
+        <!-- Note -->
+        <div class="title"><img src = {% static 'images/icons/dark/files.png' %} alt="" class="titleIcon" /><h6>Signup</h6></div>
         <form action="" id="validate" class="form" method="post">
             {% csrf_token %}
             <fieldset>
@@ -36,26 +44,41 @@
                     <div class="loginInput"><input type="text" name="name" class="validate[required]" id="login" /></div>
                     <div class="clear"></div>
                 </div>
-                
+
                 <div class="formRow">
                     <label for="pass">Password:</label>
-                    <div class="loginInput"><input type="password" name="password" class="validate[required]" id="pass" /></div>
+                    <div class="loginInput"><input type="password" name="password1" class="validate[required]" id="pass" /></div>
                     <div class="clear"></div>
                 </div>
-                
+
+                <div class="formRow">
+                    <label for="pass">Again:</label>
+                    <div class="loginInput"><input type="password" name="password2" class="validate[required]" id="pass" /></div>
+                    <div class="clear"></div>
+                </div>
+
+                <div class="formRow">
+                    <label for="type">Type:</label>
+                    <div class="loginInput">
+                         <select name="type">
+                          <option value ="N">Normal</option>
+                          <option value ="R">Retailer</option>
+                        </select>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
                 <div class="loginControl">
-                    <div class="rememberMe"><input type="checkbox" id="remMe" name="remMe" /><label for="remMe">Remember me</label></div>
-                    <input type="submit" value="Log me in" class="dredB logMeIn" />
+                    <input type="submit" value="Sign up now!" class="dredB logMeIn" />
                     <div class="clear"></div>
                 </div>
             </fieldset>
         </form>
     </div>
-</div>    
+</div>
 
 <!-- Footer line -->
 {% include 'panel/footer.html' %}
-
 
 </body>
 </html>

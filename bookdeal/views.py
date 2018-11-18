@@ -9,13 +9,9 @@ from bookdeal.models import *
 # Create your views here.
 
 
-def index(request):
-    return render(request, 'test/index.html')
-
-
 def signup(request):
     if request.method == 'GET':
-        return render(request, 'test/signup.html')
+        return render(request, 'panel/signup.html')
     if request.method == 'POST':
         # get the information
         name = request.POST.get('name')
@@ -24,32 +20,22 @@ def signup(request):
         typ = request.POST.get('type')
         # check if they are legal
         if name == "" or passwd1 == "" or typ == "":
-            return render(request, 'test/result.html', {'func': 'signup', 'res': 'cannot be null'})
+            return render(request, 'panel/signup.html', {'TYPE': "Failed",
+                                                                    'msg': "illegal password or name"})
         if passwd1 != passwd2:
-            return render(request, 'test/result.html', {'func': 'signup', 'res': 'passwd not equal'})
+            return render(request, 'panel/signup.html', {'TYPE': "Failed",
+                                                                    'msg': "password ot equal"})
         res = User.objects.filter(username=name)
         if res:
-            return render(request, 'test/result.html', {'func': 'signup', 'res': 'name already exists!'})
+            return render(request, 'panel/signup.html', {'TYPE': "Failed",
+                                                                    'msg': "username already exists"})
         # sign up
-        if typ == 'n':
+        if typ == 'N':
             Normal.objects.create_user(username=name, password=passwd1)
-        else:
+        elif typ=='R':
             Retailer.objects.create_user(username=name, password=passwd1)
-        return render(request, 'test/result.html', {'func': 'signup', 'res': 'success'})
-
-
-def signin(request):
-    if request.method == 'GET':
-        return render(request, 'test/signin.html')
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        passwd = request.POST.get('password')
-        user = auth.authenticate(username=name, password=passwd)
-        if user is not None and user.is_active:
-            auth.login(request, user)
-            return render(request, 'test/result.html', {'func': 'signin', 'res': name})
-        else:
-            return render(request, 'test/result.html', {'func': 'signin', 'res': 'fail!'})
+        return render(request, 'panel/index.html', {'TYPE': "Success",
+                                                                    'msg': "sign up successfully please login"})
 
 
 def login(request):
@@ -66,23 +52,6 @@ def login(request):
             return render(request, 'panel/login.html', {'username': 'signin', 'res': 'fail!'})
 
 
-
-def add_book(request):
-    if request.method == 'GET':
-        return render(request, 'test/addbook.html')
-    if request.method == 'POST':
-        book_name = request.POST.get('name')
-        info = request.POST.get('info')
-        price = float(request.POST.get('price'))
-        cover = request.FILES.get('cover')
-        if book_name == "" or len(info) < 10 or price > 10000 or price < 0:
-            return render(request, 'test/result.html', {'func': 'add_book', 'res': 'illegal input !!'})
-        if cover.name.split('.')[1].lower() not in ['jpeg', 'jpg', 'png'] or cover.size > 10000000:
-            return render(request, 'test/result.html', {'func': 'add_book', 'res': 'illegal cover !!'})
-        Book.objects.create(name=book_name, info=info, price=price, cover=cover, owner=request.user)
-        return render(request, 'test/result.html', {'func': 'add_book', 'res': 'add success!'})
-
-
 def addbook(request):
     if request.method == 'GET':
         return render(request, 'panel/addbook.html')
@@ -97,48 +66,6 @@ def addbook(request):
             return render(request, 'panel/index.html', {'TYPE': "Warning", 'msg': "illegal cover", "username":request.user.username})
         Book.objects.create(name=book_name, info=info, price=price, cover=cover, owner=request.user)
         return render(request, 'panel/index.html', {'TYPE': "Success", 'msg': 'Successfully Add Book ' + book_name + '!', "username":request.user.username})
-
-
-def market(request):
-    tar = request.POST.get('name')
-    q = request.GET.get('q')
-    user = request.user
-    if tar is None and q is None:
-        return render(request, 'panel/market.html', {'username': request.user.username})
-    else:
-        if q is None:
-            q = tar
-        books = Book.objects.filter(name__contains=q).order_by('id')
-        paginator = Paginator(books, 2)  # Show 2 contacts per page
-
-        page = request.GET.get('page')
-        try:
-            books = paginator.page(page)
-        except PageNotAnInteger:
-            # If page is not an integer, deliver first page.
-            books = paginator.page(1)
-        except EmptyPage:
-            # If page is out of range (e.g. 9999), deliver last page of results.
-            books = paginator.page(paginator.num_pages)
-        add = request.GET.get('add')
-        if add:
-            try:
-                useroutlet = Normal.objects.get(username=user)
-            except Normal.DoesNotExist:
-                return render(request, 'panel/index.html',
-                              {'username': request.user.username, 'TYPE': "Warning",
-                               'msg': "Please Login First!"})
-            check = Car.objects.filter(user=useroutlet, item=add)
-            if check:
-                return render(request, 'panel/market.html',
-                              {'username': request.user.username, 'books': books, 'query': q, 'TYPE': "Failure",
-                               'msg': "Add to Cart Failed, Book Exists!"})
-
-            Car.objects.create(item=add, user=useroutlet)
-            return render(request, 'panel/market.html',
-                          {'username': request.user.username, 'books': books, 'query': q, 'TYPE': "Success", 'msg': "Add to Cart Successfully!"})
-
-        return render(request, 'panel/market.html', {'username': request.user.username, 'books': books, 'query': q})
 
 
 def info(request):
@@ -199,6 +126,71 @@ def info(request):
         return render(request, 'panel/info.html', {'username': request.user.username, 'books': books})
 
 
+def market(request):
+    tar = request.POST.get('name')
+    q = request.GET.get('q')
+    user = request.user
+    if tar is None and q is None:
+        return render(request, 'panel/market.html', {'username': request.user.username})
+    else:
+        if q is None:
+            q = tar
+        books = Book.objects.filter(name__contains=q).order_by('id')
+        paginator = Paginator(books, 2)  # Show 2 contacts per page
+
+        page = request.GET.get('page')
+        try:
+            books = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            books = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            books = paginator.page(paginator.num_pages)
+        add = request.GET.get('add')
+        if add:
+            try:
+                useroutlet = Normal.objects.get(username=user)
+            except Normal.DoesNotExist:
+                return render(request, 'panel/index.html',
+                              {'username': request.user.username, 'TYPE': "Warning",
+                               'msg': "Please Login First!"})
+            check = Car.objects.filter(user=useroutlet, item=add)
+            if check:
+                return render(request, 'panel/market.html',
+                              {'username': request.user.username, 'books': books, 'query': q, 'TYPE': "Failure",
+                               'msg': "Add to Cart Failed, Book Exists!"})
+
+            Car.objects.create(item=add, user=useroutlet)
+            return render(request, 'panel/market.html',
+                          {'username': request.user.username, 'books': books, 'query': q, 'TYPE': "Success", 'msg': "Add to Cart Successfully!"})
+
+        return render(request, 'panel/market.html', {'username': request.user.username, 'books': books, 'query': q})
+
+
+def list_mysell(request):
+    if request.method == 'GET':
+        q = request.GET.get('q')
+        if q is not None:
+            book_name = request.GET.get('del')
+            tar = Book.objects.filter(name=book_name, owner=request.user)
+            if tar:
+                book = tar[0]
+                book.isDelete = True
+                book.save()
+                books = Book.objects.filter(owner=request.user, isDelete=False)
+                return render(request, 'panel/list_mysell.html', {'username': request.user.username, 'books': books,
+                                                                    'TYPE': "Success",
+                                                                    'msg': "delete successfully"})
+        books = Book.objects.filter(owner=request.user, isDelete=False)
+        if books:
+            return render(request, 'panel/list_mysell.html', {'username': request.user.username, 'books': books})
+        else:
+            return render(request, 'panel/list_mysell.html', {'username': request.user.username, 'TYPE': "Warning",
+                       'msg': "You do not sell any single book!"})
+
+
+
 def addcar(request):
     user = request.user
     book_id = request.POST.get('id')
@@ -217,35 +209,7 @@ def removecar(request):
 
         return HttpResponse('Add Successfully!')
 
-
-def list_mysell(request):
-    books = Book.objects.filter(owner=request.user, isDelete=False)
-    if books:
-        return render(request, 'test/list.html', {'books': books})
-    return render(request, 'test/result.html', {'func': 'list_mysell', 'res': 'None!'})
-
-
-def delete_book(request):
-    if request.method == 'GET':
-        return render(request, 'test/deletebook.html')
-    if request.method == 'POST':
-        book_name = request.POST.get('book_name')
-        tar = Book.objects.filter(name=book_name, owner=request.user)
-        if tar:
-            book = tar[0]
-            book.isDelete = True
-            book.save()
-            return render(request, 'test/result.html', {'func': 'delete_book', 'res': book.name})
-        return render(request, 'test/result.html', {'func': 'delete_book', 'res': 'fail!'})
-
-
-# new !!!
-
-def search_book(request):
-    tar = request.POST.get('name')
-    res = Book.objects.filter(name__contains=tar)
-    return render(request, 'test/list.html', {'func': 'search_book', 'res': res})
-
+# new !!
 
 def my_car(request):
     user = request.user
@@ -402,3 +366,58 @@ def front(request):
 
 def panel(request):
     return render(request, 'panel/index.html')
+
+
+"""
+code for test
+
+def index(request):
+    return render(request, 'test/index.html')
+
+def add_book(request):
+    if request.method == 'GET':
+        return render(request, 'test/addbook.html')
+    if request.method == 'POST':
+        book_name = request.POST.get('name')
+        info = request.POST.get('info')
+        price = float(request.POST.get('price'))
+        cover = request.FILES.get('cover')
+        if book_name == "" or len(info) < 10 or price > 10000 or price < 0:
+            return render(request, 'test/result.html', {'func': 'add_book', 'res': 'illegal input !!'})
+        if cover.name.split('.')[1].lower() not in ['jpeg', 'jpg', 'png'] or cover.size > 10000000:
+            return render(request, 'test/result.html', {'func': 'add_book', 'res': 'illegal cover !!'})
+        Book.objects.create(name=book_name, info=info, price=price, cover=cover, owner=request.user)
+        return render(request, 'test/result.html', {'func': 'add_book', 'res': 'add success!'})
+
+
+def search_book(request):
+    tar = request.POST.get('name')
+    res = Book.objects.filter(name__contains=tar)
+    return render(request, 'test/list.html', {'func': 'search_book', 'res': res})
+    
+def signin(request):
+    if request.method == 'GET':
+        return render(request, 'test/signin.html')
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        passwd = request.POST.get('password')
+        user = auth.authenticate(username=name, password=passwd)
+        if user is not None and user.is_active:
+            auth.login(request, user)
+            return render(request, 'test/result.html', {'func': 'signin', 'res': name})
+        else:
+            return render(request, 'test/result.html', {'func': 'signin', 'res': 'fail!'})
+            
+def delete_book(request):
+    if request.method == 'GET':
+        return render(request, 'test/deletebook.html')
+    if request.method == 'POST':
+        book_name = request.POST.get('book_name')
+        tar = Book.objects.filter(name=book_name, owner=request.user)
+        if tar:
+            book = tar[0]
+            book.isDelete = True
+            book.save()
+            return render(request, 'test/result.html', {'func': 'delete_book', 'res': book.name})
+        return render(request, 'test/result.html', {'func': 'delete_book', 'res': 'fail!'})
+"""
