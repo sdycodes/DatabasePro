@@ -116,7 +116,7 @@ def info(request):
             idset = []
             for idi in ids:
                 idset.append(idi.item)
-            books = Book.objects.filter(id__in=idset).order_by('id')
+            books = Book.objects.filter(id__in=idset, isDelete=False).order_by('id')
 
             paginator = Paginator(books, 3)  # Show 2 contacts per page
 
