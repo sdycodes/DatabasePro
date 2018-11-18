@@ -91,7 +91,7 @@ def info(request):
         idset = []
         for idi in ids:
             idset.append(idi.item)
-        books = Book.objects.filter(id__in=idset).order_by('id')
+        books = Book.objects.filter(id__in=idset, isDelete=False).order_by('id')
         paginator = Paginator(books, 3)  # Show 2 contacts per page
 
         page = request.GET.get('page')
@@ -146,7 +146,7 @@ def market(request):
     else:
         if q is None:
             q = tar
-        books = Book.objects.filter(name__contains=q).order_by('id')
+        books = Book.objects.filter(name__contains=q, isDelete=False).order_by('id')
         paginator = Paginator(books, 2)  # Show 2 contacts per page
 
         page = request.GET.get('page')
@@ -181,25 +181,31 @@ def market(request):
 
 def list_mysell(request):
     if request.method == 'GET':
-        q = request.GET.get('q')
-        if q is not None:
-            book_name = request.GET.get('del')
-            tar = Book.objects.filter(name=book_name, owner=request.user)
+        book_id = request.GET.get('del')
+        if book_id is not None:
+            tar = Book.objects.filter(id=book_id, owner=request.user).order_by('id')
             if tar:
                 book = tar[0]
                 book.isDelete = True
                 book.save()
-                books = Book.objects.filter(owner=request.user, isDelete=False)
+                books = Book.objects.filter(owner=request.user, isDelete=False).order_by('id')
                 return render(request, 'panel/list_mysell.html', {'username': request.user.username, 'books': books,
-                                                                    'TYPE': "Success",
-                                                                    'msg': "delete successfully"})
-        books = Book.objects.filter(owner=request.user, isDelete=False)
-        if books:
-            return render(request, 'panel/list_mysell.html', {'username': request.user.username, 'books': books})
+                                                                  'TYPE': "Success",
+                                                                  'msg': "delete successfully"})
+            books = Book.objects.filter(owner=request.user, isDelete=False).order_by('id')
+            if books:
+                return render(request, 'panel/list_mysell.html', {'username': request.user.username, 'TYPE': "Failure",
+                                                                  'msg': "Error Occurred!", 'books': books})
+            else:
+                return render(request, 'panel/list_mysell.html', {'username': request.user.username, 'TYPE': "Warning",
+                                                                  'msg': "You do not sell any single book!"})
         else:
-            return render(request, 'panel/list_mysell.html', {'username': request.user.username, 'TYPE': "Warning",
-                       'msg': "You do not sell any single book!"})
-
+            books = Book.objects.filter(owner=request.user, isDelete=False).order_by('id')
+            if books:
+                return render(request, 'panel/list_mysell.html', {'username': request.user.username, 'books': books})
+            else:
+                return render(request, 'panel/list_mysell.html', {'username': request.user.username, 'TYPE': "Warning",
+                                                                  'msg': "You do not sell any single book!"})
 
 
 def addcar(request):

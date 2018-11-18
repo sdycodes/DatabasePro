@@ -17,7 +17,7 @@
     <!-- Left navigation -->
     <ul id="menu" class="nav">
         <li class="dash"><a href="/panel/" title=""><span>Dashboard</span></a></li>
-        <li class="charts"><a href="/market/" title="" class="active"><span>Market</span></a></li>
+        <li class="charts"><a href="/market/" title=""><span>Market</span></a></li>
         <li class="forms"><a href="#" title="" class="exp"><span>Forms stuff</span><strong>4</strong></a>
             <ul class="sub">
                 <li><a href="forms.html" title="">Form elements</a></li>
@@ -110,20 +110,20 @@
                             <span class="step-links">
                             <ul class="pagination">
                                     {% if books.has_previous %}
-                                        <li class="prev"><a href="?q={{ query }}&page={{ books.previous_page_number }}" title=""></a></li>
+                                        <li class="prev"><a href="?page={{ books.previous_page_number }}" title=""></a></li>
                                     {% endif %}
 
 
                                     {% for page in books.paginator.page_range %}
                                         {% if books.number == page %}
-                                            <li><a href="?q={{ query }}&page={{ page }}" title="" class="active">{{ page }}</a></li>
+                                            <li><a href="?page={{ page }}" title="" class="active">{{ page }}</a></li>
                                         {% else %}
-                                            <li><a href="?q={{ query }}&page={{ page }}" title="">{{ page }}</a></li>
+                                            <li><a href="?page={{ page }}" title="">{{ page }}</a></li>
                                         {% endif %}
                                     {% endfor %}
 
                                     {% if books.has_next %}
-                                        <li class="next"><a href="?q={{ query }}&page={{ contacts.next_page_number }}" title=""></a></li>
+                                        <li class="next"><a href="?page={{ contacts.next_page_number }}" title=""></a></li>
                                     {% endif %}
                             </ul>
                             </span>
@@ -141,7 +141,7 @@
                         <td align="center">{{ book.info }}</td>
                         <td class="fileInfo"><span><strong>¥ </strong> {{ book.price }}</span></td>
 
-                       <td class="actBtns"><a href="?del={{ book.name }}&q={{ query }}&page={{ books.number }}" title="Delete" class="tipS" type="submit"><img src="{% static 'images/icons/remove.png' %}" alt="" /></a></td>
+                       <td class="actBtns"><a href="?del={{ book.id }}&page={{ books.number }}" title="Delete" class="tipS" type="submit"><img src="{% static 'images/icons/remove.png' %}" alt="" /></a></td>
 
                    </tr>
                    {% endfor %}
