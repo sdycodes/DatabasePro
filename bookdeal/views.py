@@ -11,34 +11,6 @@ from bookdeal.models import *
 
 def signup(request):
     if request.method == 'GET':
-        return render(request, 'panel/signup.html')
-    if request.method == 'POST':
-        # get the information
-        name = request.POST.get('name')
-        passwd1 = request.POST.get('password1')
-        passwd2 = request.POST.get('password2')
-        typ = request.POST.get('type')
-        # check if they are legal
-        if name == "" or passwd1 == "" or typ == "":
-            return render(request, 'panel/signup.html', {'TYPE': "Failed",
-                                                                    'msg': "illegal password or name"})
-        if passwd1 != passwd2:
-            return render(request, 'panel/signup.html', {'TYPE': "Failed",
-                                                                    'msg': "password ot equal"})
-        res = User.objects.filter(username=name)
-        if res:
-            return render(request, 'panel/signup.html', {'TYPE': "Failed",
-                                                                    'msg': "username already exists"})
-        # sign up
-        if typ == 'N':
-            Normal.objects.create_user(username=name, password=passwd1)
-        elif typ=='R':
-            Retailer.objects.create_user(username=name, password=passwd1)
-        return render(request, 'test/result.html', {'func': 'signup', 'res': 'success'})
-
-
-def adduser(request):
-    if request.method == 'GET':
         return render(request, 'panel/adduser.html')
     if request.method == 'POST':
         # get the information

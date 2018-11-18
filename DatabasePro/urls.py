@@ -30,7 +30,6 @@ urlpatterns = [
     url('signup/', views.signup),
     url('signin/', views.login),
     url('addbook/', views.addbook),
-    url('adduser/', views.adduser),
     url('deletebook/', views.delete_book),
     url('list_mysell', views.list_mysell)
     # url('deletebook/', views.delete_book),
