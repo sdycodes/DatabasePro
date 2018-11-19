@@ -27,6 +27,7 @@ urlpatterns = [
     url('market/', views.market),
     url('login/', views.login),
     url('info/', views.info),
+    url('purchase/', views.purchase),
     url('signup/', views.signup),
     url('signin/', views.login),
     url('addbook/', views.addbook),

@@ -86,9 +86,17 @@
 
     <!-- Main content wrapper -->
     <div class="wrapper">
+        <!-- Note -->
+        {% if msg %}
+        <div class="nNote n{{ TYPE }} hideit">
+            <p><strong>INFORMATION: </strong>{{ msg }}</p>
+        </div>
+        {% endif %}
         {% if books %}
-            <form method="POST" action="">
+
         <div class="widget">
+        <form method="POST" action="">
+            {% csrf_token %}
             <div class="title"><span class="titleIcon"><input type="checkbox" id="titleCheck" name="titleCheck" /></span><h6>My Shopping Cart</h6></div>
             <table cellpadding="0" cellspacing="0" width="100%" class="sTable withCheck mTable" id="checkAll">
                 <thead>
@@ -131,12 +139,10 @@
                     <tr>
                         <td colspan="6">
                             <div class="itemActions" style="margin:20px">
-                                <label>Apply action:</label>
+                                <label>Purchase With:</label>
                                 <select>
-                                    <option value="">Select action...</option>
-                                    <option value="Edit">Edit</option>
-                                    <option value="Delete">Delete</option>
-                                    <option value="Move">Move somewhere</option>
+                                    <option value="Wechat">Wechat</option>
+                                    <option value="Alipay">Alipay</option>
                                 </select>
                             </div>
                             <div class="wizButtons">
@@ -152,7 +158,7 @@
                 {% for book in books %}
 
                    <tr>
-                     <td><input type="checkbox" id="titleCheck2" name="checkRow" /></td>
+                     <td><input type="checkbox" id="titleCheck2" name="checkRow" value="{{ book.id }}" /></td>
                         <td align="center"><a href="{{ book.cover.url }}" title="" rel="lightbox"><img src="{{ book.cover.url }}" alt="" style="width:60px" /></a></td>
                         <td style="width:50px;text-align:center"><a href="#" title="">{{ book.name }}</a></td>
                         <td align="center">{{ book.info }}</td>
@@ -163,9 +169,13 @@
                    {% endfor %}
                 </tbody>
             </table>
+        </form>
         </div>
-
-            </form>
+    {% else %}
+        <!-- Note -->
+        <div class="nNote nWarning hideit">
+            <p><strong>INFORMATION: </strong>Empty Shopping Cart!</p>
+        </div>
     {% endif %}
         <!-- My tasks table widget -->
                 <div class="widget">
