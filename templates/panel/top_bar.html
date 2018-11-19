@@ -16,7 +16,7 @@
                         </ul>
                     </li>
                     <li><a href="#" title=""><img src="{% static 'images/icons/topnav/settings.png' %}" alt="" /><span>Settings</span></a></li>
-                    <li><a href="/login/" title=""><img src="{% static 'images/icons/topnav/logout.png' %}" alt="" /><span>Logout</span></a></li>
+                    <li><a href="/login/" title=""><img src="{% static 'images/icons/topnav/logout.png' %}" alt="" /><span>Log{% if username %}out{% else %}in{% endif %}</span></a></li>
                 </ul>
             </div>
             <div class="clear"></div>

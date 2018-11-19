@@ -26,6 +26,12 @@
 <!-- Main content wrapper -->
 <div class="loginWrapper">
     <div class="loginLogo"><img src = {% static 'images/loginLogo.png' %} alt="" /></div>
+    <!-- Note -->
+        {% if msg %}
+        <div class="nNote n{{ TYPE }} hideit">
+            <p><strong>INFORMATION: </strong>{{ msg }}</p>
+        </div>
+        {% endif %}
     <div class="widget">
         <div class="title"><img src = {% static 'images/icons/dark/files.png' %} alt="" class="titleIcon" /><h6>Login</h6></div>
         <form action="" id="validate" class="form" method="post">
@@ -44,7 +50,7 @@
                 </div>
                 
                 <div class="loginControl">
-                    <div class="rememberMe"><input type="checkbox" id="remMe" name="remMe" /><label for="remMe">Remember me</label></div>
+                    <div class="rememberMe"><input type="checkbox" id="remMe" name="remember" checked="checked" /><label for="remMe">Remember me</label></div>
                     <input type="submit" value="Log me in" class="dredB logMeIn" />
                     <div class="clear"></div>
                 </div>

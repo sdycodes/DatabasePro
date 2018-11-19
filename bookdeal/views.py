@@ -17,7 +17,7 @@ def signup(request):
         name = request.POST.get('name')
         passwd1 = request.POST.get('password1')
         passwd2 = request.POST.get('password2')
-        typ = request.POST.get('type')
+        typ = request.POST.get('typ')
         # check if they are legal
         res = User.objects.filter(username=name)
         if res:
@@ -25,10 +25,10 @@ def signup(request):
                           {'TYPE': "Failure", 'msg': 'User ' + name + ' Already Exists!',
                            "username": request.user.username})
         # sign up
-        if typ == 'n':
-            Normal.objects.create_user(username=name, password=passwd1)
-        else:
+        if typ == "a":
             Retailer.objects.create_user(username=name, password=passwd1)
+        else:
+            Normal.objects.create_user(username=name, password=passwd1)
         return render(request, 'panel/index.html',
                       {'TYPE': "Success", 'msg': 'User ' + name + ' Successfully Added!',
                        "username": request.user.username})
@@ -50,16 +50,20 @@ def signin(request):
 
 def login(request):
     if request.method == 'GET':
+        request.session.flush()
         return render(request, 'panel/login.html')
     if request.method == 'POST':
         name = request.POST.get('name')
         passwd = request.POST.get('password')
+        rem = request.POST.get('remember')
+        if not rem:
+            request.session.set_expiry(0)
         user = auth.authenticate(username=name, password=passwd)
         if user is not None and user.is_active:
             auth.login(request, user)
             return render(request, 'panel/index.html', {'username': request.user.username, 'res': name})
         else:
-            return render(request, 'panel/login.html', {'username': 'signin', 'res': 'fail!'})
+            return render(request, 'panel/login.html', {'username': '', 'TYPE': 'Failure', 'msg': "Invalid Password or Username!"})
 
 
 def addbook(request):
@@ -71,7 +75,7 @@ def addbook(request):
         price = float(request.POST.get('price'))
         cover = request.FILES.get('cover')
         if book_name == "" or len(info) < 10 or price > 10000 or price < 0:
-            return render(request, 'panel/index.html', {'TYPE':"Failure", 'msg':"addbook", "username":request.user.username})
+            return render(request, 'panel/index.html', {'TYPE':"Failure", 'msg':"addbook", "username": request.user.username})
         if cover is None or cover.name.split('.')[1].lower() not in ['jpeg', 'jpg', 'png'] or cover.size > 10000000:
             return render(request, 'panel/index.html', {'TYPE': "Warning", 'msg': "illegal cover", "username":request.user.username})
         Book.objects.create(name=book_name, info=info, price=price, cover=cover, owner=request.user)
@@ -80,11 +84,15 @@ def addbook(request):
 
 def info(request):
     if request.method == 'GET' or request.method == 'POST':
-        user = request.user
+        name = request.user.username
         try:
-            useroutlet = Normal.objects.get(username=user)
+            useroutlet = Normal.objects.get(username=name)
         except Normal.DoesNotExist:
-            return render(request, 'panel/index.html',
+            try:
+                useroutlet = Retailer.objects.get(username=name)
+                return render(request, 'panel/info.html', {'username': request.user.username})
+            except Retailer.DoesNotExist:
+                return render(request, 'panel/index.html',
                         {'username': request.user.username, 'TYPE': "Warning",
                        'msg': "Please Login First!"})
         ids = Car.objects.filter(user=useroutlet)
@@ -163,7 +171,13 @@ def market(request):
             try:
                 useroutlet = Normal.objects.get(username=user)
             except Normal.DoesNotExist:
-                return render(request, 'panel/index.html',
+                try:
+                    useroutlet = Retailer.objects.get(username=user)
+                    return render(request, 'panel/index.html',
+                                  {'username': request.user.username, 'TYPE': "Failure",
+                                   'msg': "Retailers Not Authorized to Purchase!"})
+                except Retailer.DoesNotExist:
+                    return render(request, 'panel/index.html',
                               {'username': request.user.username, 'TYPE': "Warning",
                                'msg': "Please Login First!"})
             check = Car.objects.filter(user=useroutlet, item=add)
