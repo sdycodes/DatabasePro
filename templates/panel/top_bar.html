@@ -6,16 +6,19 @@
             <div class="userNav">
                 <ul>
                     <li><a href="{% if username %}/info/{% else %}/login/{% endif %}" title=""><img src="{% static 'images/icons/topnav/profile.png' %}" alt="" /><span>Account</span></a></li>
-                    <li><a href="#" title=""><img src="{% static 'images/icons/topnav/tasks.png' %}" alt="" /><span>Tasks</span></a></li>
-                    <li class="dd"><a title=""><img src="{% static 'images/icons/topnav/messages.png' %}" alt="" /><span>Messages</span><span class="numberTop">8</span></a>
+                    <li><a href="/market/" title=""><img src="{% static 'images/icons/topnav/tasks.png' %}" alt="" /><span>Market</span></a></li>
+                    {% if username %}
+                    <li class="dd"><a title=""><img src="{% static 'images/icons/topnav/messages.png' %}" alt="" /><span>Messages</span><span class="numberTop">?</span></a>
                         <ul class="userDropdown">
-                            <li><a href="#" title="" class="sAdd">new message</a></li>
-                            <li><a href="#" title="" class="sInbox">inbox</a></li>
-                            <li><a href="#" title="" class="sOutbox">outbox</a></li>
-                            <li><a href="#" title="" class="sTrash">trash</a></li>
+                            <li><a href="/info/" title="" class="sAdd">My Cart</a></li>
+                            <li><a href="/info/" title="" class="sInbox">My Order</a></li>
+
+                            <li><a href="/info/" title="" class="sOutbox">outbox</a></li>
+                            <li><a href="/info/" title="" class="sTrash">trash</a></li>
                         </ul>
                     </li>
                     <li><a href="#" title=""><img src="{% static 'images/icons/topnav/settings.png' %}" alt="" /><span>Settings</span></a></li>
+                    {% endif %}
                     <li><a href="/login/" title=""><img src="{% static 'images/icons/topnav/logout.png' %}" alt="" /><span>Log{% if username %}out{% else %}in{% endif %}</span></a></li>
                 </ul>
             </div>
