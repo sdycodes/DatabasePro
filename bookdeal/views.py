@@ -110,6 +110,7 @@ def info(request):
             return render(request, 'panel/index.html',
                           {'username': request.user.username, 'TYPE': "Warning",
                            'msg': "Please Login First!"})
+    orders = Order.objects.filter(buyer=name)
     ids = Car.objects.filter(user=useroutlet)
     idset = []
     for idi in ids:
@@ -133,7 +134,7 @@ def info(request):
         if not check:
             return render(request, 'panel/info.html',
                           {'username': request.user.username, 'books': books, 'query': q, 'TYPE': "Failure",
-                           'msg': "Remove from Cart Failed, Book Not Exists!"})
+                           'msg': "Remove from Cart Failed, Book Not Exists!", 'orders': orders})
         Car.objects.get(item=delete, user=useroutlet).delete()
         ids = Car.objects.filter(user=useroutlet)
         idset = []
@@ -155,12 +156,12 @@ def info(request):
 
         return render(request, 'panel/info.html',
                       {'username': request.user.username, 'books': books,
-                       'TYPE': "Success", 'msg': "Remove from Cart Successfully!"})
+                       'TYPE': "Success", 'msg': "Remove from Cart Successfully!", 'orders': orders})
 
     if purchased:
-        return render(request, 'panel/info.html', {'username': request.user.username, 'books': books, 'TYPE': "Success", 'msg': "Purchased Successfully!"})
+        return render(request, 'panel/info.html', {'username': request.user.username, 'books': books, 'TYPE': "Success", 'msg': "Purchased Successfully!", 'orders': orders})
     else:
-        return render(request, 'panel/info.html', {'username': request.user.username, 'books': books})
+        return render(request, 'panel/info.html', {'username': request.user.username, 'books': books, 'orders': orders})
 
 
 def purchase(request):

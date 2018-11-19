@@ -177,6 +177,7 @@
             <p><strong>INFORMATION: </strong>Empty Shopping Cart!</p>
         </div>
     {% endif %}
+    {% if orders %}
         <!-- My tasks table widget -->
                 <div class="widget">
                     <div class="title"><img src="{% static 'images/icons/dark/timer.png' %}" alt="" class="titleIcon" /><h6>My Orders</h6><div class="num"><a href="#" class="blueNum">+245</a></div></div>
@@ -184,34 +185,29 @@
                         <thead>
                             <tr>
                                 <td>Description</td>
+                                <td width="140">Date</td>
                                 <td width="100">Status</td>
                                 <td width="60">Acts</td>
                             </tr>
                         </thead>
                         <tbody>
+                        {% for order in orders %}
                             <tr>
-                                <td class="taskPr"><a href="#" title="">Finish design</a></td>
-                                <td><span class="green f11">in progress</span></td>
-                                <td class="actBtns"><a href="#" title="Update" class="tipS"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a><a href="#" title="Remove" class="tipS"><img src="{% static 'images/icons/remove.png' %}" alt="" /></a></td>
+                                <td class="{% if order.isFinish %}taskPr{% else %}taskD{% endif %}"><a href="#" title="">{{ order.book_id.name }}</a></td>
+                                <td><a href="#" title="">{{ order.date }}</a></td>
+                                <td><span class="{% if order.isFinish %}red{% else %}green{% endif %} f11">{% if order.isFinish %}Finished{% else %}In Progress{% endif %}</span></td>
+                                <td class="actBtns"><a href="{% static 'images/icons/edit.png' %}" rel="lightbox" title="Update" class="tipS"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a></td>
                             </tr>
-                            <tr>
-                                <td class="taskP"><a href="#" title="">Get HTML done</a></td>
-                                <td><span class="lGrey f11">pending</span></td>
-                                <td class="actBtns"><a href="#" title="Update" class="tipS"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a><a href="#" title="Remove" class="tipS"><img src="{% static 'images/icons/remove.png' %}" alt="" /></a></td>
-                            </tr>
-                            <tr>
-                                <td class="taskP"><a href="#" title="">Connect jQuery stuff</a></td>
-                                <td><span class="lGrey f11">pending</span></td>
-                                <td class="actBtns"><a href="#" title="Update" class="tipS"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a><a href="#" title="Remove" class="tipS"><img src="{% static 'images/icons/remove.png' %}" alt="" /></a></td>
-                            </tr>
-                            <tr>
-                                <td class="taskD"><a href="#" title="">Start beta testing</a></td>
-                                <td><span class="red f11">done</span></td>
-                                <td class="actBtns"><a href="#" title="Update" class="tipS"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a><a href="#" title="Remove" class="tipS"><img src="{% static 'images/icons/remove.png' %}" alt="" /></a></td>
-                            </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>
+    {% else %}
+    <!-- Note -->
+        <div class="nNote nWarning hideit">
+            <p><strong>INFORMATION: </strong>No Orders Available Yet!</p>
+        </div>
+    {% endif %}
 
         <!-- Purchase info widget -->
                 <div class="widget">
