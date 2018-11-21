@@ -146,7 +146,7 @@
                     <tr>
                         <td colspan="6">
                             <div class="itemActions" style="margin:20px;">
-                                <label>Price:</label>
+                                <label>Price: <strong>¥ </strong></label>
                             </div>
                             <div class="wizButtons">
                                 <div class="status" id="status1"></div>
@@ -197,10 +197,10 @@
                         <tbody>
                         {% for order in orders %}
                             <tr>
-                                <td class="{% if order.isFinish %}taskPr{% else %}taskD{% endif %}"><a href="#" title="">{{ order.book_id.name }}</a></td>
+                                <td class="{% if not order.isFinish %}taskP{% elif order.brate is 0 %}taskPr{% else %}taskD{% endif %}"><a href="/order/{{ order.id }}" title="">{{ order.book_id.name }}</a></td>
                                 <td><a href="#" title="">{{ order.date }}</a></td>
-                                <td><span class="{% if order.isFinish %}red{% else %}green{% endif %} f11">{% if order.isFinish %}Finished{% else %}In Progress{% endif %}</span></td>
-                                <td class="actBtns"><a href="/order/" title="Update" class="tipS"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a></td>
+                                <td><span class="{% if not order.isFinish %}grey{% elif order.brate is 0 %}red{% else %}green{% endif %} f11">{% if not order.isFinish %}Pending{% elif order.brate is 0 %}In Progress{% else %}Finished{% endif %}</span></td>
+                                <td class="actBtns"><a href="/order/{{ order.id }}" title="Details" class="tipS"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a></td>
                             </tr>
                         {% endfor %}
                         </tbody>

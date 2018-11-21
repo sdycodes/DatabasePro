@@ -164,16 +164,16 @@ def info(request):
         return render(request, 'panel/info.html', {'username': request.user.username, 'books': books, 'orders': orders, 'orderSum': len(orders)})
 
 
-def order():
-    if request.method == GET:
-        return render(request, 'panel/order.html',
-                      {'username': request.user.username, 'TYPE': "Failure", 'msg': "Unable to obtain order information!"})
+def order(request, order_id):
+    if request.method == 'GET':
+        order_detail = Order.objects.get(id=order_id)
+        if not order_detail:
+            return render(request, 'panel/order.html',
+                          {'username': request.user.username, 'TYPE': "Failure",
+                           'msg': "Unable to obtain order information!"})
 
-    if request.method == POST:
-        order_id = request.GET.get('order')
-        Order.objects.get(id=order_id)
         return render(request, 'panel/order.html',
-                      {'username': request.user.username, 'order': order})
+                      {'username': request.user.username, 'order': order_detail})
 
 
 def purchase(request):

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+{% include 'panel/header.html' %}
+{% include 'panel/loader.html' %}
+    <script>
+        function purchase(){
+            document.getElementById('pp_exit').click();
+            setTimeout(function () {
+                document.getElementById('buy').click();
+            }, 500);
+
+        }
+    </script>
+<body>
+<!-- Left side content -->
+<div id="leftSide">
+    <div class="logo"><a href="/panel/" style="font-size:medium; color:#FFF"><img style="width:25%" src="{% static 'images/logo.png' %}"" alt="" /> Find Books!</a></div> <!--  -->
+
+
+    <!-- General balance widget -->
+    {% include 'panel/balance_bar.html' %}
+
+    <!-- Left navigation -->
+    <ul id="menu" class="nav">
+        <li class="dash"><a href="/panel/" title=""><span>Dashboard</span></a></li>
+        <li class="charts"><a href="/market/" title=""><span>Market</span></a></li>
+        <li class="forms"><a href="#" title="" class="exp"><span>Forms stuff</span><strong>4</strong></a>
+            <ul class="sub">
+                <li><a href="forms.html" title="">Form elements</a></li>
+                <li><a href="form_validation.html" title="">Validation</a></li>
+                <li><a href="form_editor.html" title="">WYSIWYG and file uploader</a></li>
+                <li class="last"><a href="form_wizards.html" title="">Wizards</a></li>
+            </ul>
+        </li>
+        <li class="ui"><a href="ui_elements.html" title=""><span>Interface elements</span></a></li>
+        <li class="tables"><a href="tables.html" title="" class="exp"><span>Tables</span><strong>3</strong></a>
+            <ul class="sub">
+                <li><a href="table_static.html" title="">Static tables</a></li>
+                <li><a href="table_dynamic.html" title="">Dynamic table</a></li>
+                <li class="last"><a href="table_sortable_resizable.html" title="">Sortable &amp; resizable tables</a></li>
+            </ul>
+        </li>
+        <li class="widgets"><a href="#" title="" class="exp"><span>Widgets and grid</span><strong>2</strong></a>
+            <ul class="sub">
+                <li><a href="widgets.html" title="">Widgets</a></li>
+                <li class="last"><a href="grid.html" title="">Grid</a></li>
+            </ul>
+        </li>
+        <li class="errors"><a href="#" title="" class="exp"><span>Error pages</span><strong>6</strong></a>
+            <ul class="sub">
+                <li><a href="403.html" title="">403 page</a></li>
+                <li><a href="404.html" title="">404 page</a></li>
+                <li><a href="405.html" title="">405 page</a></li>
+                <li><a href="500.html" title="">500 page</a></li>
+                <li><a href="503.html" title="">503 page</a></li>
+                <li class="last"><a href="offline.html" title="">Website is offline</a></li>
+            </ul>
+        </li>
+        <li class="files"><a href="file_manager.html" title=""><span>File manager</span></a></li>
+        <li class="typo"><a href="#" title="" class="exp"><span>Other pages</span><strong>3</strong></a>
+            <ul class="sub">
+                <li><a href="typography.html" title="">Typography</a></li>
+                <li><a href="calendar.html" title="">Calendar</a></li>
+                <li class="last"><a href="gallery.html" title="">Gallery</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+
+<!-- Right side -->
+<div id="rightSide">
+
+    {% include 'panel/top_bar.html' %}
+
+
+
+    <!-- Title area -->
+    {% load static %}
+        <div class="titleArea">
+        <div class="wrapper">
+            <div class="pageTitle">
+                <h1><strong>#{{ order.id }}</strong> Order Details</h1>
+                <span>{{ username }} | {% if retail %}Retailer{% else %}Customer{% endif %}</span>
+            </div>
+        </div>
+        </div>
+    <div class="clear"></div>
+    <div class="line"></div>
+
+
+    <!-- Main content wrapper -->
+    <div class="wrapper">
+        <!-- Note -->
+        {% if msg %}
+        <div class="nNote n{{ TYPE }} hideit">
+            <p><strong>INFORMATION: </strong>{{ msg }}</p>
+        </div>
+        {% endif %}
+        {% if order %}
+
+            <div class="widget">
+            <div class="title"><img src="{% static '/images/icons/dark/loading.png' %}" alt="" class="titleIcon"><h6>Order Progress</h6></div>
+            <div class="formRow">
+                <div class="formRight">
+                    <label>
+                       <span style="color: {% if order.isFinish %}green{% else %}red{% endif %}">
+                       <img src="{% static '/images/icons/dark/money.png' %}" alt="" class="titleIcon">
+                       {% if not order.isFinish %}    Waiting for Confirmation...{% elif order.srate is 0 %}    Waiting for seller to rate...{% elif order.brate is 0 %}    Waiting for buyer to rate...{% else %}    Order Finished!{% endif %}</span></label>
+                <br>
+                <div class="clear"></div>
+                    <div id="progress" class="ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100"
+                 aria-valuenow="10">
+
+                        <div class="ui-progressbar-value ui-widget-header ui-corner-left" style="width: 80%;"></div>
+                    </div>
+
+                   </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+
+        <div class="widget">
+        <form id="usualValidate" method="POST" action="">
+            {% csrf_token %}
+            <div class="title"><span class="titleIcon"><input type="checkbox" id="titleCheck" name="titleCheck" /></span><h6>My Shopping Cart</h6></div>
+            <table cellpadding="0" cellspacing="0" width="100%" class="sTable withCheck mTable" id="checkAll">
+                <thead>
+                    <tr>
+                        <td><img src="{% static 'images/icons/tableArrows.png' %}" alt="" /></td>
+                        <td>Cover</td>
+                        <td class="sortCol"><div>Name<span></span></div></td>
+                        <td class="sortCol"><div>Info<span></span></div></td>
+                        <td>Price</td>
+                        <td>Actions</td>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <td colspan="6">
+                        <div class="tPagination">
+                            <span class="step-links">
+                            <ul class="pagination">
+                                    {% if books.has_previous %}
+                                        <li class="prev"><a href="?page={{ books.previous_page_number }}" title=""></a></li>
+                                    {% endif %}
+
+
+                                    {% for page in books.paginator.page_range %}
+                                        {% if books.number == page %}
+                                            <li><a href="?page={{ page }}" title="" class="active">{{ page }}</a></li>
+                                        {% else %}
+                                            <li><a href="?page={{ page }}" title="">{{ page }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if books.has_next %}
+                                        <li class="next"><a href="?page={{ contacts.next_page_number }}" title=""></a></li>
+                                    {% endif %}
+                            </ul>
+                            </span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">
+                            <div class="itemActions" style="margin:20px;">
+                                <label>Price: <strong>¥ </strong></label>
+                            </div>
+                            <div class="wizButtons">
+                                <div class="status" id="status1"></div>
+                                <span class="wNavButtons">
+                                    <a href="{% static 'images/purchase.jpg' %}" rel="lightbox"><input class="greenB ml10" value="Purchase" type="submit" /></a>
+                                    <input style="display:none;" id="buy" value="Purchase" type="submit" />
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+                <tbody>
+                {% for book in books %}
+
+                   <tr>
+                     <td><input type="checkbox" id="titleCheck2" name="checkRow" value="{{ book.id }}" /></td>
+                        <td align="center"><a href="{{ book.cover.url }}" title="" rel="lightbox"><img src="{{ book.cover.url }}" alt="" style="width:60px" /></a></td>
+                        <td style="width:50px;text-align:center"><a href="#" title="">{{ book.name }}</a></td>
+                        <td align="center">{{ book.info }}</td>
+                        <td class="fileInfo"><span><strong>¥ </strong> {{ book.price }}</span></td>
+                        <td class="actBtns"><a href="?del={{ book.id }}&page={{ books.number }}" title="Remove" class="tipS"><img src="{% static 'images/icons/remove.png' %}" alt="" /></a></td>
+
+                   </tr>
+                   {% endfor %}
+                </tbody>
+            </table>
+        </form>
+        </div>
+    {% else %}
+        <!-- Note -->
+        <div class="nNote nWarning hideit">
+            <p><strong>INFORMATION: </strong>Empty Shopping Cart!</p>
+        </div>
+    {% endif %}
+    {% if orders %}
+        <!-- My tasks table widget -->
+                <div class="widget">
+                    <div class="title"><img src="{% static 'images/icons/dark/timer.png' %}" alt="" class="titleIcon" /><h6>My Orders</h6><div class="num"><a href="#" class="blueNum">+{{ orderSum }}</a></div></div>
+                    <table cellpadding="0" cellspacing="0" width="100%" class="sTable taskWidget">
+                        <thead>
+                            <tr>
+                                <td>Description</td>
+                                <td width="140">Date</td>
+                                <td width="100">Status</td>
+                                <td width="60">Acts</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for order in orders %}
+                            <tr>
+                                <td class="{% if order.isFinish %}taskPr{% else %}taskD{% endif %}"><a href="#" title="">{{ order.book_id.name }}</a></td>
+                                <td><a href="#" title="">{{ order.date }}</a></td>
+                                <td><span class="{% if order.isFinish %}red{% else %}green{% endif %} f11">{% if order.isFinish %}Finished{% else %}In Progress{% endif %}</span></td>
+                                <td class="actBtns"><a href="/order?order={{ order.id }}" title="Details" class="tipS"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+    {% else %}
+    <!-- Note -->
+        <div class="nNote nWarning hideit">
+            <p><strong>INFORMATION: </strong>No Orders Available Yet!</p>
+        </div>
+    {% endif %}
+
+        <!-- Purchase info widget -->
+                <div class="widget">
+                    <div class="title">
+                    	<img src="{% static 'images/icons/dark/money.png' %}" alt="" class="titleIcon" />
+                        <h6>Purchase info</h6>
+                        <div class="topIcons">
+                            <a href="#" class="tipS" title="Download statement"><img src="{% static 'images/icons/downloadTop.png' %}" alt="" /></a>
+                            <a href="#" class="tipS" title="Print invoice"><img src="{% static 'images/icons/printTop.png' %}" alt="" /></a>
+                            <a href="#" class="tipS" title="Edit"><img src="{% static 'images/icons/editTop.png' %}" alt="" /></a>
+                        </div>
+                    </div>
+                    <div class="newOrder">
+                        <div class="userRow">
+                            <a href="#" title=""><img src="{% static 'images/user.png' %}" alt="" class="floatL" /></a>
+                            <ul class="leftList">
+                                <li><a href="#" title=""><strong>Julia Maria Shine</strong></a></li>
+                                <li>Order status:</li>
+                            </ul>
+                            <ul class="rightList">
+                                <li><a href="#" title=""> <strong>#2112</strong></a></li>
+                                <li class="orderIcons"><span class="oUnfinished"></span><span class="oShipped tipN" title="Shipped on Feb 2nd, 2012"></span><span class="oPaid tipN" title="Paid on Feb 1st, 2012"></span></li>
+                            </ul>
+                            <div class="clear"></div>
+                        </div>
+
+                        <div class="cLine"></div>
+
+                        <div class="orderRow">
+                            <ul class="leftList">
+                                <li>Date and time:</li>
+                                <li>Subtotal amount:</li>
+                                <li>Taxes</li>
+                            </ul>
+                            <ul class="rightList">
+                                <li><strong>Jan 31, 2012</strong> |  12:51</li>
+                                <li><strong class="green">$5,514.36</strong></li>
+                                <li><strong class="orange">- $1,158.54</strong></li>
+                            </ul>
+                            <div class="clear"></div>
+                        </div>
+
+                        <div class="cLine"></div>
+                        <div class="totalAmount"><h6 class="floatL blue">Total:</h6><h6 class="floatR blue">$12,157.99</h6><div class="clear"></div></div>
+                    </div>
+                </div>
+
+
+
+    </div>
+
+    <!-- Footer line -->
+    {% include 'panel/footer.html' %}
+
+</div>
+
+<div class="clear"></div>
+
+</body>
+</html>

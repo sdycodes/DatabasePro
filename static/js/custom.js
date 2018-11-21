@@ -527,11 +527,7 @@ $(function() {
 	var iNow = new Date().setTime(new Date().getTime() + 5 * 1000); // now plus 5 secs
 	var iEnd = new Date().setTime(new Date().getTime() + 15 * 1000); // now plus 15 secs
 	$('#progress2').anim_progressbar({start: iNow, finish: iEnd, interval: 1});
-	
-	// jQuery UI progress bar
-	$( "#progress" ).progressbar({
-			value: 80
-	});
+
 	
 	
 	
