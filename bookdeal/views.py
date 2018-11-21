@@ -100,17 +100,17 @@ def info(request):
                 Car.objects.get(item=id, user=useroutlet).delete()
                 purchased = True
     name = request.user.username
+    orders = Order.objects.filter(buyer=name)
     try:
         useroutlet = Normal.objects.get(username=name)
     except Normal.DoesNotExist:
         try:
             useroutlet = Retailer.objects.get(username=name)
-            return render(request, 'panel/info.html', {'username': request.user.username})
+            return render(request, 'panel/info.html', {'username': request.user.username, 'retail': True, 'orders': orders, 'orderSum': len(orders)})
         except Retailer.DoesNotExist:
             return render(request, 'panel/index.html',
                           {'username': request.user.username, 'TYPE': "Warning",
                            'msg': "Please Login First!"})
-    orders = Order.objects.filter(buyer=name)
     ids = Car.objects.filter(user=useroutlet)
     idset = []
     for idi in ids:
@@ -134,7 +134,7 @@ def info(request):
         if not check:
             return render(request, 'panel/info.html',
                           {'username': request.user.username, 'books': books, 'query': q, 'TYPE': "Failure",
-                           'msg': "Remove from Cart Failed, Book Not Exists!", 'orders': orders})
+                           'msg': "Remove from Cart Failed, Book Not Exists!", 'orders': orders, 'orderSum': len(orders)})
         Car.objects.get(item=delete, user=useroutlet).delete()
         ids = Car.objects.filter(user=useroutlet)
         idset = []
@@ -156,12 +156,24 @@ def info(request):
 
         return render(request, 'panel/info.html',
                       {'username': request.user.username, 'books': books,
-                       'TYPE': "Success", 'msg': "Remove from Cart Successfully!", 'orders': orders})
+                       'TYPE': "Success", 'msg': "Remove from Cart Successfully!", 'orders': orders, 'orderSum': len(orders)})
 
     if purchased:
-        return render(request, 'panel/info.html', {'username': request.user.username, 'books': books, 'TYPE': "Success", 'msg': "Purchased Successfully!", 'orders': orders})
+        return render(request, 'panel/info.html', {'username': request.user.username, 'books': books, 'TYPE': "Success", 'msg': "Purchased Successfully!", 'orders': orders, 'orderSum': len(orders)})
     else:
-        return render(request, 'panel/info.html', {'username': request.user.username, 'books': books, 'orders': orders})
+        return render(request, 'panel/info.html', {'username': request.user.username, 'books': books, 'orders': orders, 'orderSum': len(orders)})
+
+
+def order():
+    if request.method == GET:
+        return render(request, 'panel/order.html',
+                      {'username': request.user.username, 'TYPE': "Failure", 'msg': "Unable to obtain order information!"})
+
+    if request.method == POST:
+        order_id = request.GET.get('order')
+        Order.objects.get(id=order_id)
+        return render(request, 'panel/order.html',
+                      {'username': request.user.username, 'order': order})
 
 
 def purchase(request):
@@ -171,7 +183,6 @@ def purchase(request):
         if checks:
             buyer = request.user.username
             for id in checks:
-                print(id)
                 book = Book.objects.filter(id=id, isDelete=False).order_by('id')
                 if book:
                     book = book[0]

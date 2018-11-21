@@ -248,8 +248,8 @@ $(function() {
 	);*/
 	
 	
-	//===== User nav dropdown =====//		
-	
+	//===== User nav dropdown =====//
+
 	$('.dd').click(function () {
 		$('.userDropdown').slideToggle(200);
 	});
@@ -258,8 +258,7 @@ $(function() {
 		if (! $clicked.parents().hasClass("dd"))
 		$(".userDropdown").slideUp(200);
 	});
-	  
-	  
+
 	  
 	//===== Statistics row dropdowns =====//	
 		

@@ -18,21 +18,20 @@
         <div class="pp_content"> \
          <div class="pp_loaderIcon"></div> \
          <div class="pp_fade"> \
-          <a href="#" class="pp_expand" title="Expand the image">Expand</a> \
+          <a class="pp_close" href="" id="pp_exit">Close</a> \
           <div class="pp_hoverContainer"> \
-           <a class="pp_next" href="#">next</a> \
-           <a class="pp_previous" href="#">previous</a> \
+           <a class="pp_next">next</a> \
+           <a class="pp_previous" href="">previous</a> \
           </div> \
           <div id="pp_full_res"></div> \
           <div class="pp_details"> \
            <div class="pp_nav"> \
-            <a href="#" class="pp_arrow_previous">Previous</a> \
+            <a href="" class="pp_arrow_previous">Previous</a> \
             <p class="currentTextHolder">0/0</p> \
-            <a href="#" class="pp_arrow_next">Next</a> \
+            <a href="" class="pp_arrow_next">Next</a> \
            </div> \
-           <p class="pp_description"></p> \
-           <div class="pp_social">{pp_social}</div> \
-           <a class="pp_close" href="#">Close</a> \
+           <button id="pp_pass" onclick="purchase();">Bypass Purchase...</button>\
+           <a href="" class="pp_expand" title="Expand the image">Expand</a> \
           </div> \
          </div> \
         </div> \

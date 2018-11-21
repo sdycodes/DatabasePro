@@ -30,6 +30,7 @@ urlpatterns = [
     url('purchase/', views.purchase),
     url('signup/', views.signup),
     url('signin/', views.login),
+    url('order/', views.order),
     url('addbook/', views.addbook),
     url('deletebook/', views.delete_book),
     url('list_mysell', views.list_mysell)
