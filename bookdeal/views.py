@@ -139,7 +139,7 @@ def info(request):
         if not check:
             return render(request, 'panel/info.html',
                           {'username': request.user.username, 'books': books, 'query': q, 'TYPE': "Failure",
-                           'msg': "Remove from Cart Failed, Book Not Exists!", 'orders': orders, 'orderSum': len(orders), 'sales': sales, 'saleSum': len(sales)})
+                           'msg': "Remove from Cart Failed, Book Not Exists!", 'orders': orders, 'orderSum': len(orders), 'sales': sales, 'saleSum': len(sales), 'bookSum': len(sale_books)})
         Car.objects.get(item=delete, user=useroutlet).delete()
         ids = Car.objects.filter(user=useroutlet)
         idset = []
@@ -161,12 +161,12 @@ def info(request):
 
         return render(request, 'panel/info.html',
                       {'username': request.user.username, 'books': books,
-                       'TYPE': "Success", 'msg': "Remove from Cart Successfully!", 'orders': orders, 'orderSum': len(orders), 'sales': sales, 'saleSum': len(sales)})
+                       'TYPE': "Success", 'msg': "Remove from Cart Successfully!", 'orders': orders, 'orderSum': len(orders), 'sales': sales, 'saleSum': len(sales), 'bookSum': len(sale_books)})
 
     if purchased:
-        return render(request, 'panel/info.html', {'username': request.user.username, 'books': books, 'TYPE': "Success", 'msg': "Purchased Successfully!", 'orders': orders, 'orderSum': len(orders), 'sales': sales, 'saleSum': len(sales)})
+        return render(request, 'panel/info.html', {'username': request.user.username, 'books': books, 'TYPE': "Success", 'msg': "Purchased Successfully!", 'orders': orders, 'orderSum': len(orders), 'sales': sales, 'saleSum': len(sales), 'bookSum': len(sale_books)})
     else:
-        return render(request, 'panel/info.html', {'username': request.user.username, 'books': books, 'orders': orders, 'orderSum': len(orders), 'sales': sales, 'saleSum': len(sales)})
+        return render(request, 'panel/info.html', {'username': request.user.username, 'books': books, 'orders': orders, 'orderSum': len(orders), 'sales': sales, 'saleSum': len(sales), 'bookSum': len(sale_books)})
 
 
 def order(request, order_id):
