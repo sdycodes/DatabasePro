@@ -12,6 +12,29 @@
             }, 500);
 
         }
+        function setprice(price, cls){
+            var pricetag = document.getElementById('price');
+            var btn = document.getElementById('pay');
+
+            if(parseInt(price) < 0){
+                pricetag.innerText="0.00";
+            }
+            else{
+                var checkbox = document.getElementsByClassName(cls.toString())[0];
+                if(checkbox.checked){
+                    pricetag.innerText=(parseFloat(pricetag.innerText)+parseFloat(price)).toFixed(2).toString();
+                }
+                else{
+                    pricetag.innerText=(parseFloat(pricetag.innerText)-parseFloat(price)).toFixed(2).toString();
+                }
+            }
+            if(parseInt(pricetag.innerText) == 0){
+                btn.hidden=true;
+            }
+            else{
+                btn.hidden=false;
+            }
+        }
     </script>
 <body>
 <!-- Left side content -->
@@ -123,20 +146,20 @@
                             <span class="step-links">
                             <ul class="pagination">
                                     {% if books.has_previous %}
-                                        <li class="prev"><a href="?page={{ books.previous_page_number }}" title=""></a></li>
+                                        <li class="prev"><a href="?page={{ books.previous_page_number }}" title="" onclick="setprice(-1, -1);"></a></li>
                                     {% endif %}
 
 
                                     {% for page in books.paginator.page_range %}
                                         {% if books.number == page %}
-                                            <li><a href="?page={{ page }}" title="" class="active">{{ page }}</a></li>
+                                            <li><a href="?page={{ page }}" title="" class="active" onclick="setprice(-1, -1);">{{ page }}</a></li>
                                         {% else %}
-                                            <li><a href="?page={{ page }}" title="">{{ page }}</a></li>
+                                            <li><a href="?page={{ page }}" title="" onclick="setprice(-1, -1);">{{ page }}</a></li>
                                         {% endif %}
                                     {% endfor %}
 
                                     {% if books.has_next %}
-                                        <li class="next"><a href="?page={{ contacts.next_page_number }}" title=""></a></li>
+                                        <li class="next"><a href="?page={{ contacts.next_page_number }}" title="" onclick="setprice(-1, -1);"></a></li>
                                     {% endif %}
                             </ul>
                             </span>
@@ -146,12 +169,12 @@
                     <tr>
                         <td colspan="6">
                             <div class="itemActions" style="margin:20px;">
-                                <label>Price: <strong>¥ </strong></label>
+                                <label>Price: <strong>¥ </strong><span id="price">0.00</span></label>
                             </div>
                             <div class="wizButtons">
                                 <div class="status" id="status1"></div>
                                 <span class="wNavButtons">
-                                    <a href="{% static 'images/purchase.jpg' %}" rel="lightbox"><input class="greenB ml10" value="Purchase" type="submit" /></a>
+                                    <a href="{% static 'images/purchase.jpg' %}" rel="lightbox" id="pay" hidden="hidden"><input class="greenB ml10" value="Purchase" type="submit" /></a>
                                     <input style="display:none;" id="buy" value="Purchase" type="submit" />
                                 </span>
                             </div>
@@ -162,7 +185,7 @@
                 {% for book in books %}
 
                    <tr>
-                     <td><input type="checkbox" id="titleCheck2" name="checkRow" value="{{ book.id }}" /></td>
+                     <td><input class="{{ book.id }}" type="checkbox" id="titleCheck2" name="checkRow" value="{{ book.id }}" onclick="setprice({{ book.price }}, {{ book.id }});"  /></td>
                         <td align="center"><a href="{{ book.cover.url }}" title="" rel="lightbox"><img src="{{ book.cover.url }}" alt="" style="width:60px" /></a></td>
                         <td style="width:50px;text-align:center"><a href="#" title="">{{ book.name }}</a></td>
                         <td align="center">{{ book.info }}</td>
