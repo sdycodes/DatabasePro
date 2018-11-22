@@ -1,6 +1,6 @@
-from django.shortcuts import render,render_to_response
+from django.shortcuts import render, render_to_response
 from django import forms
-from django.http import HttpResponse,HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.template import RequestContext
 from django.views import generic
@@ -99,6 +99,7 @@ def info(request):
                 useroutlet = Normal.objects.get(username=buyer)
                 Car.objects.get(item=id, user=useroutlet).delete()
                 purchased = True
+
     name = request.user.username
     orders = Order.objects.filter(buyer=name)
     try:
@@ -106,11 +107,15 @@ def info(request):
     except Normal.DoesNotExist:
         try:
             useroutlet = Retailer.objects.get(username=name)
-            return render(request, 'panel/info.html', {'username': request.user.username, 'retail': True, 'orders': orders, 'orderSum': len(orders)})
+            sale_books = Book.objects.filter(owner=useroutlet)
+            sales = Order.objects.filter(book_id__in=sale_books)
+            return render(request, 'panel/info.html', {'username': request.user.username, 'retail': True, 'orders': orders, 'orderSum': len(orders), 'sales': sales, 'saleSum': len(sales)})
         except Retailer.DoesNotExist:
             return render(request, 'panel/index.html',
                           {'username': request.user.username, 'TYPE': "Warning",
                            'msg': "Please Login First!"})
+    sale_books = Book.objects.filter(owner=useroutlet)
+    sales = Order.objects.filter(book_id__in=sale_books)
     ids = Car.objects.filter(user=useroutlet)
     idset = []
     for idi in ids:
@@ -134,7 +139,7 @@ def info(request):
         if not check:
             return render(request, 'panel/info.html',
                           {'username': request.user.username, 'books': books, 'query': q, 'TYPE': "Failure",
-                           'msg': "Remove from Cart Failed, Book Not Exists!", 'orders': orders, 'orderSum': len(orders)})
+                           'msg': "Remove from Cart Failed, Book Not Exists!", 'orders': orders, 'orderSum': len(orders), 'sales': sales, 'saleSum': len(sales)})
         Car.objects.get(item=delete, user=useroutlet).delete()
         ids = Car.objects.filter(user=useroutlet)
         idset = []
@@ -156,24 +161,40 @@ def info(request):
 
         return render(request, 'panel/info.html',
                       {'username': request.user.username, 'books': books,
-                       'TYPE': "Success", 'msg': "Remove from Cart Successfully!", 'orders': orders, 'orderSum': len(orders)})
+                       'TYPE': "Success", 'msg': "Remove from Cart Successfully!", 'orders': orders, 'orderSum': len(orders), 'sales': sales, 'saleSum': len(sales)})
 
     if purchased:
-        return render(request, 'panel/info.html', {'username': request.user.username, 'books': books, 'TYPE': "Success", 'msg': "Purchased Successfully!", 'orders': orders, 'orderSum': len(orders)})
+        return render(request, 'panel/info.html', {'username': request.user.username, 'books': books, 'TYPE': "Success", 'msg': "Purchased Successfully!", 'orders': orders, 'orderSum': len(orders), 'sales': sales, 'saleSum': len(sales)})
     else:
-        return render(request, 'panel/info.html', {'username': request.user.username, 'books': books, 'orders': orders, 'orderSum': len(orders)})
+        return render(request, 'panel/info.html', {'username': request.user.username, 'books': books, 'orders': orders, 'orderSum': len(orders), 'sales': sales, 'saleSum': len(sales)})
 
 
 def order(request, order_id):
-    if request.method == 'GET':
-        order_detail = Order.objects.get(id=order_id)
-        if not order_detail:
-            return render(request, 'panel/order.html',
+    if request.method == 'POST':
+        star = request.POST.get('star')
+        retail = request.POST.get('retail')
+        order_id = request.POST.get('order_id')
+        order = Order.objects.get(id=order_id)
+        if order and star:
+            if retail == "True":
+                order.srate = star
+            else:
+                order.brate = star
+            order.save()
+        confirm = request.POST.get('confirm')
+        if order and confirm:
+            order.isFinish = True
+            order.save()
+    order_detail = Order.objects.get(id=order_id)
+    if not order_detail:
+        return render(request, 'panel/order.html',
                           {'username': request.user.username, 'TYPE': "Failure",
                            'msg': "Unable to obtain order information!"})
-
-        return render(request, 'panel/order.html',
-                      {'username': request.user.username, 'order': order_detail})
+    retail = False
+    if request.user.username != order_detail.buyer:
+        retail = True
+    return render(request, 'panel/order.html',
+                      {'username': request.user.username, 'order': order_detail, 'retail': retail})
 
 
 def purchase(request):
@@ -263,7 +284,7 @@ def market(request):
     else:
         if q is None:
             q = tar
-        books = Book.objects.filter(name__contains=q, isDelete=False).order_by('id')
+        books = Book.objects.filter(name__contains=q, isDelete=False).exclude(name__contains=q, isDelete=False, owner=user).order_by('id')
         paginator = Paginator(books, 2)  # Show 2 contacts per page
 
         page = request.GET.get('page')

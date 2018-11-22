@@ -198,7 +198,7 @@
             </table>
         </form>
         </div>
-    {% else %}
+    {% elif not retail %}
         <!-- Note -->
         <div class="nNote nWarning hideit">
             <p><strong>INFORMATION: </strong>Empty Shopping Cart!</p>
@@ -220,9 +220,42 @@
                         <tbody>
                         {% for order in orders %}
                             <tr>
-                                <td class="{% if not order.isFinish %}taskP{% elif order.brate is 0 %}taskPr{% else %}taskD{% endif %}"><a href="/order/{{ order.id }}" title="">{{ order.book_id.name }}</a></td>
+                                <td class="{% if not order.isFinish %}taskP{% elif order.brate == 0 %}taskD{% else %}taskPr{% endif %}"><a href="/order/{{ order.id }}" title="">{{ order.book_id.name }}</a></td>
                                 <td><a href="#" title="">{{ order.date }}</a></td>
-                                <td><span class="{% if not order.isFinish %}grey{% elif order.brate is 0 %}red{% else %}green{% endif %} f11">{% if not order.isFinish %}Pending{% elif order.brate is 0 %}In Progress{% else %}Finished{% endif %}</span></td>
+                                <td><span class="{% if not order.isFinish %}grey{% elif order.brate == 0 %}red{% else %}green{% endif %} f11">{% if not order.isFinish %}Pending{% elif order.brate == 0 %}In Progress{% else %}Finished{% endif %}</span></td>
+                                <td class="actBtns"><a href="/order/{{ order.id }}" title="Details" class="tipS"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+    {% elif not retail %}
+    <!-- Note -->
+        <div class="nNote nWarning hideit">
+            <p><strong>INFORMATION: </strong>No Orders Available Yet!</p>
+        </div>
+    {% endif %}
+
+
+    {% if sales %}
+        <!-- My tasks table widget -->
+                <div class="widget">
+                    <div class="title"><img src="{% static 'images/icons/dark/timer.png' %}" alt="" class="titleIcon" /><h6>My Sales</h6><div class="num"><a href="#" class="greenNum">+{{ saleSum }}</a></div></div>
+                    <table cellpadding="0" cellspacing="0" width="100%" class="sTable taskWidget">
+                        <thead>
+                            <tr>
+                                <td>Description</td>
+                                <td width="140">Date</td>
+                                <td width="100">Status</td>
+                                <td width="60">Acts</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for order in sales %}
+                            <tr>
+                                <td class="{% if not order.isFinish %}taskP{% elif order.brate == 0 %}taskD{% else %}taskPr{% endif %}"><a href="/order/{{ order.id }}" title="">{{ order.book_id.name }}</a></td>
+                                <td><a href="#" title="">{{ order.date }}</a></td>
+                                <td><span class="{% if not order.isFinish %}grey{% elif order.brate == 0 %}red{% else %}green{% endif %} f11">{% if not order.isFinish %}Pending{% elif order.brate == 0 %}In Progress{% else %}Finished{% endif %}</span></td>
                                 <td class="actBtns"><a href="/order/{{ order.id }}" title="Details" class="tipS"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a></td>
                             </tr>
                         {% endfor %}
@@ -232,9 +265,10 @@
     {% else %}
     <!-- Note -->
         <div class="nNote nWarning hideit">
-            <p><strong>INFORMATION: </strong>No Orders Available Yet!</p>
+            <p><strong>INFORMATION: </strong>No Sales Available Yet!</p>
         </div>
     {% endif %}
+
 
         <!-- Purchase info widget -->
                 <div class="widget">

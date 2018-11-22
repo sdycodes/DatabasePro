@@ -4,19 +4,153 @@
 <head>
 {% include 'panel/header.html' %}
 {% include 'panel/loader.html' %}
-    <script>
+<script>
         function purchase(){
             document.getElementById('pp_exit').click();
             setTimeout(function () {
                 document.getElementById('buy').click();
             }, 500);
+        }
+        var check = {% if retail %}{{ order.srate }}{% else %}{{ order.brate }}{% endif %};//该变量是记录当前选择的评分
+        var fcheck = {% if not retail %}{{ order.srate }}{% else %}{{ order.brate }}{% endif %};//该变量是记录当前选择的评分
 
+        $(document).ready(function(){
+            fout();
+            out();
+        });
+        function fout(){
+            if(fcheck == 1){//打分是1，设置第一颗星星亮，其他星星暗，其他情况以此类推
+                $("#fstar1").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#fstar2").attr("src","{% static 'images/stars/star.png' %}");
+                $("#fstar3").attr("src","{% static 'images/stars/star.png' %}");
+                $("#fstar4").attr("src","{% static 'images/stars/star.png' %}");
+                $("#fstar5").attr("src","{% static 'images/stars/star.png' %}");
+                $("#fmessage").html("Very Bad!");
+            }else if(fcheck == 2){
+                $("#fstar1").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#fstar2").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#fstar3").attr("src","{% static 'images/stars/star.png' %}");
+                $("#fstar4").attr("src","{% static 'images/stars/star.png' %}");
+                $("#fstar5").attr("src","{% static 'images/stars/star.png' %}");
+                $("#fmessage").html("Relatively Bad!");
+            }else if(fcheck == 3){
+                $("#fstar1").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#fstar2").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#fstar3").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#fstar4").attr("src","{% static 'images/stars/star.png' %}");
+                $("#fstar5").attr("src","{% static 'images/stars/star.png' %}");
+                $("#fmessage").html("Fair...");
+            }else if(fcheck == 4){
+                $("#fstar1").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#fstar2").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#fstar3").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#fstar4").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#fstar5").attr("src","{% static 'images/stars/star.png' %}");
+                $("#fmessage").html("Pretty Good!");
+            }else if(fcheck == 5){
+                $("#fstar1").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#fstar2").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#fstar3").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#fstar4").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#fstar5").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#fmessage").html("Excellent!");
+            }else if(fcheck == 0){
+                $("#fstar1").attr("src","{% static 'images/stars/star.png' %}");
+                $("#fstar2").attr("src","{% static 'images/stars/star.png' %}");
+                $("#fstar3").attr("src","{% static 'images/stars/star.png' %}");
+                $("#fstar4").attr("src","{% static 'images/stars/star.png' %}");
+                $("#fstar5").attr("src","{% static 'images/stars/star.png' %}");
+                $("#fmessage").html("Not Graded Yet!");
+            }
+        }
+
+        /*over()是鼠标移过事件的处理方法*/
+        function over(param){
+            if(param == 1){
+                $("#star1").attr("src","{% static 'images/stars/star_red.png' %}");//第一颗星星亮起来，下面以此类推
+                $("#message").html("Very Bad!");//设置提示语，下面以此类推
+            }else if(param == 2){
+                $("#star1").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#star2").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#message").html("Relatively Bad!");
+            }else if(param == 3){
+                $("#star1").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#star2").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#star3").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#message").html("Fair...");
+            }else if(param == 4){
+                $("#star1").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#star2").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#star3").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#star4").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#message").html("Pretty Good!");
+            }else if(param == 5){
+                $("#star1").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#star2").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#star3").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#star4").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#star5").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#message").html("Excellent!");
+            }
+        }
+        /*out 方法是鼠标移除事件的处理方法，当鼠标移出时，恢复到我的打分情况*/
+        function out(){
+            if(check == 1){//打分是1，设置第一颗星星亮，其他星星暗，其他情况以此类推
+                $("#star1").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#star2").attr("src","{% static 'images/stars/star.png' %}");
+                $("#star3").attr("src","{% static 'images/stars/star.png' %}");
+                $("#star4").attr("src","{% static 'images/stars/star.png' %}");
+                $("#star5").attr("src","{% static 'images/stars/star.png' %}");
+                $("#message").html("Very Bad!");
+            }else if(check == 2){
+                $("#star1").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#star2").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#star3").attr("src","{% static 'images/stars/star.png' %}");
+                $("#star4").attr("src","{% static 'images/stars/star.png' %}");
+                $("#star5").attr("src","{% static 'images/stars/star.png' %}");
+                $("#message").html("Relatively Bad!");
+            }else if(check == 3){
+                $("#star1").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#star2").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#star3").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#star4").attr("src","{% static 'images/stars/star.png' %}");
+                $("#star5").attr("src","{% static 'images/stars/star.png' %}");
+                $("#message").html("Fair...");
+            }else if(check == 4){
+                $("#star1").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#star2").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#star3").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#star4").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#star5").attr("src","{% static 'images/stars/star.png' %}");
+                $("#message").html("Pretty Good!");
+            }else if(check == 5){
+                $("#star1").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#star2").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#star3").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#star4").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#star5").attr("src","{% static 'images/stars/star_red.png' %}");
+                $("#message").html("Excellent!");
+            }else if(check == 0){
+                $("#star1").attr("src","{% static 'images/stars/star.png' %}");
+                $("#star2").attr("src","{% static 'images/stars/star.png' %}");
+                $("#star3").attr("src","{% static 'images/stars/star.png' %}");
+                $("#star4").attr("src","{% static 'images/stars/star.png' %}");
+                $("#star5").attr("src","{% static 'images/stars/star.png' %}");
+                $("#message").html("Not Graded Yet!");
+            }
+        }
+        /*click()点击事件处理，记录打分*/
+        function click(param){
+            check = param;//记录当前打分
+            out();//设置星星数
+
+            $.post("/order/{{ order.id }}/", {'star': check, 'order_id': {{ order.id }}, 'retail': "{{ retail }}", 'csrfmiddlewaretoken': "{{ csrf_token }}"});
         }
     </script>
 <body>
 <!-- Left side content -->
 <div id="leftSide">
-    <div class="logo"><a href="/panel/" style="font-size:medium; color:#FFF"><img style="width:25%" src="{% static 'images/logo.png' %}"" alt="" /> Find Books!</a></div> <!--  -->
+    <div class="logo"><a href="/panel/" style="font-size:medium; color:#FFF"><img style="width:25%" src="{% static 'images/logo.png' %}" alt="" /> Find Books!</a></div> <!--  -->
 
 
     <!-- General balance widget -->
@@ -104,23 +238,89 @@
             <div class="widget">
             <div class="title"><img src="{% static '/images/icons/dark/loading.png' %}" alt="" class="titleIcon"><h6>Order Progress</h6></div>
             <div class="formRow">
-                <div class="formRight">
-                    <label>
-                       <span style="color: {% if order.isFinish %}green{% else %}red{% endif %}">
-                       <img src="{% static '/images/icons/dark/money.png' %}" alt="" class="titleIcon">
-                       {% if not order.isFinish %}    Waiting for Confirmation...{% elif order.srate is 0 %}    Waiting for seller to rate...{% elif order.brate is 0 %}    Waiting for buyer to rate...{% else %}    Order Finished!{% endif %}</span></label>
-                <br>
+                <div>
+
+                           <h2>{% if not order.isFinish %}    Waiting for Confirmation...{% elif order.srate == 0 %}    Waiting for seller to rate...{% elif order.brate == 0 %}    Waiting for buyer to rate...{% else %}    Order Finished!{% endif %}</h2>
+
                 <div class="clear"></div>
                     <div id="progress" class="ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100"
                  aria-valuenow="10">
 
-                        <div class="ui-progressbar-value ui-widget-header ui-corner-left" style="width: 80%;"></div>
+                        <div class="ui-progressbar-value ui-widget-header ui-corner-left" style="width: {% if not order.isFinish %}0{% elif order.srate == 0 %}50{% elif order.brate == 0 %}80{% else %}100{% endif %}%;"></div>
                     </div>
+                        <div class="wizButtons">
+                                <div class="status" id="status1"></div>
+                                <span class="wNavButtons" style="margin-bottom: 0">
+                                    {% if not order.isFinish %}
+                                    <form method="POST" action="">
+                                        {% csrf_token %}
+                                    <input type="hidden" name="confirm" value="True" />
 
+                                        <input type="hidden" name="order_id" value="{{ order.id }}" />
+                                    <input class="greenB ml10" value="CONFIRM" type="submit" />
+                                    </form>
+                                    {% endif %}
+                                </span>
+                            </div>
                    </div>
                 <div class="clear"></div>
             </div>
         </div>
+
+        <div class="widgets">
+            <div class="oneTwo">
+
+                <!-- Headings -->
+                <div class="widget">
+                    <div class="title"><img src="{% static 'images/icons/dark/clipboard.png' %}" alt="" class="titleIcon"><h6>Grades</h6></div>
+                    <div class="body">
+                        <h1 class="pt10">Grade As a <span class="{% if retail %}green{% else %}blue{% endif %}Back">{% if retail %}Retailer{% else %}Customer{% endif %}</span></h1>
+                        {% if order.isFinish %}
+                        <div style="padding-left:6%;padding-top:5%;padding-bottom:3%">
+                            <a href="javascript:click(1)"><img src="{% static 'images/stars/star.png' %}" id="star1" onMouseOver="over(1)" onMouseOut="out(1)" style="width:20px;"/></a>
+                            <a href="javascript:click(2)"><img src="{% static 'images/stars/star.png' %}" id="star2" onMouseOver="over(2)" onMouseOut="out(2)" style="width:20px;" /></a>
+                            <a href="javascript:click(3)"><img src="{% static 'images/stars/star.png' %}" id="star3" onMouseOver="over(3)" onMouseOut="out(3)" style="width:20px;" /></a>
+                            <a href="javascript:click(4)"><img src="{% static 'images/stars/star.png' %}" id="star4" onMouseOver="over(4)" onMouseOut="out(4)" style="width:20px;"/></a>
+                            <a href="javascript:click(5)"><img src="{% static 'images/stars/star.png' %}" id="star5" onMouseOver="over(5)" onMouseOut="out(5)" style="width:20px;"/></a>
+                        </div>
+                            <h4 id="message" style="padding-left:6%;padding-top:1%;">Not Graded Yet!</h4>
+
+                            {% else %}
+                                <h4 style="padding-left:6%;padding-top:4%;">Waiting for Confirmation...</h4>
+                            {% endif %}
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="oneTwo">
+
+                <!-- Headings -->
+                <div class="widget">
+                    <div class="title"><img src="{% static 'images/icons/dark/clipboard.png' %}" alt="" class="titleIcon"><h6>Remarks</h6></div>
+                    <div class="body">
+                        <h1 class="pt10">Remark by <span class="{% if not retail %}green{% else %}blue{% endif %}Back">{% if not retail %}Seller {{ order.book_id.owner.username }}{% else %}Customer {{ order.buyer }}{% endif %}</span></h1>
+                        {% if order.isFinish %}
+                        <div style="padding-left:6%;padding-top:5%;padding-bottom:3%">
+                            <a href="javascript:alert('Unable to grade for seller!');"><img src="{% static 'images/stars/star.png' %}" id="fstar1" style="width:20px;"/></a>
+                            <a href="javascript:alert('Unable to grade for seller!');"><img src="{% static 'images/stars/star.png' %}" id="fstar2" style="width:20px;" /></a>
+                            <a href="javascript:alert('Unable to grade for seller!');"><img src="{% static 'images/stars/star.png' %}" id="fstar3" style="width:20px;" /></a>
+                            <a href="javascript:alert('Unable to grade for seller!');"><img src="{% static 'images/stars/star.png' %}" id="fstar4" style="width:20px;"/></a>
+                            <a href="javascript:alert('Unable to grade for seller!');"><img src="{% static 'images/stars/star.png' %}" id="fstar5" style="width:20px;"/></a>
+                        </div>
+                            <h4 id="fmessage" style="padding-left:6%;padding-top:1%;">Not Graded Yet!</h4>
+
+                            {% else %}
+                                <h4 style="padding-left:6%;padding-top:4%;">Waiting for Confirmation...</h4>
+                            {% endif %}
+
+                    </div>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+
+
 
         <div class="widget">
         <form id="usualValidate" method="POST" action="">
