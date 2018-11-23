@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+{% include 'panel/header.html' %}
+{% include 'panel/loader.html' %}
+    <style type="text/css">.CRZ{table-layout:fixed;}.CRZ td,.CRZ th{overflow:hidden}.CRC{height:0px;position:relative;}.CRG{margin-left:-5px;position:absolute;z-index:5;}.CRG .CRZ{position:absolute;background-color:red;filter:alpha(opacity=1);opacity:0;width:10px;height:100%;top:0px}.CRL{position:absolute;width:1px}.CRD{ border-left:1px dotted black}</style>
+<body>
+<!-- Left side content -->
+<div id="leftSide">
+    <div class="logo"><a href="/panel/" style="font-size:medium; color:#FFF"><img style="width:25%" src="{% static 'images/logo.png' %}" alt="" /> Add Books!</a></div> <!--  -->
+
+
+    <!-- General balance widget -->
+    {% include 'panel/balance_bar.html' %}
+
+    <!-- Left navigation -->
+    <ul id="menu" class="nav">
+        <li class="dash"><a href="/panel/" title="" class="active"><span>Dashboard</span></a></li>
+        <li class="charts"><a href="/market/" title=""><span>Market</span></a></li>
+        <li class="forms"><a href="#" title="" class="exp"><span>Forms stuff</span><strong>4</strong></a>
+            <ul class="sub">
+                <li><a href="forms.html" title="">Form elements</a></li>
+                <li><a href="form_validation.html" title="">Validation</a></li>
+                <li><a href="form_editor.html" title="">WYSIWYG and file uploader</a></li>
+                <li class="last"><a href="form_wizards.html" title="">Wizards</a></li>
+            </ul>
+        </li>
+        <li class="ui"><a href="ui_elements.html" title=""><span>Interface elements</span></a></li>
+        <li class="tables"><a href="tables.html" title="" class="exp"><span>Tables</span><strong>3</strong></a>
+            <ul class="sub">
+                <li><a href="table_static.html" title="">Static tables</a></li>
+                <li><a href="table_dynamic.html" title="">Dynamic table</a></li>
+                <li class="last"><a href="table_sortable_resizable.html" title="">Sortable &amp; resizable tables</a></li>
+            </ul>
+        </li>
+        <li class="widgets"><a href="#" title="" class="exp"><span>Widgets and grid</span><strong>2</strong></a>
+            <ul class="sub">
+                <li><a href="widgets.html" title="">Widgets</a></li>
+                <li class="last"><a href="grid.html" title="">Grid</a></li>
+            </ul>
+        </li>
+        <li class="errors"><a href="#" title="" class="exp"><span>Error pages</span><strong>6</strong></a>
+            <ul class="sub">
+                <li><a href="403.html" title="">403 page</a></li>
+                <li><a href="404.html" title="">404 page</a></li>
+                <li><a href="405.html" title="">405 page</a></li>
+                <li><a href="500.html" title="">500 page</a></li>
+                <li><a href="503.html" title="">503 page</a></li>
+                <li class="last"><a href="offline.html" title="">Website is offline</a></li>
+            </ul>
+        </li>
+        <li class="files"><a href="file_manager.html" title=""><span>File manager</span></a></li>
+        <li class="typo"><a href="#" title="" class="exp"><span>Other pages</span><strong>3</strong></a>
+            <ul class="sub">
+                <li><a href="typography.html" title="">Typography</a></li>
+                <li><a href="calendar.html" title="">Calendar</a></li>
+                <li class="last"><a href="gallery.html" title="">Gallery</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+
+<!-- Right side -->
+<div id="rightSide">
+
+    {% include 'panel/top_bar.html' %}
+
+
+
+    <!-- Main content wrapper -->
+    <div class="wrapper">
+        <div style="padding-top:20px"></div>
+        <div class="widget">
+        <div class="title"><img src = {% static 'images/icons/dark/imagesList.png' %} alt="" class="titleIcon" /><h6>Edit Account Settings</h6></div>
+        <form action="" id="validate" class="form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <fieldset>
+                <div class="formRow">
+                    <label for="login">Username:</label>
+                    <div class="loginInput"><input type="text" name="" value="{{ username }}" class="validate[required]" id="login" disabled="disabled" /></div>
+                    <div class="clear"></div>
+                    <input type="hidden" name="name" value="{{ username }}" />
+                </div>
+
+                <div class="formRow">
+                    <label for="pass">Old Password:</label>
+                    <div class="loginInput"><input type="password" name="oldpassword" class="validate[required]" id="password" /></div>
+                    <div class="clear"></div>
+                </div>
+
+                <div class="formRow">
+                    <label for="pass">New Password:</label>
+                    <div class="loginInput"><input type="password" name="password1" class="validate[required]" id="password1" /></div>
+                    <div class="clear"></div>
+                </div>
+
+                <div class="formRow">
+                    <label for="pass">Repeat New Password:</label>
+                    <div class="loginInput"><input type="password" name="password2" class="validate[required,equals[password1]]" id="password2" /></div>
+                    <div class="clear"></div>
+                </div>
+
+
+                <div class="loginControl">
+                    <input type="submit" value="Edit" class="dredB logMeIn" />
+                    <div class="clear"></div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+
+
+    </div>
+
+    <!-- Footer line -->
+    {% include 'panel/footer.html' %}
+
+</div>
+
+<div class="clear"></div>
+
+</body>
+</html>

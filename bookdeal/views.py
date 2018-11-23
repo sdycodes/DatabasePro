@@ -18,7 +18,7 @@ def getBalance(request):
         try:
             useroutlet = Retailer.objects.get(username=name)
         except Retailer.DoesNotExist:
-            return
+            return 0, 0
     sale_books = Book.objects.filter(owner=useroutlet)
     sales = Order.objects.filter(book_id__in=sale_books)
     balance = 0
@@ -26,6 +26,31 @@ def getBalance(request):
         if sale.isFinish:
             balance += sale.book_id.price
     return balance, len(sales)
+
+
+def settings(request):
+    balance, saleSum = getBalance(request)
+    if request.method == 'GET':
+        return render(request, 'panel/settings.html', {'username': request.user.username, 'user': request.user, 'balance': balance, 'saleSum': saleSum})
+    if request.method == 'POST':
+        # get the information
+        name = request.POST.get('name')
+        res = User.objects.filter(username=name)
+        if res:
+            opasswd = request.POST.get('oldpassword')
+            user = auth.authenticate(username=name, password=opasswd)
+            if user is not None and user.is_active:
+                current = res[0]
+                passwd = request.POST.get('password1')
+                current.set_password(passwd)
+                return render(request, 'panel/index.html',
+                              {'TYPE': "Success", 'msg': 'Successfully Modified Password for User ' + name + '!',
+                               "username": request.user.username, 'balance': balance, 'saleSum': saleSum})
+        else:
+            return render(request, 'panel/index.html',
+                          {'TYPE': "Failure", 'msg': 'User ' + name + ' Password Mismatch!',
+                           "username": request.user.username, 'balance': balance, 'saleSum': saleSum})
+
 
 
 def signup(request):
@@ -75,7 +100,6 @@ def login(request):
         name = request.POST.get('name')
         passwd = request.POST.get('password')
         rem = request.POST.get('remember')
-        print(rem)
         if rem is not "true":
             request.session.set_expiry(0)
         user = auth.authenticate(username=name, password=passwd)
