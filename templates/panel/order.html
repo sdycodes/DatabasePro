@@ -241,6 +241,41 @@
             <p><strong>INFORMATION: </strong>{{ msg }}</p>
         </div>
         {% endif %}
+
+
+    {% if order %}
+
+        <div class="widget">
+        <form method="POST" action="">
+            <div class="title"><h6>Order Content</h6></div>
+            <table cellpadding="0" cellspacing="0" width="100%" class="sTable withCheck mTable" id="checkAll">
+                <thead>
+                    <tr>
+                        <td>Cover</td>
+                        <td class="sortCol"><div>Name<span></span></div></td>
+                        <td class="sortCol"><div>Info<span></span></div></td>
+                        <td>Price</td>
+                    </tr>
+                </thead>
+                <tfoot>
+
+                </tfoot>
+                <tbody>
+
+                   <tr>
+                     <td align="center"><a href="{{ order.book_id.cover.url }}" title="" rel="lightbox"><img src="{{ order.book_id.cover.url }}" alt="" style="width:60px" /></a></td>
+                        <td style="width:50px;text-align:center"><a href="#" title="">{{ order.book_id.name }}</a></td>
+                        <td align="center">{{ order.book_id.info }}</td>
+                        <td class="fileInfo"><span><strong>¥ </strong> {{ order.book_id.price }}</span></td>
+
+                   </tr>
+                </tbody>
+            </table>
+        </form>
+        </div>
+    {% endif %}
+
+
         {% if order %}
 
             <div class="widget">
