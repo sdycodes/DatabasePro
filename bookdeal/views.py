@@ -9,6 +9,25 @@ from bookdeal.models import *
 # Create your views here.
 
 
+def getBalance(request):
+    name = request.user.username
+    orders = Order.objects.filter(buyer=name)
+    try:
+        useroutlet = Normal.objects.get(username=name)
+    except Normal.DoesNotExist:
+        try:
+            useroutlet = Retailer.objects.get(username=name)
+        except Retailer.DoesNotExist:
+            return
+    sale_books = Book.objects.filter(owner=useroutlet)
+    sales = Order.objects.filter(book_id__in=sale_books)
+    balance = 0
+    for sale in sales:
+        if sale.isFinish:
+            balance += sale.book_id.price
+    return balance, len(sales)
+
+
 def signup(request):
     if request.method == 'GET':
         return render(request, 'panel/adduser.html')
@@ -56,6 +75,7 @@ def login(request):
         name = request.POST.get('name')
         passwd = request.POST.get('password')
         rem = request.POST.get('remember')
+        print(rem)
         if rem is not "true":
             request.session.set_expiry(0)
         user = auth.authenticate(username=name, password=passwd)
@@ -68,18 +88,20 @@ def login(request):
 
 def addbook(request):
     if request.method == 'GET':
-        return render(request, 'panel/addbook.html')
+        balance, saleSum = getBalance(request)
+        return render(request, 'panel/addbook.html', {'balance': balance, 'saleSum': saleSum})
     if request.method == 'POST':
         book_name = request.POST.get('name')
         info = request.POST.get('info')
         price = float(request.POST.get('price'))
         cover = request.FILES.get('cover')
+        balance, saleSum = getBalance(request)
         if book_name == "" or len(info) < 10 or price > 10000 or price < 0:
-            return render(request, 'panel/index.html', {'TYPE':"Failure", 'msg':"Way too expensive and too little info given!", "username": request.user.username})
+            return render(request, 'panel/index.html', {'TYPE':"Failure", 'msg':"Way too expensive and too little info given!", "username": request.user.username, 'balance': balance, 'saleSum': saleSum})
         if cover is None or cover.name.split('.')[1].lower() not in ['jpeg', 'jpg', 'png'] or cover.size > 10000000:
-            return render(request, 'panel/index.html', {'TYPE': "Warning", 'msg': "illegal cover", "username":request.user.username})
+            return render(request, 'panel/index.html', {'TYPE': "Warning", 'msg': "illegal cover", "username":request.user.username, 'balance': balance, 'saleSum': saleSum})
         Book.objects.create(name=book_name, info=info, price=price, cover=cover, owner=request.user)
-        return render(request, 'panel/index.html', {'TYPE': "Success", 'msg': 'Successfully Add Book ' + book_name + '!', "username":request.user.username})
+        return render(request, 'panel/index.html', {'TYPE': "Success", 'msg': 'Successfully Add Book ' + book_name + '!', "username":request.user.username, 'balance': balance, 'saleSum': saleSum})
 
 
 def info(request):
@@ -101,6 +123,7 @@ def info(request):
                 purchased = True
 
     name = request.user.username
+    balance, saleSum = getBalance(request)
     orders = Order.objects.filter(buyer=name)
     try:
         useroutlet = Normal.objects.get(username=name)
@@ -109,7 +132,7 @@ def info(request):
             useroutlet = Retailer.objects.get(username=name)
             sale_books = Book.objects.filter(owner=useroutlet)
             sales = Order.objects.filter(book_id__in=sale_books)
-            return render(request, 'panel/info.html', {'username': request.user.username, 'retail': True, 'orders': orders, 'orderSum': len(orders), 'sales': sales, 'saleSum': len(sales)})
+            return render(request, 'panel/info.html', {'username': request.user.username, 'retail': True, 'orders': orders, 'orderSum': len(orders), 'sales': sales, 'saleSum': saleSum, 'balance': balance})
         except Retailer.DoesNotExist:
             return render(request, 'panel/index.html',
                           {'username': request.user.username, 'TYPE': "Warning",
@@ -139,7 +162,7 @@ def info(request):
         if not check:
             return render(request, 'panel/info.html',
                           {'username': request.user.username, 'books': books, 'query': q, 'TYPE': "Failure",
-                           'msg': "Remove from Cart Failed, Book Not Exists!", 'orders': orders, 'orderSum': len(orders), 'sales': sales, 'saleSum': len(sales), 'bookSum': len(sale_books)})
+                           'msg': "Remove from Cart Failed, Book Not Exists!", 'orders': orders, 'orderSum': len(orders), 'sales': sales, 'saleSum': len(sales), 'bookSum': len(sale_books), 'balance': balance})
         Car.objects.get(item=delete, user=useroutlet).delete()
         ids = Car.objects.filter(user=useroutlet)
         idset = []
@@ -161,22 +184,21 @@ def info(request):
 
         return render(request, 'panel/info.html',
                       {'username': request.user.username, 'books': books,
-                       'TYPE': "Success", 'msg': "Remove from Cart Successfully!", 'orders': orders, 'orderSum': len(orders), 'sales': sales, 'saleSum': len(sales), 'bookSum': len(sale_books)})
+                       'TYPE': "Success", 'msg': "Remove from Cart Successfully!", 'orders': orders, 'orderSum': len(orders), 'sales': sales, 'saleSum': len(sales), 'bookSum': len(sale_books), 'balance': balance})
 
     if purchased:
-        return render(request, 'panel/info.html', {'username': request.user.username, 'books': books, 'TYPE': "Success", 'msg': "Purchased Successfully!", 'orders': orders, 'orderSum': len(orders), 'sales': sales, 'saleSum': len(sales), 'bookSum': len(sale_books)})
+        return render(request, 'panel/info.html', {'username': request.user.username, 'books': books, 'TYPE': "Success", 'msg': "Purchased Successfully!", 'orders': orders, 'orderSum': len(orders), 'sales': sales, 'saleSum': len(sales), 'bookSum': len(sale_books), 'balance': balance})
     else:
-        return render(request, 'panel/info.html', {'username': request.user.username, 'books': books, 'orders': orders, 'orderSum': len(orders), 'sales': sales, 'saleSum': len(sales), 'bookSum': len(sale_books)})
+        return render(request, 'panel/info.html', {'username': request.user.username, 'books': books, 'orders': orders, 'orderSum': len(orders), 'sales': sales, 'saleSum': len(sales), 'bookSum': len(sale_books), 'balance': balance})
 
 
-def order(request, order_id):
+def order(request, order_id, retail):
     if request.method == 'POST':
         star = request.POST.get('star')
-        retail = request.POST.get('retail')
         order_id = request.POST.get('order_id')
         order = Order.objects.get(id=order_id)
         if order and star:
-            if retail == "True":
+            if retail == "Retailer":
                 order.srate = star
             else:
                 order.brate = star
@@ -185,16 +207,14 @@ def order(request, order_id):
         if order and confirm:
             order.isFinish = True
             order.save()
+    balance, saleSum = getBalance(request)
     order_detail = Order.objects.get(id=order_id)
     if not order_detail:
         return render(request, 'panel/order.html',
                           {'username': request.user.username, 'TYPE': "Failure",
                            'msg': "Unable to obtain order information!"})
-    retail = False
-    if request.user.username != order_detail.buyer:
-        retail = True
     return render(request, 'panel/order.html',
-                      {'username': request.user.username, 'order': order_detail, 'retail': retail})
+                      {'username': request.user.username, 'order': order_detail, 'retail': retail, 'balance': balance, 'saleSum': saleSum})
 
 
 def purchase(request):
@@ -279,8 +299,9 @@ def market(request):
     tar = request.POST.get('name')
     q = request.GET.get('q')
     user = request.user
+    balance, saleSum = getBalance(request)
     if tar is None and q is None:
-        return render(request, 'panel/market.html', {'username': request.user.username})
+        return render(request, 'panel/market.html', {'username': request.user.username, 'balance': balance, 'saleSum': saleSum})
     else:
         if q is None:
             q = tar
@@ -305,7 +326,7 @@ def market(request):
                     useroutlet = Retailer.objects.get(username=user)
                     return render(request, 'panel/index.html',
                                   {'username': request.user.username, 'TYPE': "Failure",
-                                   'msg': "Retailers Not Authorized to Purchase!"})
+                                   'msg': "Retailers Not Authorized to Purchase!", 'balance': balance, 'saleSum': saleSum})
                 except Retailer.DoesNotExist:
                     return render(request, 'panel/index.html',
                               {'username': request.user.username, 'TYPE': "Warning",
@@ -314,17 +335,18 @@ def market(request):
             if check:
                 return render(request, 'panel/market.html',
                               {'username': request.user.username, 'books': books, 'query': q, 'TYPE': "Failure",
-                               'msg': "Add to Cart Failed, Book Exists!"})
+                               'msg': "Add to Cart Failed, Book Exists!", 'balance': balance, 'saleSum': saleSum})
 
             Car.objects.create(item=add, user=useroutlet)
             return render(request, 'panel/market.html',
-                          {'username': request.user.username, 'books': books, 'query': q, 'TYPE': "Success", 'msg': "Add to Cart Successfully!"})
+                          {'username': request.user.username, 'books': books, 'query': q, 'TYPE': "Success", 'msg': "Add to Cart Successfully!", 'balance': balance, 'saleSum': saleSum})
 
-        return render(request, 'panel/market.html', {'username': request.user.username, 'books': books, 'query': q})
+        return render(request, 'panel/market.html', {'username': request.user.username, 'books': books, 'query': q, 'balance': balance, 'saleSum': saleSum})
 
 
 def list_mysell(request):
     if request.method == 'GET':
+        balance, saleSum = getBalance(request)
         book_id = request.GET.get('del')
         if book_id is not None:
             tar = Book.objects.filter(id=book_id, owner=request.user).order_by('id')
@@ -335,21 +357,21 @@ def list_mysell(request):
                 books = Book.objects.filter(owner=request.user, isDelete=False).order_by('id')
                 return render(request, 'panel/list_mysell.html', {'username': request.user.username, 'books': books,
                                                                   'TYPE': "Success",
-                                                                  'msg': "delete successfully"})
+                                                                  'msg': "delete successfully", 'balance': balance, 'saleSum': saleSum})
             books = Book.objects.filter(owner=request.user, isDelete=False).order_by('id')
             if books:
                 return render(request, 'panel/list_mysell.html', {'username': request.user.username, 'TYPE': "Failure",
-                                                                  'msg': "Error Occurred!", 'books': books})
+                                                                  'msg': "Error Occurred!", 'books': books, 'balance': balance, 'saleSum': saleSum})
             else:
                 return render(request, 'panel/list_mysell.html', {'username': request.user.username, 'TYPE': "Warning",
-                                                                  'msg': "You do not sell any single book!"})
+                                                                  'msg': "You do not sell any single book!", 'balance': balance, 'saleSum': saleSum})
         else:
             books = Book.objects.filter(owner=request.user, isDelete=False).order_by('id')
             if books:
-                return render(request, 'panel/list_mysell.html', {'username': request.user.username, 'books': books})
+                return render(request, 'panel/list_mysell.html', {'username': request.user.username, 'books': books, 'balance': balance, 'saleSum': saleSum})
             else:
                 return render(request, 'panel/list_mysell.html', {'username': request.user.username, 'TYPE': "Warning",
-                                                                  'msg': "You do not sell any single book!"})
+                                                                  'msg': "You do not sell any single book!", 'balance': balance, 'saleSum': saleSum})
 
 
 def addcar(request):
@@ -526,8 +548,9 @@ def front(request):
 
 
 def panel(request):
+    balance, saleSum = getBalance(request)
     if request.user.username:
-        return render(request, 'panel/index.html', {'username': request.user.username, 'TYPE': "Success", 'msg': "Welcome Back!"})
+        return render(request, 'panel/index.html', {'username': request.user.username, 'TYPE': "Success", 'msg': "Welcome Back!", 'balance': balance, 'saleSum': saleSum})
     else:
         return render(request, 'panel/index.html', {'TYPE': "Warning", 'msg': "Please Login First!"})
 

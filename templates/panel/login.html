@@ -3,6 +3,17 @@
 <head>
 {% include 'panel/header.html' %}
 {% include 'panel/loader.html' %}
+    <script>
+        function me(){
+            var current = document.getElementById('remMe');
+            if(current.value.toString() == "true"){
+                current.value="false";
+            }
+            else {
+                current.value="true";
+            }
+        }
+    </script>
 </head>
 
 <body class="nobg loginPage">
@@ -50,7 +61,7 @@
                 </div>
                 
                 <div class="loginControl">
-                    <div class="rememberMe"><input type="checkbox" id="remMe" name="remember" checked="checked" value="true" /><label for="remMe">Remember me</label></div>
+                    <div class="rememberMe"><input type="checkbox" id="remMe" name="remember" checked="checked" value="true" onclick="me()" /><label for="remMe">Remember me</label></div>
                     <input type="submit" value="Log me in" class="dredB logMeIn" />
                     <div class="clear"></div>
                 </div>

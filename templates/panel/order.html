@@ -11,8 +11,8 @@
                 document.getElementById('buy').click();
             }, 500);
         }
-        var check = {% if retail %}{{ order.srate }}{% else %}{{ order.brate }}{% endif %};//该变量是记录当前选择的评分
-        var fcheck = {% if not retail %}{{ order.srate }}{% else %}{{ order.brate }}{% endif %};//该变量是记录当前选择的评分
+        var check = {% if retail == "Retailer" %}{{ order.srate }}{% else %}{{ order.brate }}{% endif %};//该变量是记录当前选择的评分
+        var fcheck = {% if retail == "Customer" %}{{ order.srate }}{% else %}{{ order.brate }}{% endif %};//该变量是记录当前选择的评分
 
         $(document).ready(function(){
             fout();
@@ -141,10 +141,18 @@
         }
         /*click()点击事件处理，记录打分*/
         function click(param){
-            check = param;//记录当前打分
+            if(check > 0)
+                alert("Already Graded Order {{ order.id }}!");
+            else{
+                check = param;//记录当前打分
             out();//设置星星数
 
-            $.post("/order/{{ order.id }}/", {'star': check, 'order_id': {{ order.id }}, 'retail': "{{ retail }}", 'csrfmiddlewaretoken': "{{ csrf_token }}"});
+            $.post("/order/{{ order.id }}/{{ retail }}/", {'star': check, 'order_id': {{ order.id }}, 'csrfmiddlewaretoken': "{{ csrf_token }}"});
+            setTimeout(function () {
+                document.location = "/order/{{ order.id }}/{{ retail }}/";
+            }, 1000);
+
+            }
         }
     </script>
 <body>
@@ -217,7 +225,7 @@
         <div class="wrapper">
             <div class="pageTitle">
                 <h1><strong>#{{ order.id }}</strong> Order Details</h1>
-                <span>{{ username }} | {% if retail %}Retailer{% else %}Customer{% endif %}</span>
+                <span>{{ username }} | {{ retail }}</span>
             </div>
         </div>
         </div>
@@ -274,7 +282,7 @@
                 <div class="widget">
                     <div class="title"><img src="{% static 'images/icons/dark/clipboard.png' %}" alt="" class="titleIcon"><h6>Grades</h6></div>
                     <div class="body">
-                        <h1 class="pt10">Grade As a <span class="{% if retail %}green{% else %}blue{% endif %}Back">{% if retail %}Retailer{% else %}Customer{% endif %}</span></h1>
+                        <h1 class="pt10">Grade As a <span class="{% if retail == "Retailer" %}green{% else %}blue{% endif %}Back">{{ retail }}</span></h1>
                         {% if order.isFinish %}
                         <div style="padding-left:6%;padding-top:5%;padding-bottom:3%">
                             <a href="javascript:click(1)"><img src="{% static 'images/stars/star.png' %}" id="star1" onMouseOver="over(1)" onMouseOut="out(1)" style="width:20px;"/></a>
@@ -299,7 +307,7 @@
                 <div class="widget">
                     <div class="title"><img src="{% static 'images/icons/dark/clipboard.png' %}" alt="" class="titleIcon"><h6>Remarks</h6></div>
                     <div class="body">
-                        <h1 class="pt10">Remark by <span class="{% if not retail %}green{% else %}blue{% endif %}Back">{% if not retail %}Seller {{ order.book_id.owner.username }}{% else %}Customer {{ order.buyer }}{% endif %}</span></h1>
+                        <h1 class="pt10">Remark by <span class="{% if retail == "Customer" %}green{% else %}blue{% endif %}Back">{% if retail == "Customer" %}Seller {{ order.book_id.owner.username }}{% else %}Customer {{ order.buyer }}{% endif %}</span></h1>
                         {% if order.isFinish %}
                         <div style="padding-left:6%;padding-top:5%;padding-bottom:3%">
                             <a href="javascript:alert('Unable to grade for seller!');"><img src="{% static 'images/stars/star.png' %}" id="fstar1" style="width:20px;"/></a>
