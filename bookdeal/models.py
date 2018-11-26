@@ -19,9 +19,7 @@ class Retailer(User):
     sale = models.IntegerField(default=0)
 
 
-class Admin(models.Model):
-    name = models.CharField(max_length=20)
-    passwd = models.CharField(max_length=20)
+class Admin(User):
     info = models.CharField(max_length=50, blank=True)
 
 
@@ -62,6 +60,7 @@ class Report(models.Model):
                               on_delete=models.CASCADE,
                               related_name='trans')
     info = models.CharField(max_length=1000)
+    isFinish = models.BooleanField(default=False)
 
 
 class Correct(models.Model):
@@ -70,6 +69,7 @@ class Correct(models.Model):
                                   on_delete=models.CASCADE,
                                   related_name='corrector')
     info = models.CharField(max_length=1000)
+    isFinish = models.BooleanField(default=False)
 
 
 class Car(models.Model):

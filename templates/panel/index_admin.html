@@ -4,11 +4,11 @@
 <head>
 {% include 'panel/header.html' %}
 {% include 'panel/loader.html' %}
-    <style type="text/css">.CRZ{table-layout:fixed;}.CRZ td,.CRZ th{overflow:hidden}.CRC{height:0px;position:relative;}.CRG{margin-left:-5px;position:absolute;z-index:5;}.CRG .CRZ{position:absolute;background-color:red;filter:alpha(opacity=1);opacity:0;width:10px;height:100%;top:0px}.CRL{position:absolute;width:1px}.CRD{ border-left:1px dotted black}</style>
+
 <body>
 <!-- Left side content -->
 <div id="leftSide">
-    <div class="logo"><a href="/panel/" style="font-size:medium; color:#FFF"><img style="width:25%" src="{% static 'images/logo.png' %}" alt="" /> Find Books!</a></div> <!--  -->
+    <div class="logo"><a href="/panel/" style="font-size:medium; color:#FFF"><img style="width:25%" src="{% static 'images/logo.png' %}" alt="" /> Hello Admin!</a></div> <!--  -->
 
 
     <!-- General balance widget -->
@@ -67,56 +67,84 @@
 
     {% include 'panel/top_bar.html' %}
 
+    <br>
 
-
-    <!-- Title area -->
-    {% include 'panel/title_bar.html' %}
-
-
-
+    </br>
     <!-- Main content wrapper -->
     <div class="wrapper">
 
+        <!-- Note -->
+        {% if msg %}
+        <div class="nNote n{{ TYPE }} hideit">
+            <p><strong>INFORMATION: </strong>{{ msg }}</p>
+        </div>
+        {% endif %}
 
 
         <!-- Widgets -->
-        <form action="" id="validate" class="form" method="POST" enctype="multipart/form-data">
-            <fieldset>
-                {% csrf_token %}
-                <div class="widget">
-                    <div class="title"><img src="{% static 'images/icons/dark/transfer.png' %}" alt="" class="titleIcon" /><h6>Sign Up</h6></div>
-                    <div class="formRow">
-                        <label>User Name:<span class="req">*</span></label>
-                        <div class="formRight"><input type="text" class="validate[required]" name="name" id="req"/></div><div class="clear"></div>
-                    </div>
-                    <div class="formRow">
-                        <label>Password:<span class="req">*</span></label>
-                        <div class="formRight"><input type="password" class="validate[required]" name="password1" id="password1" /></div><div class="clear"></div>
-                    </div>
-                    <div class="formRow">
-                        <label>Repeat password:<span class="req">*</span></label>
-                        <div class="formRight"><input type="password" class="validate[required,equals[password1]]" name="password2" id="password2" /></div><div class="clear"></div>
-                    </div>
-                    <div class="formRow">
-                        <label>Identity:<span class="req">*</span></label>
-                        <div class="formRight">
-                            <div class="floatL">
-                                <select name="typ" id="selectReq" class="validate[required]">
-                                    <option value="n">Customer</option>
-                                    <option value="a">Retailer</option>
-                                    <option value="g">Admin</option>
-                                </select>
-                            </div>
+        <div class="widgets">
+            <div class="clear"></div>
+        </div>
 
-                        </div><div class="clear"></div>
-                    </div>
-                    <div class="formSubmit"><input type="submit" value="submit" class="redB" /></div>
-                    <div class="clear"></div>
-                </div>
-                </fieldset>
+    	<!-- Dynamic table of report-->
+        <div class="widget">
+            <div class="title"><img src="{% static 'images/icons/dark/full2.png' %}" alt="" class="titleIcon" /><h6>Reports</h6></div>
+            <table cellpadding="0" cellspacing="0" border="0" class="display dTable">
+            <thead>
+            <tr>
+                <th>report number</th>
+                <th>Reporter</th>
+                <th>transaction number</th>
+                <th>information</th>
+                <th>Done</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for report in reports %}
+                {% if report.isFinish %}
+                    <tr class="gradeA">
+                {% else %}
+                    <tr class="gradeX">
+                {% endif %}
+                    <td>report.id</td>
+                    <td>report.reporter.username</td>
+                    <td>report.trans.id</td>
+                    <td>report.info[0:20]</td>
+                    <td class="actBtns"><a href="" title="Finish" class="tipS" type="submit"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+        </div>
 
-                </form>
-
+        <!-- Dynamic table of corrections-->
+        <div class="widget">
+            <div class="title"><img src="{% static 'images/icons/dark/full2.png' %}" alt="" class="titleIcon" /><h6>Corrections</h6></div>
+            <table cellpadding="0" cellspacing="0" border="0" class="display dTable">
+            <thead>
+            <tr>
+                <th>Corrections number</th>
+                <th>Corrector</th>
+                <th>information</th>
+                <th>close</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for correct in corrections %}
+                {% if correct.isFinish %}
+                    <tr class="gradeA">
+                {% else %}
+                    <tr class="gradeX">
+                {% endif %}
+                    <td>correct.id</td>
+                    <td>correct.corrector.username</td>
+                    <td>correct.info[0:20]</td>
+                    <td class="actBtns"><a href="" title="Finish" class="tipS" type="submit"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+        </div>
 
     </div>
 
@@ -129,3 +157,4 @@
 
 </body>
 </html>
+
