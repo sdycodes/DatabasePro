@@ -9,6 +9,105 @@ from bookdeal.models import *
 from bookdeal.views import *
 
 
+def getBalance(request):
+    name = request.user.username
+    orders = Order.objects.filter(buyer=name)
+    try:
+        useroutlet = Normal.objects.get(username=name)
+    except Normal.DoesNotExist:
+        try:
+            useroutlet = Retailer.objects.get(username=name)
+        except Retailer.DoesNotExist:
+            return 0, 0
+    sale_books = Book.objects.filter(owner=useroutlet)
+    sales = Order.objects.filter(book_id__in=sale_books)
+    balance = 0
+    for sale in sales:
+        if sale.isFinish:
+            balance += sale.book_id.price
+    return balance, len(sales)
+
+
+def manage(request):
+    # 管理信息
+    if request.user.username and Admin.objects.filter(username=request.user.username):
+        if request.method == 'GET':
+            book_id = request.GET.get('del')
+            add_id = request.GET.get('rec')
+            if book_id is not None or add_id is not None:
+                if book_id is not None:
+                    tar = Book.objects.filter(id=book_id).order_by('id')
+                else:
+                    tar = Book.objects.filter(id=add_id).order_by('id')
+                if tar:
+                    book = tar[0]
+                    if book_id is not None:
+                        book.isDelete = True
+                    else:
+                        book.isDelete = False
+                    book.save()
+                    books = Book.objects.order_by('id')
+                    paginator = Paginator(books, 2)  # Show 2 contacts per page
+
+                    page = request.GET.get('page')
+                    try:
+                        books = paginator.page(page)
+                    except PageNotAnInteger:
+                        # If page is not an integer, deliver first page.
+                        books = paginator.page(1)
+                    except EmptyPage:
+                        # If page is out of range (e.g. 9999), deliver last page of results.
+                        books = paginator.page(paginator.num_pages)
+                    return render(request, 'panel/manage.html', {'username': request.user.username, 'books': books,
+                                                                      'TYPE': "Success",
+                                                                      'msg': "Modified Successfully"})
+                books = Book.objects.order_by('id')
+                paginator = Paginator(books, 2)  # Show 2 contacts per page
+
+                page = request.GET.get('page')
+                try:
+                    books = paginator.page(page)
+                except PageNotAnInteger:
+                    # If page is not an integer, deliver first page.
+                    books = paginator.page(1)
+                except EmptyPage:
+                    # If page is out of range (e.g. 9999), deliver last page of results.
+                    books = paginator.page(paginator.num_pages)
+                if books:
+                    return render(request, 'panel/manage.html',
+                                  {'username': request.user.username, 'TYPE': "Failure",
+                                   'msg': "Error Occurred!", 'books': books})
+                else:
+                    return render(request, 'panel/manage.html',
+                                  {'username': request.user.username, 'TYPE': "Warning",
+                                   'msg': "No Books Available on Sale!"})
+            else:
+                books = Book.objects.order_by('id')
+                paginator = Paginator(books, 2)  # Show 2 contacts per page
+
+                page = request.GET.get('page')
+                try:
+                    books = paginator.page(page)
+                except PageNotAnInteger:
+                    # If page is not an integer, deliver first page.
+                    books = paginator.page(1)
+                except EmptyPage:
+                    # If page is out of range (e.g. 9999), deliver last page of results.
+                    books = paginator.page(paginator.num_pages)
+                if books:
+                    return render(request, 'panel/manage.html',
+                                  {'username': request.user.username, 'books': books})
+                else:
+                    return render(request, 'panel/manage.html',
+                                  {'username': request.user.username, 'TYPE': "Warning",
+                                   'msg': "No Books Available on Sale!"})
+
+    else:
+        return render(request, 'panel/index.html',
+                      {'TYPE': "Failure", 'msg': 'User ' + name + ' is not Administrator!',
+                       "username": request.user.username})
+
+
 def signup(request):
     # 注册用户
     if request.method == 'GET':

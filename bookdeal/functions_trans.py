@@ -44,7 +44,7 @@ def market(request):
                 except Retailer.DoesNotExist:
                     return render(request, 'panel/index.html',
                               {'username': request.user.username, 'TYPE': "Warning",
-                               'msg': "Please Login First!"})
+                               'msg': "Please Login As User First!"})
             check = Car.objects.filter(user=useroutlet, item=add)
             if check:
                 return render(request, 'panel/market.html',

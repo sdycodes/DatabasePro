@@ -30,6 +30,8 @@ def removecar(request):
 
 def info(request):
     purchased = False
+    if request.user.username and Admin.objects.filter(username=request.user.username):
+        return manage(request)
     if request.method == 'POST':
         checks = request.POST.getlist('checkRow')
         if checks:

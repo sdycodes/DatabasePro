@@ -90,7 +90,9 @@ def front(request):
 
 def panel(request):
     balance, saleSum = getBalance(request)
-    if request.user.username:
+    if request.user.username and Admin.objects.filter(username=request.user.username):
+        return render(request, 'panel/index_admin.html', {'username': request.user.username, 'TYPE': "Success", 'msg': "Welcome Back!", 'balance': balance, 'saleSum': saleSum})
+    elif request.user.username:
         return render(request, 'panel/index.html', {'username': request.user.username, 'TYPE': "Success", 'msg': "Welcome Back!", 'balance': balance, 'saleSum': saleSum})
     else:
         return render(request, 'panel/index.html', {'TYPE': "Warning", 'msg': "Please Login First!"})
