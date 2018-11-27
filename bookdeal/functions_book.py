@@ -8,6 +8,55 @@ from django.contrib import auth
 from bookdeal.models import *
 
 
+def market(request):
+    tar = request.POST.get('name')
+    q = request.GET.get('q')
+    user = request.user
+    balance, saleSum = getBalance(request)
+    if tar is None and q is None:
+        return render(request, 'panel/market.html', {'username': request.user.username, 'balance': balance, 'saleSum': saleSum})
+    else:
+        if q is None:
+            q = tar
+        books = Book.objects.filter(name__contains=q, isDelete=False).exclude(name__contains=q, isDelete=False, owner=user).order_by('id')
+        paginator = Paginator(books, 2)  # Show 2 contacts per page
+
+        page = request.GET.get('page')
+        try:
+            books = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            books = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            books = paginator.page(paginator.num_pages)
+        add = request.GET.get('add')
+        if add:
+            try:
+                useroutlet = Normal.objects.get(username=user)
+            except Normal.DoesNotExist:
+                try:
+                    useroutlet = Retailer.objects.get(username=user)
+                    return render(request, 'panel/index.html',
+                                  {'username': request.user.username, 'TYPE': "Failure",
+                                   'msg': "Retailers Not Authorized to Purchase!", 'balance': balance, 'saleSum': saleSum})
+                except Retailer.DoesNotExist:
+                    return render(request, 'panel/index.html',
+                              {'username': request.user.username, 'TYPE': "Warning",
+                               'msg': "Please Login As User First!"})
+            check = Car.objects.filter(user=useroutlet, item=add)
+            if check:
+                return render(request, 'panel/market.html',
+                              {'username': request.user.username, 'books': books, 'query': q, 'TYPE': "Failure",
+                               'msg': "Add to Cart Failed, Book Exists!", 'balance': balance, 'saleSum': saleSum})
+
+            Car.objects.create(item=add, user=useroutlet)
+            return render(request, 'panel/market.html',
+                          {'username': request.user.username, 'books': books, 'query': q, 'TYPE': "Success", 'msg': "Add to Cart Successfully!", 'balance': balance, 'saleSum': saleSum})
+
+        return render(request, 'panel/market.html', {'username': request.user.username, 'books': books, 'query': q, 'balance': balance, 'saleSum': saleSum})
+
+
 def addbook(request):
     if request.method == 'GET':
         balance, saleSum = getBalance(request)

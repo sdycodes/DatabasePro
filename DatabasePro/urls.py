@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^$', views.panel),
     url('front/', views.front),
     url('panel/', views.panel),
+    url('detail/', views.detail_report),
     url('market/', views.market),
     url('login/', views.login),
     url('info/', views.info),

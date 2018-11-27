@@ -153,7 +153,7 @@ def login(request):
             if Admin.objects.filter(username=request.user.username):
                 reports = Report.objects.filter()
                 corrections = Correct.objects.filter()
-                return render(request, 'panel/index_admin.html', {'username': request.user.username, 'res': name,
+                return render(request, 'panel/index_admin.html', {'username': request.user.username,
                                                                   'reports': reports, 'corrections': corrections})
             else:
                 return render(request, 'panel/index.html', {'username': request.user.username, 'res': name})

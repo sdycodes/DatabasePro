@@ -169,8 +169,60 @@ def front(request):
 def panel(request):
     balance, saleSum = getBalance(request)
     if request.user.username and Admin.objects.filter(username=request.user.username):
-        return render(request, 'panel/index_admin.html', {'username': request.user.username, 'TYPE': "Success", 'msg': "Welcome Back!", 'balance': balance, 'saleSum': saleSum})
+        reports = Report.objects.filter()
+        corrections = Correct.objects.filter()
+        return render(request, 'panel/index_admin.html', {'username': request.user.username,
+                                                              'reports': reports, 'corrections': corrections})
     elif request.user.username:
         return render(request, 'panel/index.html', {'username': request.user.username, 'TYPE': "Success", 'msg': "Welcome Back!", 'balance': balance, 'saleSum': saleSum})
     else:
         return render(request, 'panel/index.html', {'TYPE': "Warning", 'msg': "Please Login First!"})
+
+
+def detail_report(request):
+    q = ""
+    p = ""
+    d = ""
+    try:
+        q = request.GET['repo_id']
+    except:
+        pass
+    try:
+        p = request.GET['p']
+    except:
+        pass
+    try:
+        d = request.GET['d']
+    except:
+        pass
+
+    reports = Report.objects.filter()
+    corrections = Correct.objects.filter()
+    if q and p == "":
+        detail = Report.objects.get(id=q)
+        reported = detail.trans.book_id.owner.username
+        return render(request, 'panel/index_admin.html', {'username': request.user.username, 'detail': detail,
+                                                          'reported': reported, 'reports': reports, 'corrections': corrections})
+    if p != "":
+        print(p)
+        res = Normal.objects.filter(username=p)
+        if res:
+            user = res[0]
+        else:
+            user = Retailer.objects.get(username=p)
+        user.credit -= 1
+        user.save()
+        detail = Report.objects.get(id=q)
+        reported = detail.trans.book_id.owner.username
+        msg = "punish" + user.username
+        return render(request, 'panel/index_admin.html', {'username': request.user.username, 'detail': detail,
+                                                          'reported': reported, 'reports': reports, 'msg': msg,
+                                                          'TYPE': "Success", 'corrections': corrections})
+    if d != "":
+        repo = Report.objects.get(id=d)
+        repo.isFinish = True
+        repo.save()
+        msg = "Finish a report!"
+        return render(request, 'panel/index_admin.html', {'username': request.user.username,
+                                                          'reports': reports, 'msg': msg,
+                                                          'TYPE': "Success", 'corrections': corrections})

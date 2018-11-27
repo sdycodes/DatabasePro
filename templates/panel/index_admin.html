@@ -84,6 +84,25 @@
             <div class="clear"></div>
         </div>
 
+        <!-- Detail info of a report-->
+        {% if detail %}
+             <div class="widget">
+                <div class="formRow">
+                    <label for="pass">Detail info: {{ detail.info }}</label>
+                    <div class="clear"></div>
+                </div>
+                 <div class="formRow">
+                    <label for="pass">Reporter: {{ detail.reporter.username }}</label>
+                     <input type="button" onclick="window.location.href='/detail/?repo_id={{ detail.id }}&p={{ detail.reporter.username }}'" value="Punish Reporter" class="dredB logMeIn" />
+                    <div class="clear"></div>
+                </div>
+                <div class="formRow">
+                    <label for="pass">Being Reported: {{ reported }}</label>
+                    <input type="button" onclick="window.location.href='/detail/?repo_id={{ detail.id }}&p={{ reported }}'" value="Punish Reported" class="dredB logMeIn" />
+                    <div class="clear"></div>
+                </div>
+        </div>
+        {% endif %}
     	<!-- Dynamic table of report-->
         <div class="widget">
             <div class="title"><img src="{% static 'images/icons/dark/full2.png' %}" alt="" class="titleIcon" /><h6>Reports</h6></div>
@@ -104,11 +123,11 @@
                 {% else %}
                     <tr class="gradeX">
                 {% endif %}
-                    <td>report.id</td>
-                    <td>report.reporter.username</td>
-                    <td>report.trans.id</td>
-                    <td>report.info[0:20]</td>
-                    <td class="actBtns"><a href="" title="Finish" class="tipS" type="submit"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a></td>
+                    <td><a href="/detail/?repo_id={{ report.id }}&p=">{{ report.id }}</a></td>
+                    <td>{{ report.reporter.username }}</td>
+                    <td>{{ report.trans.id }}</td>
+                    <td>{{ report.info }}</td>
+                    <td class="actBtns"><a href="/detail/?d={{ report.id }}" title="Finish" class="tipS" type="submit"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a></td>
                 </tr>
             {% endfor %}
             </tbody>
