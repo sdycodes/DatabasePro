@@ -25,9 +25,27 @@ def list_myissue(request):
                 useroutlet = Retailer.objects.get(username=name)
                 sale_books = Book.objects.filter(owner=useroutlet)
                 sales = Order.objects.filter(book_id__in=sale_books)
-                return render(request, 'panel/info.html',
-                              {'username': request.user.username, 'retail': True, 'orders': orders,
-                               'orderSum': len(orders), 'sales': sales, 'saleSum': saleSum, 'balance': balance})
+                orders = []
+                sale_books = Book.objects.filter(owner=useroutlet)
+                books = Order.objects.filter(book_id__in=sale_books)
+                idset = []
+                for idi in books:
+                    idset.append(idi.buyer)
+                buyers = User.objects.filter(username__in=idset)
+                issues = Report.objects.filter(reporter__in=buyers)
+
+                books = Order.objects.filter(buyer=useroutlet)
+                idset = []
+                for idi in books:
+                    idset.append(idi.book_id.owner)
+                print(idset)
+                owners = User.objects.filter(username__in=idset)
+                print(owners)
+                issues = issues | Report.objects.filter(reporter__in=owners)
+                reports = Report.objects.filter(reporter=request.user).order_by('id')
+                return render(request, 'panel/list_myissue.html',
+                              {'username': request.user.username, 'retail': True, 'orders': orders, 'issues': issues,
+                               'reports': reports, 'orderSum': len(orders), 'sales': sales, 'saleSum': saleSum, 'balance': balance})
             except Retailer.DoesNotExist:
                 return render(request, 'panel/index.html',
                               {'username': request.user.username, 'TYPE': "Warning",
@@ -210,7 +228,8 @@ def detail_report(request):
             user = res[0]
         else:
             user = Retailer.objects.get(username=p)
-        user.credit -= 1
+        if user.credit > 1:
+            user.credit -= 1
         user.save()
         detail = Report.objects.get(id=q)
         reported = detail.trans.book_id.owner.username
