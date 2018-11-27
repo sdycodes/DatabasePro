@@ -5,6 +5,12 @@
 {% include 'panel/header.html' %}
 {% include 'panel/loader.html' %}
 <script>
+
+        function expand(){
+            document.getElementById('fold').hidden = true;
+            document.getElementById('report').hidden = false;
+        }
+
         function purchase(){
             document.getElementById('pp_exit').click();
             setTimeout(function () {
@@ -153,7 +159,19 @@
             }, 1000);
 
             }
-        }
+         }
+         function Send(){
+            var comment = document.getElementById('comment').innerHTML;
+            if(comment)
+                alert("Must Input Some Reports!");
+            else{
+                $.post("/order/{{ order.id }}/{{ retail }}/", {'comment': comment, 'csrfmiddlewaretoken': "{{ csrf_token }}", 'report':"True"});
+                setTimeout(function () {
+                document.location = "/order/{{ order.id }}/{{ retail }}/";
+            }, 1000);
+            }
+         }
+
     </script>
 <body>
 <!-- Left side content -->
@@ -362,122 +380,52 @@
             </div>
             <div class="clear"></div>
         </div>
+    {% else %}
+        <!-- Note -->
+        <div class="nNote nFailure hideit">
+            <p><strong>INFORMATION: </strong>Error Loading Rate System!</p>
+        </div>
+    {% endif %}
 
 
 
-        <div class="widget">
-        <form id="usualValidate" method="POST" action="">
+
+
+
+    <div class="widget">
+        <form action="" class="form">
             {% csrf_token %}
-            <div class="title"><span class="titleIcon"><input type="checkbox" id="titleCheck" name="titleCheck" /></span><h6>My Shopping Cart</h6></div>
-            <table cellpadding="0" cellspacing="0" width="100%" class="sTable withCheck mTable" id="checkAll">
-                <thead>
-                    <tr>
-                        <td><img src="{% static 'images/icons/tableArrows.png' %}" alt="" /></td>
-                        <td>Cover</td>
-                        <td class="sortCol"><div>Name<span></span></div></td>
-                        <td class="sortCol"><div>Info<span></span></div></td>
-                        <td>Price</td>
-                        <td>Actions</td>
-                    </tr>
-                </thead>
-                <tfoot>
-                    <tr>
-                        <td colspan="6">
-                        <div class="tPagination">
-                            <span class="step-links">
-                            <ul class="pagination">
-                                    {% if books.has_previous %}
-                                        <li class="prev"><a href="?page={{ books.previous_page_number }}" title=""></a></li>
-                                    {% endif %}
-
-
-                                    {% for page in books.paginator.page_range %}
-                                        {% if books.number == page %}
-                                            <li><a href="?page={{ page }}" title="" class="active">{{ page }}</a></li>
-                                        {% else %}
-                                            <li><a href="?page={{ page }}" title="">{{ page }}</a></li>
-                                        {% endif %}
-                                    {% endfor %}
-
-                                    {% if books.has_next %}
-                                        <li class="next"><a href="?page={{ contacts.next_page_number }}" title=""></a></li>
-                                    {% endif %}
-                            </ul>
-                            </span>
+                <fieldset>
+                        <div class="title"><img src="{% static 'images/icons/dark/list.png' %}" alt="" class="titleIcon" /><h6>Issues</h6></div>
+                            <div id="fold" style="margin: 2% 2% 2% 2%;padding-left: 30%">
+                                <a title="" class="wButton redwB" onclick="expand();"><span>Report an Issue</span></a>
                             </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="6">
-                            <div class="itemActions" style="margin:20px;">
-                                <label>Price: <strong>¥ </strong></label>
+                        <div id="report" hidden="hidden">
+                            <div class="formRow">
+                                <label>Comment:</label>
+                                <div class="formRight"><textarea rows="8" cols="" name="comment" id="comment" class="autoGrow"></textarea></div>
+                                <div class="clear"></div>
                             </div>
+
+                            <div class="formRow">
+                                <label for="tags">Tags:</label>
+                                <div class="formRight"><input type="text" id="tags" name="tags" class="tags" value="Problem" /></div>
+                                <div class="clear"></div>
+                            </div>
+
                             <div class="wizButtons">
                                 <div class="status" id="status1"></div>
                                 <span class="wNavButtons">
-                                    <a href="{% static 'images/purchase.jpg' %}" rel="lightbox"><input class="greenB ml10" value="Purchase" type="submit" /></a>
-                                    <input style="display:none;" id="buy" value="Purchase" type="submit" />
+                                    <a class="wButton redwB" onclick="Send();"><span>Submit</span></a>
                                 </span>
                             </div>
-                        </td>
-                    </tr>
-                </tfoot>
-                <tbody>
-                {% for book in books %}
+                        </div>
+                </fieldset>
+            </form>
+    </div>
 
-                   <tr>
-                     <td><input type="checkbox" id="titleCheck2" name="checkRow" value="{{ book.id }}" /></td>
-                        <td align="center"><a href="{{ book.cover.url }}" title="" rel="lightbox"><img src="{{ book.cover.url }}" alt="" style="width:60px" /></a></td>
-                        <td style="width:50px;text-align:center"><a href="#" title="">{{ book.name }}</a></td>
-                        <td align="center">{{ book.info }}</td>
-                        <td class="fileInfo"><span><strong>¥ </strong> {{ book.price }}</span></td>
-                        <td class="actBtns"><a href="?del={{ book.id }}&page={{ books.number }}" title="Remove" class="tipS"><img src="{% static 'images/icons/remove.png' %}" alt="" /></a></td>
 
-                   </tr>
-                   {% endfor %}
-                </tbody>
-            </table>
-        </form>
-        </div>
-    {% else %}
-        <!-- Note -->
-        <div class="nNote nWarning hideit">
-            <p><strong>INFORMATION: </strong>Empty Shopping Cart!</p>
-        </div>
-    {% endif %}
-    {% if orders %}
-        <!-- My tasks table widget -->
-                <div class="widget">
-                    <div class="title"><img src="{% static 'images/icons/dark/timer.png' %}" alt="" class="titleIcon" /><h6>My Orders</h6><div class="num"><a href="#" class="blueNum">+{{ orderSum }}</a></div></div>
-                    <table cellpadding="0" cellspacing="0" width="100%" class="sTable taskWidget">
-                        <thead>
-                            <tr>
-                                <td>Description</td>
-                                <td width="140">Date</td>
-                                <td width="100">Status</td>
-                                <td width="60">Acts</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {% for order in orders %}
-                            <tr>
-                                <td class="{% if order.isFinish %}taskPr{% else %}taskD{% endif %}"><a href="#" title="">{{ order.book_id.name }}</a></td>
-                                <td><a href="#" title="">{{ order.date }}</a></td>
-                                <td><span class="{% if order.isFinish %}red{% else %}green{% endif %} f11">{% if order.isFinish %}Finished{% else %}In Progress{% endif %}</span></td>
-                                <td class="actBtns"><a href="/order?order={{ order.id }}" title="Details" class="tipS"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a></td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-    {% else %}
-    <!-- Note -->
-        <div class="nNote nWarning hideit">
-            <p><strong>INFORMATION: </strong>No Orders Available Yet!</p>
-        </div>
-    {% endif %}
-
-        <!-- Purchase info widget -->
+    <!-- Purchase info widget -->
                 <div class="widget">
                     <div class="title">
                     	<img src="{% static 'images/icons/dark/money.png' %}" alt="" class="titleIcon" />
@@ -522,7 +470,6 @@
                         <div class="totalAmount"><h6 class="floatL blue">Total:</h6><h6 class="floatR blue">$12,157.99</h6><div class="clear"></div></div>
                     </div>
                 </div>
-
 
 
     </div>

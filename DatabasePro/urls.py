@@ -31,6 +31,7 @@ urlpatterns = [
     url('signup/', views.signup),
     url('signin/', views.login),
     url('manage', views.manage),
+    url('report', views.report),
     url('settings/', views.settings),
     url(r'^order/(.+)/(.+)/$', views.order),
     url('addbook/', views.addbook),

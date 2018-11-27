@@ -138,27 +138,49 @@ def purchase(request):
 
 def order(request, order_id, retail):
     if request.method == 'POST':
-        star = request.POST.get('star')
-        order_id = request.POST.get('order_id')
-        order = Order.objects.get(id=order_id)
-        if order and star:
-            if retail == "Retailer":
-                order.srate = star
+        report = request.POST.get('report')
+        comment = request.POST.get('comment')
+        if report:
+            if comment:
+                order = Order.objects.get(id=order_id)
+                Report.objects.create(reporter=request.user, trans=order, isFinish=False, info=comment)
+                balance, saleSum = getBalance(request)
+                order_detail = Order.objects.get(id=order_id)
+                return render(request, 'panel/order.html',
+                              {'username': request.user.username, 'TYPE': "Success",
+                                   'msg': "Successfully Submit Report Information!", 'order': order_detail, 'retail': retail,
+                               'balance': balance, 'saleSum': saleSum})
             else:
-                order.brate = star
-            order.save()
-        confirm = request.POST.get('confirm')
-        if order and confirm:
-            order.isFinish = True
-            order.save()
+                balance, saleSum = getBalance(request)
+                order_detail = Order.objects.get(id=order_id)
+                return render(request, 'panel/order.html',
+                              {'username': request.user.username, 'TYPE': "Failure",
+                               'msg': "Failed due to Empty Information!", 'order': order_detail,
+                               'retail': retail,
+                               'balance': balance, 'saleSum': saleSum})
+        else:
+            star = request.POST.get('star')
+            order_id = request.POST.get('order_id')
+            order = Order.objects.get(id=order_id)
+            if order and star:
+                if retail == "Retailer":
+                    order.srate = star
+                else:
+                    order.brate = star
+                order.save()
+            confirm = request.POST.get('confirm')
+            if order and confirm:
+                order.isFinish = True
+                order.save()
     balance, saleSum = getBalance(request)
     order_detail = Order.objects.get(id=order_id)
     if not order_detail:
         return render(request, 'panel/order.html',
-                          {'username': request.user.username, 'TYPE': "Failure",
-                           'msg': "Unable to obtain order information!"})
+                              {'username': request.user.username, 'TYPE': "Failure",
+                               'msg': "Unable to obtain order information!"})
     return render(request, 'panel/order.html',
-                      {'username': request.user.username, 'order': order_detail, 'retail': retail, 'balance': balance, 'saleSum': saleSum})
+                          {'username': request.user.username, 'order': order_detail, 'retail': retail, 'balance': balance, 'saleSum': saleSum})
+
 
 
 def buy(request):

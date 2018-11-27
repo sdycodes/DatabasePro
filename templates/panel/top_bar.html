@@ -6,13 +6,14 @@
             <div class="userNav">
                 <ul>
                     <li><a href="{% if username %}/info/{% else %}/login/{% endif %}" title=""><img src="{% static 'images/icons/topnav/profile.png' %}" alt="" /><span>Account</span></a></li>
-                    <li><a href="/market/" title=""><img src="{% static 'images/icons/topnav/tasks.png' %}" alt="" /><span>Market</span></a></li>
+
                     {% if username %}
+                    <li><a href="/report/" title=""><img src="{% static 'images/icons/topnav/tasks.png' %}" alt="" /><span>Reports</span></a></li>
                     <li class="dd"><a title=""><img src="{% static 'images/icons/topnav/messages.png' %}" alt="" /><span>Messages</span>{% if saleSum %}<span class="numberTop">{{ saleSum }}</span>{% endif %}</a>
                         <ul class="userDropdown">
                             <li><a href="/info/" title="" class="sAdd">My Cart</a></li>
                             <li><a href="/info/" title="" class="sInbox">My Order</a></li>
-
+                            <li><a href="/report/" title="" class="sOutbox">My Issue</a></li>
                         </ul>
                     </li>
                     <li><a href="/settings/" title=""><img src="{% static 'images/icons/topnav/settings.png' %}" alt="" /><span>Settings</span></a></li>
