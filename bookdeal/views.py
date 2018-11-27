@@ -14,6 +14,61 @@ from bookdeal.tests import *
 # Create your views here.
 
 
+def list_myissue(request):
+    if request.method == 'GET':
+        balance, saleSum = getBalance(request)
+        ids = Book.objects.filter(owner=request.user)
+        books = Order.objects.filter(book_id__in=ids).order_by('id')
+        idset = []
+        for idi in books:
+            idset.append(idi.buyer)
+        buyers = User.objects.filter(username__in=idset)
+        issues = Report.objects.filter(reporter__in=buyers)
+        report_id = request.GET.get('del')
+        if report_id is not None:
+            tar = Report.objects.filter(id=report_id, reporter=request.user).order_by('id')
+            if tar:
+                Report.objects.delete(id=report_id, reporter=request.user)
+                reports = Report.objects.filter(id=report_id, reporter=request.user).order_by('id')
+                return render(request, 'panel/list_myissue.html', {'username': request.user.username, 'reports': reports, 'issues': issues,
+                                                                  'TYPE': "Success",
+                                                                  'msg': "delete successfully", 'balance': balance, 'saleSum': saleSum})
+            reports = Report.objects.filter(reporter=request.user).order_by('id')
+            if reports:
+                return render(request, 'panel/list_myissue.html', {'username': request.user.username, 'TYPE': "Failure",
+                                                                  'msg': "Error Occurred!", 'reports': reports, 'issues': issues, 'balance': balance, 'saleSum': saleSum})
+            else:
+                return render(request, 'panel/list_myissue.html', {'username': request.user.username, 'TYPE': "Warning",
+                                                                  'msg': "No Reports Available Yet!", 'balance': balance, 'saleSum': saleSum})
+        else:
+            reports = Report.objects.filter(reporter=request.user).order_by('id')
+            if reports:
+                return render(request, 'panel/list_myissue.html', {'username': request.user.username, 'reports': reports, 'issues': issues, 'issues': issues, 'balance': balance, 'saleSum': saleSum})
+            else:
+                return render(request, 'panel/list_myissue.html', {'username': request.user.username, 'TYPE': "Warning",
+                                                                  'msg': "No Reports Available Yet!", 'balance': balance, 'issues': issues, 'saleSum': saleSum})
+
+
+def issue(request, report_id):
+    report = Report.objects.filter(id=report_id)
+    if report:
+        report = report[0]
+        print()
+        if report.reporter.username == request.user.username:
+            return render(request, 'panel/report.html',
+                      {'username': request.user.username, 'report': report, 'retail': "Buyer"})
+        elif report.trans.buyer == request.user.username:
+            return render(request, 'panel/report.html',
+                          {'username': request.user.username, 'report': report, 'retail': "Seller"})
+        else:
+            return render(request, 'panel/report.html',
+                          {'username': request.user.username, 'report': report, 'retail': "Third Party"})
+    else:
+        return render(request, 'panel/report.html',
+                      {'username': request.user.username, 'TYPE': "Failure",
+                       'msg': "Unable to obtain report information!"})
+
+
 def report(request):
     if request.method == 'GET':
         return render(request, 'test/report.html')

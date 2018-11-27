@@ -82,44 +82,63 @@
         </div>
         {% endif %}
 
-        <!-- Widgets -->
-        <div class="widgets">
-        </div>
-
-        <!-- Media table -->
-    {% if books %}
+        {% if reports %}
         <div class="widget">
-            <div class="title"><span class="titleIcon"></span><h6>Book Shop</h6></div>
-            <table cellpadding="0" cellspacing="0" width="100%" class="sTable withCheck mTable" id="checkAll">
-                <thead>
-                    <tr>
-                        <td>Cover</td>
-                        <td class="sortCol"><div>Name<span></span></div></td>
-                        <td class="sortCol"><div>Info<span></span></div></td>
-                        <td>Price</td>
-                        <td>Actions</td>
-                    </tr>
-                </thead>
+            <div class="title"><h6>My Reports</h6></div>
+            <table cellpadding="0" cellspacing="0" width="100%" class="sTable taskWidget">
+                        <thead>
+                            <tr>
+                                <td>Description</td>
+                                <td width="140">Date</td>
+                                <td width="100">Status</td>
+                                <td width="60">Acts</td>
+                            </tr>
+                        </thead>
 
-                <tbody>
-                {% for book in books %}
-
-                   <tr>
-                     <td align="center"><a href="{{ book.cover.url }}" title="" rel="lightbox"><img src="{{ book.cover.url }}" alt="" style="width:60px" /></a></td>
-                        <td style="width:50px;text-align:center"><a href="#" title="">{{ book.name }}</a></td>
-                        <td align="center">{{ book.info }}</td>
-                        <td class="fileInfo"><span><strong>¥ </strong> {{ book.price }}</span></td>
-
-                       <td class="actBtns"><a href="?del={{ book.id }}&page={{ books.number }}" title="Delete" class="tipS" type="submit"><img src="{% static 'images/icons/remove.png' %}" alt="" /></a></td>
-
-                   </tr>
-                   {% endfor %}
-                </tbody>
-            </table>
+                        <tbody>
+                        {% for report in reports %}
+                            <tr>
+                                <td class="{% if not report.isFinish %}taskP{% elif report.brate == 0 %}taskD{% else %}taskPr{% endif %}"><a href="/report/{{ report.id }}" title="">《{{ report.trans.book_id.name }}》{{ report.info }}</a></td>
+                                <td><a href="#" title="">{{ report.trans.date }}</a></td>
+                                <td><span class="{% if not report.isFinish %}grey{% else %}green{% endif %} f11">{% if not report.isFinish %}In Progress{% else %}Finished{% endif %}</span></td>
+                                <td class="actBtns"><a href="?del={{ report.id }}" title="Delete" class="tipS" type="submit"><img src="{% static 'images/icons/remove.png' %}" alt="" /></a></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
         </div>
     {% endif %}
 
-    </div>
+    {% if issues %}
+        <div class="widget">
+            <div class="title"><h6>My Issues</h6></div>
+            <table cellpadding="0" cellspacing="0" width="100%" class="sTable taskWidget">
+                        <thead>
+                            <tr>
+                                <td>Description</td>
+                                <td width="140">Date</td>
+                                <td width="100">Status</td>
+                                <td width="60">Acts</td>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for report in issues %}
+                            <tr>
+                                <td class="{% if not report.isFinish %}taskP{% elif report.brate == 0 %}taskD{% else %}taskPr{% endif %}"><a href="/report/{{ report.id }}" title="">《{{ report.trans.book_id.name }}》{{ report.info }}</a></td>
+                                <td><a href="#" title="">{{ report.trans.date }}</a></td>
+                                <td><span class="{% if not report.isFinish %}grey{% else %}green{% endif %} f11">{% if not report.isFinish %}In Progress{% else %}Finished{% endif %}</span></td>
+                                <td class="actBtns"><a href="/report/{{ report.id }}" class="tipS" original-title="Update"><img src="{% static 'images/icons/edit.png' %}" alt=""></a></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+        </div>
+    {% endif %}
+</div>
+
+
+
 
     <!-- Footer line -->
     {% include 'panel/footer.html' %}

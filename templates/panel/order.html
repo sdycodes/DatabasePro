@@ -161,11 +161,14 @@
             }
          }
          function Send(){
-            var comment = document.getElementById('comment').innerHTML;
-            if(comment)
+            var comment = document.getElementById('comment').value;
+            if(comment == '')
                 alert("Must Input Some Reports!");
             else{
                 $.post("/order/{{ order.id }}/{{ retail }}/", {'comment': comment, 'csrfmiddlewaretoken': "{{ csrf_token }}", 'report':"True"});
+                alert("Report Submitted!");
+                document.getElementById('fold').onclick = null;
+                document.getElementById('report').hidden = true;
                 setTimeout(function () {
                 document.location = "/order/{{ order.id }}/{{ retail }}/";
             }, 1000);
@@ -396,8 +399,41 @@
         <form action="" class="form">
             {% csrf_token %}
                 <fieldset>
-                        <div class="title"><img src="{% static 'images/icons/dark/list.png' %}" alt="" class="titleIcon" /><h6>Issues</h6></div>
-                            <div id="fold" style="margin: 2% 2% 2% 2%;padding-left: 30%">
+                        <div class="title"><img src="{% static 'images/icons/dark/list.png' %}" alt="" class="titleIcon" /><h6>Issues</h6><div class="num"><a href="#" class="redNum">+{{ reportSum }}</a></div></div>
+
+                        {% if reports %}
+        <!-- My tasks table widget -->
+                    <table cellpadding="0" cellspacing="0" width="100%" class="sTable taskWidget">
+                        <thead>
+                            <tr>
+                                <td>Description</td>
+                                <td width="140">Date</td>
+                                <td width="100">Status</td>
+                                <td width="60">Acts</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for report in reports %}
+                            <tr>
+                                <td class="{% if not report.isFinish %}taskP{% elif report.brate == 0 %}taskD{% else %}taskPr{% endif %}"><a href="/report/{{ report.id }}" title="">《{{ report.trans.book_id.name }}》{{ report.info }}</a></td>
+                                <td><a href="#" title="">{{ report.trans.date }}</a></td>
+                                <td><span class="{% if not report.isFinish %}grey{% else %}green{% endif %} f11">{% if not report.isFinish %}In Progress{% else %}Finished{% endif %}</span></td>
+                                <td class="actBtns"><a href="/report/{{ report.id }}" title="Details" class="tipS"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a></td>
+                            </tr>
+                        {% endfor %}
+                        <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>  
+                                </tr>
+                        </tbody>
+                    </table>
+
+    {% endif %}
+                        <div class="clear"></div>
+
+                            <div id="fold" style="margin: 2% 2% 2% 2%;padding-left: 35%">
                                 <a title="" class="wButton redwB" onclick="expand();"><span>Report an Issue</span></a>
                             </div>
                         <div id="report" hidden="hidden">
@@ -419,9 +455,11 @@
                                     <a class="wButton redwB" onclick="Send();"><span>Submit</span></a>
                                 </span>
                             </div>
+
                         </div>
                 </fieldset>
             </form>
+
     </div>
 
 

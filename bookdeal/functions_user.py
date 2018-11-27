@@ -28,12 +28,6 @@ def getBalance(request):
     return balance, len(sales)
 
 
-def report(request):
-
-
-    return
-
-
 def manage(request):
     # 管理信息
     if request.user.username and Admin.objects.filter(username=request.user.username):

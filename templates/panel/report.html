@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+{% include 'panel/header.html' %}
+{% include 'panel/loader.html' %}
+<script>
+
+
+    </script>
+<body>
+<!-- Left side content -->
+<div id="leftSide">
+    <div class="logo"><a href="/panel/" style="font-size:medium; color:#FFF"><img style="width:25%" src="{% static 'images/logo.png' %}" alt="" /> Find Books!</a></div> <!--  -->
+
+
+    <!-- General balance widget -->
+    {% include 'panel/balance_bar.html' %}
+
+    <!-- Left navigation -->
+    <ul id="menu" class="nav">
+        <li class="dash"><a href="/panel/" title=""><span>Dashboard</span></a></li>
+        <li class="charts"><a href="/market/" title=""><span>Market</span></a></li>
+        <li class="forms"><a href="#" title="" class="exp"><span>Forms stuff</span><strong>4</strong></a>
+            <ul class="sub">
+                <li><a href="forms.html" title="">Form elements</a></li>
+                <li><a href="form_validation.html" title="">Validation</a></li>
+                <li><a href="form_editor.html" title="">WYSIWYG and file uploader</a></li>
+                <li class="last"><a href="form_wizards.html" title="">Wizards</a></li>
+            </ul>
+        </li>
+        <li class="ui"><a href="ui_elements.html" title=""><span>Interface elements</span></a></li>
+        <li class="tables"><a href="tables.html" title="" class="exp"><span>Tables</span><strong>3</strong></a>
+            <ul class="sub">
+                <li><a href="table_static.html" title="">Static tables</a></li>
+                <li><a href="table_dynamic.html" title="">Dynamic table</a></li>
+                <li class="last"><a href="table_sortable_resizable.html" title="">Sortable &amp; resizable tables</a></li>
+            </ul>
+        </li>
+        <li class="widgets"><a href="#" title="" class="exp"><span>Widgets and grid</span><strong>2</strong></a>
+            <ul class="sub">
+                <li><a href="widgets.html" title="">Widgets</a></li>
+                <li class="last"><a href="grid.html" title="">Grid</a></li>
+            </ul>
+        </li>
+        <li class="errors"><a href="#" title="" class="exp"><span>Error pages</span><strong>6</strong></a>
+            <ul class="sub">
+                <li><a href="403.html" title="">403 page</a></li>
+                <li><a href="404.html" title="">404 page</a></li>
+                <li><a href="405.html" title="">405 page</a></li>
+                <li><a href="500.html" title="">500 page</a></li>
+                <li><a href="503.html" title="">503 page</a></li>
+                <li class="last"><a href="offline.html" title="">Website is offline</a></li>
+            </ul>
+        </li>
+        <li class="files"><a href="file_manager.html" title=""><span>File manager</span></a></li>
+        <li class="typo"><a href="#" title="" class="exp"><span>Other pages</span><strong>3</strong></a>
+            <ul class="sub">
+                <li><a href="typography.html" title="">Typography</a></li>
+                <li><a href="calendar.html" title="">Calendar</a></li>
+                <li class="last"><a href="gallery.html" title="">Gallery</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+
+<!-- Right side -->
+<div id="rightSide">
+
+    {% include 'panel/top_bar.html' %}
+
+
+
+    <!-- Title area -->
+    {% load static %}
+        <div class="titleArea">
+        <div class="wrapper">
+            <div class="pageTitle">
+                <h1><strong>#{{ report.id }}</strong> Report Details</h1>
+                <span>{{ username }} | {{ retail }}</span>
+            </div>
+        </div>
+        </div>
+    <div class="clear"></div>
+    <div class="line"></div>
+
+
+    <!-- Main content wrapper -->
+    <div class="wrapper">
+        <!-- Note -->
+        {% if msg %}
+        <div class="nNote n{{ TYPE }} hideit">
+            <p><strong>INFORMATION: </strong>{{ msg }}</p>
+        </div>
+        {% endif %}
+
+        {% if report %}
+            <div class="widget">
+                        <div class="title"><img src="{% static 'images/icons/dark/list.png' %}" alt="" class="titleIcon" /><h6>Issues</h6><div class="num"><a href="#" class="redNum">+1</a></div></div>
+
+
+        <!-- My tasks table widget -->
+                    <table cellpadding="0" cellspacing="0" width="100%" class="sTable taskWidget">
+                        <thead>
+                            <tr>
+                                <td>Description</td>
+                                <td width="140">Date</td>
+                                <td width="100">Status</td>
+                                <td width="60">Acts</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="{% if not report.isFinish %}taskP{% elif report.brate == 0 %}taskD{% else %}taskPr{% endif %}"><a href="/report/{{ report.id }}" title="">《{{ report.trans.book_id.name }}》{{ report.info }}</a></td>
+                                <td><a href="#" title="">{{ report.trans.date }}</a></td>
+                                <td><span class="{% if not report.isFinish %}grey{% else %}green{% endif %} f11">{% if not report.isFinish %}In Progress{% else %}Finished{% endif %}</span></td>
+                                <td class="actBtns"><a href="/report/{{ report.id }}" title="Details" class="tipS"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+            </div>
+            {% endif %}
+    {% if report %}
+
+            <div class="widget">
+            <div class="title"><img src="{% static '/images/icons/dark/loading.png' %}" alt="" class="titleIcon"><h6>Order Progress</h6></div>
+            <div class="formRow">
+                <div>
+
+                           <h2>{% if not report.isFinish %}    Waiting for Intercession...{% else %}    Report Solved!{% endif %}</h2>
+
+                <div class="clear"></div>
+                    <div id="progress" class="ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100"
+                 aria-valuenow="10">
+
+                        <div class="ui-progressbar-value ui-widget-header ui-corner-left" style="width: {% if not report.isFinish %}0{% else %}100{% endif %}%;"></div>
+                    </div>
+                        <div class="wizButtons">
+                                <div class="status" id="status1"></div>
+                                <span class="wNavButtons" style="margin-bottom: 0">
+                                    {% if not report.isFinish %}
+                                    <form method="POST" action="">
+                                        {% csrf_token %}
+                                    <input type="hidden" name="confirm" value="True" />
+                                        <input type="hidden" name="report_id" value="{{ report.id }}" />
+                                        {% ifequal retail "Buyer" %}
+                                        <input class="greenB ml10" value="SETTLE" type="submit" />
+                                    {% else %}
+                                        <a class="wButton redwB"><span>PENDING</span></a>
+                                    {% endifequal %}
+                                    </form>
+                                    {% endif %}
+                                </span>
+                            </div>
+                   </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Purchase info widget -->
+                <div class="widget">
+                    <div class="title">
+                    	<img src="{% static 'images/icons/dark/money.png' %}" alt="" class="titleIcon" />
+                        <h6>Purchase info</h6>
+                        <div class="topIcons">
+                            <a href="#" class="tipS" title="Download statement"><img src="{% static 'images/icons/downloadTop.png' %}" alt="" /></a>
+                            <a href="#" class="tipS" title="Print invoice"><img src="{% static 'images/icons/printTop.png' %}" alt="" /></a>
+                            <a href="#" class="tipS" title="Edit"><img src="{% static 'images/icons/editTop.png' %}" alt="" /></a>
+                        </div>
+                    </div>
+                    <div class="newOrder">
+                        <div class="userRow">
+                            <a href="#" title=""><img src="{% static 'images/user.png' %}" alt="" class="floatL" /></a>
+                            <ul class="leftList">
+                                <li><a href="#" title=""><strong>Julia Maria Shine</strong></a></li>
+                                <li>Order status:</li>
+                            </ul>
+                            <ul class="rightList">
+                                <li><a href="#" title=""> <strong>#2112</strong></a></li>
+                                <li class="orderIcons"><span class="oUnfinished"></span><span class="oShipped tipN" title="Shipped on Feb 2nd, 2012"></span><span class="oPaid tipN" title="Paid on Feb 1st, 2012"></span></li>
+                            </ul>
+                            <div class="clear"></div>
+                        </div>
+
+                        <div class="cLine"></div>
+
+                        <div class="orderRow">
+                            <ul class="leftList">
+                                <li>Date and time:</li>
+                                <li>Subtotal amount:</li>
+                                <li>Taxes</li>
+                            </ul>
+                            <ul class="rightList">
+                                <li><strong>Jan 31, 2012</strong> |  12:51</li>
+                                <li><strong class="green">$5,514.36</strong></li>
+                                <li><strong class="orange">- $1,158.54</strong></li>
+                            </ul>
+                            <div class="clear"></div>
+                        </div>
+
+                        <div class="cLine"></div>
+                        <div class="totalAmount"><h6 class="floatL blue">Total:</h6><h6 class="floatR blue">$12,157.99</h6><div class="clear"></div></div>
+                    </div>
+                </div>
+
+
+    </div>
+
+    <!-- Footer line -->
+    {% include 'panel/footer.html' %}
+
+</div>
+
+<div class="clear"></div>
+
+</body>
+</html>

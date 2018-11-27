@@ -146,18 +146,21 @@ def order(request, order_id, retail):
                 Report.objects.create(reporter=request.user, trans=order, isFinish=False, info=comment)
                 balance, saleSum = getBalance(request)
                 order_detail = Order.objects.get(id=order_id)
+                reports = Report.objects.filter(trans=order_detail)
+
                 return render(request, 'panel/order.html',
                               {'username': request.user.username, 'TYPE': "Success",
                                    'msg': "Successfully Submit Report Information!", 'order': order_detail, 'retail': retail,
-                               'balance': balance, 'saleSum': saleSum})
+                               'balance': balance, 'saleSum': saleSum, 'reports': reports, 'reportSum': len(reports)})
             else:
                 balance, saleSum = getBalance(request)
                 order_detail = Order.objects.get(id=order_id)
+                reports = Report.objects.filter(trans=order_detail)
                 return render(request, 'panel/order.html',
                               {'username': request.user.username, 'TYPE': "Failure",
                                'msg': "Failed due to Empty Information!", 'order': order_detail,
                                'retail': retail,
-                               'balance': balance, 'saleSum': saleSum})
+                               'balance': balance, 'saleSum': saleSum, 'reports': reports, 'reportSum': len(reports)})
         else:
             star = request.POST.get('star')
             order_id = request.POST.get('order_id')
@@ -174,12 +177,14 @@ def order(request, order_id, retail):
                 order.save()
     balance, saleSum = getBalance(request)
     order_detail = Order.objects.get(id=order_id)
+
     if not order_detail:
         return render(request, 'panel/order.html',
                               {'username': request.user.username, 'TYPE': "Failure",
                                'msg': "Unable to obtain order information!"})
+    reports = Report.objects.filter(trans=order_detail)
     return render(request, 'panel/order.html',
-                          {'username': request.user.username, 'order': order_detail, 'retail': retail, 'balance': balance, 'saleSum': saleSum})
+                          {'username': request.user.username, 'order': order_detail, 'retail': retail, 'balance': balance, 'saleSum': saleSum, 'reports': reports, 'reportSum': len(reports)})
 
 
 
