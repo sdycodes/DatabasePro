@@ -17,13 +17,37 @@ from bookdeal.tests import *
 def list_myissue(request):
     if request.method == 'GET':
         balance, saleSum = getBalance(request)
-        ids = Book.objects.filter(owner=request.user)
-        books = Order.objects.filter(book_id__in=ids).order_by('id')
+        name=request.user.username
+        try:
+            useroutlet = Normal.objects.get(username=name)
+        except Normal.DoesNotExist:
+            try:
+                useroutlet = Retailer.objects.get(username=name)
+                sale_books = Book.objects.filter(owner=useroutlet)
+                sales = Order.objects.filter(book_id__in=sale_books)
+                return render(request, 'panel/info.html',
+                              {'username': request.user.username, 'retail': True, 'orders': orders,
+                               'orderSum': len(orders), 'sales': sales, 'saleSum': saleSum, 'balance': balance})
+            except Retailer.DoesNotExist:
+                return render(request, 'panel/index.html',
+                              {'username': request.user.username, 'TYPE': "Warning",
+                               'msg': "Please Login First!"})
+        sale_books = Book.objects.filter(owner=useroutlet)
+        books = Order.objects.filter(book_id__in=sale_books)
         idset = []
         for idi in books:
             idset.append(idi.buyer)
         buyers = User.objects.filter(username__in=idset)
         issues = Report.objects.filter(reporter__in=buyers)
+
+        books = Order.objects.filter(buyer=useroutlet)
+        idset = []
+        for idi in books:
+            idset.append(idi.book_id.owner)
+        print(idset)
+        owners = User.objects.filter(username__in=idset)
+        print(owners)
+        issues = issues | Report.objects.filter(reporter__in=owners)
         report_id = request.GET.get('del')
         if report_id is not None:
             tar = Report.objects.filter(id=report_id, reporter=request.user).order_by('id')
@@ -53,11 +77,10 @@ def issue(request, report_id):
     report = Report.objects.filter(id=report_id)
     if report:
         report = report[0]
-        print()
-        if report.reporter.username == request.user.username:
+        if report.trans.buyer == request.user.username:
             return render(request, 'panel/report.html',
                       {'username': request.user.username, 'report': report, 'retail': "Buyer"})
-        elif report.trans.buyer == request.user.username:
+        elif report.trans.book_id.owner.username == request.user.username:
             return render(request, 'panel/report.html',
                           {'username': request.user.username, 'report': report, 'retail': "Seller"})
         else:
