@@ -187,9 +187,10 @@ def front(request):
 def panel(request):
     balance, saleSum = getBalance(request)
     if request.user.username and Admin.objects.filter(username=request.user.username):
-        reports = Report.objects.filter()
-        corrections = Correct.objects.filter()
-        return render(request, 'panel/index_admin.html', {'username': request.user.username,
+        reports = Report.objects.all()
+        corrections = Correct.objects.all()
+        lists = Rlist.objects.all()
+        return render(request, 'panel/index_admin.html', {'username': request.user.username, 'lists': lists,
                                                               'reports': reports, 'corrections': corrections})
     elif request.user.username:
         return render(request, 'panel/index.html', {'username': request.user.username, 'TYPE': "Success", 'msg': "Welcome Back!", 'balance': balance, 'saleSum': saleSum})
@@ -214,12 +215,13 @@ def detail_report(request):
     except:
         pass
 
-    reports = Report.objects.filter()
-    corrections = Correct.objects.filter()
+    reports = Report.objects.all()
+    corrections = Correct.objects.all()
+    lists = Rlist.objects.all()
     if q and p == "":
         detail = Report.objects.get(id=q)
         reported = detail.trans.book_id.owner.username
-        return render(request, 'panel/index_admin.html', {'username': request.user.username, 'detail': detail,
+        return render(request, 'panel/index_admin.html', {'username': request.user.username, 'detail': detail, 'lists':lists,
                                                           'reported': reported, 'reports': reports, 'corrections': corrections})
     if p != "":
         print(p)
@@ -234,7 +236,7 @@ def detail_report(request):
         detail = Report.objects.get(id=q)
         reported = detail.trans.book_id.owner.username
         msg = "punish" + user.username
-        return render(request, 'panel/index_admin.html', {'username': request.user.username, 'detail': detail,
+        return render(request, 'panel/index_admin.html', {'username': request.user.username, 'detail': detail, 'lists':lists,
                                                           'reported': reported, 'reports': reports, 'msg': msg,
                                                           'TYPE': "Success", 'corrections': corrections})
     if d != "":
@@ -242,6 +244,42 @@ def detail_report(request):
         repo.isFinish = True
         repo.save()
         msg = "Finish a report!"
-        return render(request, 'panel/index_admin.html', {'username': request.user.username,
+        return render(request, 'panel/index_admin.html', {'username': request.user.username, 'lists':lists,
                                                           'reports': reports, 'msg': msg,
                                                           'TYPE': "Success", 'corrections': corrections})
+
+
+def addrlist(request):
+    reports = Report.objects.all()
+    corrections = Correct.objects.all()
+    books = Book.objects.all()
+    lists = Rlist.objects.all()
+    if request.method == 'GET':
+        lg = request.GET.get('lg')
+        ld = request.GET.get('ld')
+        res = Rlist.objects.filter(dept=ld, grade=lg)
+        dept = ""
+        grade = ""
+        names = ""
+        if res:
+            res = res[0]
+            dept = res.dept
+            grade = res.grade
+            names = res.names
+        return render(request, 'panel/index_admin.html', {'username': request.user.username, 'add':True, 'books':books,
+                                                          'reports': reports, 'corrections': corrections, 'res': res,
+                                                          'lists': lists, 'dept': dept, 'grade': grade, 'names': names})
+    if request.method == 'POST':
+        dept = request.POST.get('dept')
+        grade = request.POST.get('grade')
+        names = request.POST.get('names')
+        res = Rlist.objects.filter(dept=dept, grade=grade)
+        if res:
+            res = res[0]
+            res.names = names
+            res.save()
+        else:
+            Rlist.objects.create(dept=dept, grade=grade, names=names)
+        return render(request, 'panel/index_admin.html', {'username': request.user.username,
+                                                          'reports': reports, 'corrections': corrections,'lists': lists,
+                                                          'msg': "Success add!", 'TYPE': "Success"})

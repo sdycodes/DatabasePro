@@ -103,6 +103,45 @@
                 </div>
         </div>
         {% endif %}
+
+        <!-- Detail info of a recommend list -->
+         {% if add %}
+
+        <div class="widget">
+        <div class="title"><img src = {% static 'images/icons/dark/imagesList.png' %} alt="" class="titleIcon" /><h6>Edit List</h6></div>
+        <form action="" id="validate" class="form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+             <fieldset>
+                <div class="formRow">
+                    <label for="login">Department:</label>
+                    <div class="loginInput"><input type="text" name="dept" value="{{ dept }}" class="validate[required]"  /></div>
+                    <div class="clear"></div>
+
+                </div>
+
+                 <div class="formRow">
+                    <label for="login">Grade:</label>
+                    <div class="loginInput"><input type="text" name="grade" value="{{ grade }}" class="validate[required]"  /></div>
+                    <div class="clear"></div>
+                </div>
+
+                <div class="formRow">
+                    <label for="pass">Names</label>
+                    <div class="input_area">
+                        <input type="text" name="names" value="{{ names }}" class="validate[required]"  />
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+                <div class="loginControl">
+                    <input type="submit" value="ADD" action="" method="POST" class="greenB" />
+                    <div class="clear"></div>
+                </div>
+            </fieldset>
+             </form>
+        </div>
+
+        {% endif %}
     	<!-- Dynamic table of report-->
         <div class="widget">
             <div class="title"><img src="{% static 'images/icons/dark/full2.png' %}" alt="" class="titleIcon" /><h6>Reports</h6></div>
@@ -123,7 +162,7 @@
                 {% else %}
                     <tr class="gradeX">
                 {% endif %}
-                    <td><a href="/detail/?repo_id={{ report.id }}&p=">{{ report.id }}</a></td>
+                    <td><a href="/detail/?repo_id={{ report.id }}">{{ report.id }}</a></td>
                     <td>{{ report.reporter.username }}</td>
                     <td>{{ report.trans.id }}</td>
                     <td>{{ report.info }}</td>
@@ -161,6 +200,31 @@
             {% endfor %}
             </tbody>
             </table>
+        </div>
+
+        <!--Dynamic table of recommend list-->
+        <div class="widget">
+            <div class="title"><img src="{% static 'images/icons/dark/full2.png' %}" alt="" class="titleIcon" /><h6>Recommend Lists</h6></div>
+            <table cellpadding="0" cellspacing="0" border="0" class="display dTable">
+            <thead>
+            <tr>
+                <th>Department</th>
+                <th>Grade</th>
+                <th>modify</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for list in lists %}
+                    <tr class="gradeA">
+                    <td>{{ list.dept }}</td>
+                    <td>{{ list.grade }}</td>
+                    <td class="actBtns"><a href="/addrlist/?ld={{ list.dept }}&lg={{ list.grade }}" title="Modify" class="tipS" type="submit"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+            <input type="button" onclick="window.location.href='/addrlist/'" value="ADD NEW" class="greenB" />
+
         </div>
 
     </div>

@@ -37,6 +37,7 @@ urlpatterns = [
     url(r'^report/(.+)/$', views.issue),
     url('report', views.list_myissue),
     url('addbook/', views.addbook),
+    url('addrlist', views.addrlist),
     url('deletebook/', views.delete_book),
     url('list_mysell', views.list_mysell)
     # url('deletebook/', views.delete_book),

@@ -152,16 +152,16 @@ def login(request):
         if user is not None and user.is_active:
             auth.login(request, user)
             if Admin.objects.filter(username=request.user.username):
-                reports = Report.objects.filter()
-                corrections = Correct.objects.filter()
+                reports = Report.objects.all()
+                corrections = Correct.objects.all()
+                lists = Rlist.objects.all()
                 return render(request, 'panel/index_admin.html', {'username': request.user.username,
-                                                                  'reports': reports, 'corrections': corrections})
+                                                                  'reports': reports, 'corrections': corrections,
+                                                                  'lists': lists})
             else:
                 carnum = len(Car.objects.filter(user=user))
-                res = Order.objects.filter(buyer=user.username)
-                buy = 0
-                for each in res:
-                    buy += each.book_id.price
+                buy = Order.objects.select_related('book_id').filter(buyer=user.username).aggregate(Sum('book_id__price'))
+                buy = buy['book_id__price__sum'] if buy['book_id__price__sum'] else 0
                 sale = Order.objects.select_related('book_id__owner').filter(book_id__owner__username=user.username).aggregate(Sum('book_id__price'))
                 sale = sale['book_id__price__sum'] if sale['book_id__price__sum'] else 0
                 return render(request, 'panel/index.html', {'username': request.user.username, 'res': name, 'user':user, 'carnum': carnum,
