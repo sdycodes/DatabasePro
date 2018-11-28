@@ -5,6 +5,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.template import RequestContext
 from django.views import generic
 from django.contrib import auth
+from django.db.models import Sum
 from bookdeal.models import *
 from bookdeal.views import *
 
@@ -156,7 +157,15 @@ def login(request):
                 return render(request, 'panel/index_admin.html', {'username': request.user.username,
                                                                   'reports': reports, 'corrections': corrections})
             else:
-                return render(request, 'panel/index.html', {'username': request.user.username, 'res': name})
+                carnum = len(Car.objects.filter(user=user))
+                res = Order.objects.filter(buyer=user.username)
+                buy = 0
+                for each in res:
+                    buy += each.book_id.price
+                sale = Order.objects.select_related('book_id__owner').filter(book_id__owner__username=user.username).aggregate(Sum('book_id__price'))
+                sale = sale['book_id__price__sum'] if sale['book_id__price__sum'] else 0
+                return render(request, 'panel/index.html', {'username': request.user.username, 'res': name, 'user':user, 'carnum': carnum,
+                                                                  'sale':sale, 'buy': buy, 'total': sale+buy})
         else:
             return render(request, 'panel/login.html', {'username': '', 'TYPE': 'Failure',
                                                         'msg': "Invalid Password or Username!"})
