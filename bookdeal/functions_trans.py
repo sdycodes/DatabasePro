@@ -7,7 +7,9 @@ from django.views import generic
 from django.contrib import auth
 from bookdeal.models import *
 from bookdeal.views import *
-
+from bookdeal.functions_user import *
+from bookdeal.functions_car import *
+from bookdeal.functions_book import *
 
 def purchase(request):
     if request.method == 'POST':

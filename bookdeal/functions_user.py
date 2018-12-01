@@ -8,7 +8,9 @@ from django.contrib import auth
 from django.db.models import Sum
 from bookdeal.models import *
 from bookdeal.views import *
-
+from bookdeal.functions_car import *
+from bookdeal.functions_book import *
+from bookdeal.functions_trans import *
 
 def getBalance(request):
     name = request.user.username
@@ -119,6 +121,8 @@ def signup(request):
         passwd1 = request.POST.get('password1')
         passwd2 = request.POST.get('password2')
         typ = request.POST.get('typ')
+        dept = request.POST.get('dept')
+        grade = request.POST.get('grade')
         # check if they are legal
         res = User.objects.filter(username=name)
         if res:
@@ -129,7 +133,14 @@ def signup(request):
         if typ == "a":
             Retailer.objects.create_user(username=name, password=passwd1)
         elif typ=="n":
-            Normal.objects.create_user(username=name, password=passwd1)
+            if dept and grade:
+                Normal.objects.create_user(username=name, password=passwd1, dept=dept, grade=grade)
+            elif dept:
+                Normal.objects.create_user(username=name, password=passwd1, dept=dept)
+            elif grade:
+                Normal.objects.create_user(username=name, password=passwd1, grade=grade)
+            else:
+                Normal.objects.create_user(username=name, password=passwd1)
         else:
             Admin.objects.create_user(username=name, password=passwd1)
         return render(request, 'panel/index.html',
@@ -151,21 +162,30 @@ def login(request):
         user = auth.authenticate(username=name, password=passwd)
         if user is not None and user.is_active:
             auth.login(request, user)
-            if Admin.objects.filter(username=request.user.username):
-                reports = Report.objects.all()
-                corrections = Correct.objects.all()
-                lists = Rlist.objects.all()
-                return render(request, 'panel/index_admin.html', {'username': request.user.username,
-                                                                  'reports': reports, 'corrections': corrections,
-                                                                  'lists': lists})
-            else:
-                carnum = len(Car.objects.filter(user=user))
-                buy = Order.objects.select_related('book_id').filter(buyer=user.username).aggregate(Sum('book_id__price'))
-                buy = buy['book_id__price__sum'] if buy['book_id__price__sum'] else 0
-                sale = Order.objects.select_related('book_id__owner').filter(book_id__owner__username=user.username).aggregate(Sum('book_id__price'))
-                sale = sale['book_id__price__sum'] if sale['book_id__price__sum'] else 0
-                return render(request, 'panel/index.html', {'username': request.user.username, 'res': name, 'user':user, 'carnum': carnum,
-                                                                  'sale':sale, 'buy': buy, 'total': sale+buy})
+            return HttpResponseRedirect('/panel/')
+            # if Admin.objects.filter(username=request.user.username):
+            #     reports = Report.objects.all()
+            #     corrections = Correct.objects.all()
+            #     lists = Rlist.objects.all()
+            #     return render(request, 'panel/index.html', {'username': request.user.username,
+            #                                                       'reports': reports, 'corrections': corrections,
+            #                                                       'lists': lists})
+            # else:
+            #     carnum = len(Car.objects.filter(user=user))
+            #     buy = Order.objects.select_related('book_id').filter(buyer=user.username).aggregate(Sum('book_id__price'))
+            #     buy = buy['book_id__price__sum'] if buy['book_id__price__sum'] else 0
+            #     sale = Order.objects.select_related('book_id__owner').filter(book_id__owner__username=user.username).aggregate(Sum('book_id__price'))
+            #     sale = sale['book_id__price__sum'] if sale['book_id__price__sum'] else 0
+            #     names = ""
+            #     nuser = Normal.objects.filter(username=request.user.username)
+            #     if nuser:
+            #         nuser = nuser[0]
+            #         if nuser.dept and nuser.grade:
+            #             rlist = Rlist.objects.filter(dept=nuser.dept, grade=nuser.grade)
+            #             if rlist:
+            #                 names = rlist[0].names
+            #     return render(request, '/panel/index.html', {'username': request.user.username, 'res': name, 'user':user, 'carnum': carnum,
+            #                                                       'sale':sale, 'buy': buy, 'total': sale+buy, 'names': names})
         else:
             return render(request, 'panel/login.html', {'username': '', 'TYPE': 'Failure',
                                                         'msg': "Invalid Password or Username!"})

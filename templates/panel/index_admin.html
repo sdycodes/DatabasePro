@@ -126,13 +126,10 @@
                 </div>
 
                 <div class="formRow">
-                    <label for="pass">Names</label>
-                    <div class="input_area">
-                        <input type="text" name="names" value="{{ names }}" class="validate[required]"  />
-                    </div>
+                    <label form="tags">names:</label>
+                    <div class="formRight"><input type="text" id="tags" name="names" value={{ names }} class="tags" /></div>
                     <div class="clear"></div>
                 </div>
-
                 <div class="loginControl">
                     <input type="submit" value="ADD" action="" method="POST" class="greenB" />
                     <div class="clear"></div>
@@ -141,6 +138,20 @@
              </form>
         </div>
 
+        {% endif %}
+
+        <!--Detail info of a correction-->
+        {% if see_correct %}
+            <div class="widget">
+                <div class="formRow">
+                    <label for="pass">Corrector: {{ correction.corrector.username }}</label>
+                     <div class="clear"></div>
+                </div>
+                <div class="formRow">
+                    <label for="pass">Correction info: {{ correction.info }}</label>
+                    <div class="clear"></div>
+                </div>
+            </div>
         {% endif %}
     	<!-- Dynamic table of report-->
         <div class="widget">
@@ -181,7 +192,6 @@
             <tr>
                 <th>Corrections number</th>
                 <th>Corrector</th>
-                <th>information</th>
                 <th>close</th>
             </tr>
             </thead>
@@ -192,10 +202,9 @@
                 {% else %}
                     <tr class="gradeX">
                 {% endif %}
-                    <td>correct.id</td>
-                    <td>correct.corrector.username</td>
-                    <td>correct.info[0:20]</td>
-                    <td class="actBtns"><a href="" title="Finish" class="tipS" type="submit"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a></td>
+                    <td><a href="/detail/?ci={{ correct.id }}">{{ correct.id }}</a></td>
+                    <td>{{ correct.corrector.username }}</td>
+                    <td class="actBtns"><a href="/detail/?cd={{ correct.id }}" title="Finish" class="tipS" type="submit"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a></td>
                 </tr>
             {% endfor %}
             </tbody>
