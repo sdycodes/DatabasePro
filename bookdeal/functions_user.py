@@ -129,7 +129,7 @@ def signup(request):
         # check if they are legal
         res = User.objects.filter(username=name)
         if res:
-            return render(request, 'panel/index.html',
+            return render(request, 'panel/adduser.html',
                           {'TYPE': "Failure", 'msg': 'User ' + name + ' Already Exists!',
                            "username": request.user.username})
         # sign up
@@ -146,7 +146,7 @@ def signup(request):
                 Normal.objects.create_user(username=name, password=passwd1)
         else:
             Admin.objects.create_user(username=name, password=passwd1)
-        return render(request, 'panel/index.html',
+        return render(request, 'panel/adduser.html',
                       {'TYPE': "Success", 'msg': 'User ' + name + ' Successfully Added!',
                        "username": request.user.username})
 

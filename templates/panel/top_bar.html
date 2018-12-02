@@ -5,7 +5,7 @@
             <div class="welcome"><a href="/login/" title=""><img src="{% static 'images/userPic.png' %}" alt="" /></a><span>{% if username %}{{ username }}{% else %}Please Login...{% endif %}</span></div>
             <div class="userNav">
                 <ul>
-                    <li><a href="{% if username %}/info/{% else %}/login/{% endif %}" title=""><img src="{% static 'images/icons/topnav/profile.png' %}" alt="" /><span>Account</span></a></li>
+                    <li><a href="{% if username %}/info/{% else %}/signup/{% endif %}" title=""><img src="{% static 'images/icons/topnav/profile.png' %}" alt="" /><span>{% if username %}Account{% else %}Signup{% endif %}</span></a></li>
 
                     {% if username %}
                     <li><a href="/report/" title=""><img src="{% static 'images/icons/topnav/tasks.png' %}" alt="" /><span>Reports</span></a></li>
