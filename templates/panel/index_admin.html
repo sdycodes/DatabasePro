@@ -71,23 +71,23 @@
              <fieldset>
                 <div class="formRow">
                     <label for="login">Department:</label>
-                    <div class="loginInput"><input type="text" name="dept" value="{{ dept }}" class="validate[required]"  /></div>
+                    <div class="loginInput"><input type="text" name="dept" value="{{ dept }}" id="dept" class="validate[required]"  /></div>
                     <div class="clear"></div>
 
                 </div>
 
                  <div class="formRow">
                     <label for="login">Grade:</label>
-                    <div class="loginInput"><input type="text" name="grade" value="{{ grade }}" class="validate[required]"  /></div>
+                    <div class="loginInput"><input type="text" name="grade" value="{{ grade }}" id="grade" class="validate[required]"  /></div>
                     <div class="clear"></div>
                 </div>
 
                 <div class="formRow">
                     <label form="tags">names:</label>
-                    <div class="formRight"><input type="text" id="tags" name="names" value={{ names }} class="tags" /></div>
+                    <div class="formRight"><input type="text" id="tags" name="names" value="{{ names }}" class="tags" /></div>
                     <div class="clear"></div>
                 </div>
-                <div class="loginControl">
+                <div class="loginControl" style="padding-left: 85%;padding-top: 2%;padding-bottom: 2%;">
                     <input type="submit" value="ADD" action="" method="POST" class="greenB" />
                     <div class="clear"></div>
                 </div>

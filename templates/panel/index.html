@@ -52,10 +52,9 @@
                 <!-- Recommend list widget -->
                <div class="widget">
                     <div class="title"><img src="{% static 'images/icons/dark/users.png' %}" alt="" class="titleIcon" /><h6>Recommend list</h6></div>
-                    <div class="formRow">
+                    <div class="formRow" style="width:92%">
                         {% if names %}
-                        <label for="tags">Recommends:</label>
-                        <div class="formRight"><input type="input" disabled="disabled" id="tags" name="names" class="tags" value="{{ names }}"/></div>
+                        <input type="input" disabled="disabled" id="tags" name="names" class="tags" value="{{ names }}" about="fixed" />
                         {% else %}
                             <label for="tags">Oops, Recommends not available!</label>
                         {% endif %}
@@ -69,7 +68,7 @@
                         </div>
                         <div class="clear"></div>
                     </div>
-                    <div class="fromRow" style="padding-left: 80%;padding-top: 3%;padding-bottom: 3%;">
+                    <div class="fromRow" style="padding-left: 75%;padding-top: 3%;padding-bottom: 3%;">
                         <input type="submit" value="Correct" action="" method="POST" class="redB" />
                         <div class="clear"></div>
                     </div>

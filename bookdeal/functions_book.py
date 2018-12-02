@@ -58,8 +58,12 @@ def market(request):
             Car.objects.create(item=add, user=useroutlet)
             return render(request, 'panel/market.html',
                           {'username': request.user.username, 'books': books, 'query': q, 'TYPE': "Success", 'msg': "Add to Cart Successfully!", 'balance': balance, 'saleSum': saleSum})
-
-        return render(request, 'panel/market.html', {'username': request.user.username, 'books': books, 'query': q, 'balance': balance, 'saleSum': saleSum})
+        if q is not None and books is None:
+            return render(request, 'panel/market.html', {'username': request.user.username, 'books': books, 'query': q, 'balance': balance, 'saleSum': saleSum, 'TYPE': "Failure", 'msg': "Failed to find any related books!"})
+        else:
+            return render(request, 'panel/market.html',
+                          {'username': request.user.username, 'books': books, 'query': q, 'balance': balance,
+                           'saleSum': saleSum, 'TYPE': "Success", 'msg': "Welcome to the market!"})
 
 
 @login_required
