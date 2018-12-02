@@ -11,9 +11,11 @@ from bookdeal.functions_book import *
 from bookdeal.functions_car import *
 from bookdeal.functions_trans import *
 from bookdeal.tests import *
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
+@login_required
 def list_myissue(request):
     if request.method == 'GET':
         balance, saleSum = getBalance(request)
@@ -91,6 +93,7 @@ def list_myissue(request):
                                                                   'msg': "No Reports Available Yet!", 'balance': balance, 'issues': issues, 'saleSum': saleSum})
 
 
+@login_required
 def issue(request, report_id):
     report = Report.objects.filter(id=report_id)
     if report:
@@ -110,6 +113,7 @@ def issue(request, report_id):
                        'msg': "Unable to obtain report information!"})
 
 
+@login_required
 def report(request):
     if request.method == 'GET':
         return render(request, 'test/report.html')
@@ -126,6 +130,7 @@ def report(request):
             HttpResponse('you cannot report other transaction')
 
 
+@login_required
 def correct(request):
     if request.method == 'GET':
         return render(request, 'test/correct.html')
@@ -136,6 +141,7 @@ def correct(request):
         return HttpResponse('corrections has been submitted')
 
 
+@login_required
 def get_recommend(request):
     if request.method == 'GET':
         user = request.user
@@ -150,6 +156,7 @@ def get_recommend(request):
             return HttpResponse('please give us more your info')
 
 
+@login_required
 def handle_report(request):
     if request.method == 'GET':
         return render('test/handle_report.html')
@@ -166,6 +173,7 @@ def handle_report(request):
         return render('result.html', {'func': 'handle_request', 'res': 'successful'})
 
 
+@login_required
 def handle_correct(request):
     if request.method == 'GET':
         return render('test/handle_correct.html')
@@ -184,6 +192,7 @@ def front(request):
     return render(request, 'front/index.html')
 
 
+@login_required
 def panel(request):
     balance, saleSum = getBalance(request)
     user = request.user
@@ -224,6 +233,7 @@ def panel(request):
         return render(request, 'panel/index.html', {'TYPE': "Warning", 'msg': "Please Login First!"})
 
 
+@login_required
 def detail_report(request):
 
     q = request.GET.get('repo_id')
@@ -277,6 +287,7 @@ def detail_report(request):
                                                           'TYPE': "Success", 'corrections': corrections})
 
 
+@login_required
 def addrlist(request):
     reports = Report.objects.all()
     corrections = Correct.objects.all()

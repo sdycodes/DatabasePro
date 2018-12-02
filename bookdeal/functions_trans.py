@@ -10,7 +10,10 @@ from bookdeal.views import *
 from bookdeal.functions_user import *
 from bookdeal.functions_car import *
 from bookdeal.functions_book import *
+from django.contrib.auth.decorators import login_required
 
+
+@login_required
 def purchase(request):
     if request.method == 'POST':
         purchased = False
@@ -89,6 +92,7 @@ def purchase(request):
         return render(request, 'panel/info.html', {'username': request.user.username, 'books': books})
 
 
+@login_required
 def order(request, order_id, retail):
     if request.method == 'POST':
         report = request.POST.get('report')
@@ -140,7 +144,7 @@ def order(request, order_id, retail):
                           {'username': request.user.username, 'order': order_detail, 'retail': retail, 'balance': balance, 'saleSum': saleSum, 'reports': reports, 'reportSum': len(reports)})
 
 
-
+@login_required
 def buy(request):
     if request.method == 'POST':
         buyer = request.user.name
@@ -154,6 +158,7 @@ def buy(request):
         return HttpResponse('successfully bought!')
 
 
+@login_required
 def buyer_confirm(request):
     if request.method == 'GET':
         return render('test/confirm.html')
@@ -178,6 +183,7 @@ def buyer_confirm(request):
             return HttpResponse('mind on your own business!')
 
 
+@login_required
 def seller_confirm(request):
     if request.method == 'GET':
         return render('test/confirm.html')

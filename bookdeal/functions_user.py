@@ -11,6 +11,8 @@ from bookdeal.views import *
 from bookdeal.functions_car import *
 from bookdeal.functions_book import *
 from bookdeal.functions_trans import *
+from django.contrib.auth.decorators import login_required
+
 
 def getBalance(request):
     name = request.user.username
@@ -31,6 +33,7 @@ def getBalance(request):
     return balance, len(sales)
 
 
+@login_required
 def manage(request):
     # 管理信息
     if request.user.username and Admin.objects.filter(username=request.user.username):
@@ -191,6 +194,7 @@ def login(request):
                                                         'msg': "Invalid Password or Username!"})
 
 
+@login_required
 def settings(request):
     # 修改用户信息
     balance, saleSum = getBalance(request)
@@ -214,3 +218,7 @@ def settings(request):
             return render(request, 'panel/index.html',
                           {'TYPE': "Failure", 'msg': 'User ' + name + ' Password Mismatch!',
                            "username": request.user.username, 'balance': balance, 'saleSum': saleSum})
+
+
+def login_required(request):
+    return login(request)

@@ -10,6 +10,8 @@ from bookdeal.views import *
 from bookdeal.functions_trans import *
 from bookdeal.functions_car import *
 from bookdeal.functions_user import *
+from django.contrib.auth.decorators import login_required
+
 
 def market(request):
     tar = request.POST.get('name')
@@ -60,6 +62,7 @@ def market(request):
         return render(request, 'panel/market.html', {'username': request.user.username, 'books': books, 'query': q, 'balance': balance, 'saleSum': saleSum})
 
 
+@login_required
 def addbook(request):
     if request.method == 'GET':
         balance, saleSum = getBalance(request)
@@ -97,6 +100,7 @@ def getBalance(request):
     return balance, len(sales)
 
 
+@login_required
 def list_mysell(request):
     if request.method == 'GET':
         balance, saleSum = getBalance(request)
@@ -127,6 +131,7 @@ def list_mysell(request):
                                                                   'msg': "You do not sell any single book!", 'balance': balance, 'saleSum': saleSum})
 
 
+@login_required
 def delete_book(request):
     if request.method == 'GET':
         return render(request, 'test/deletebook.html')

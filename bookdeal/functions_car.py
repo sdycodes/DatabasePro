@@ -10,7 +10,10 @@ from bookdeal.views import *
 from bookdeal.functions_trans import *
 from bookdeal.functions_user import *
 from bookdeal.functions_book import *
+from django.contrib.auth.decorators import login_required
 
+
+@login_required
 def addcar(request):
     user = request.user
     book_id = request.POST.get('id')
@@ -21,6 +24,7 @@ def addcar(request):
     return HttpResponse('Add Successfully!')
 
 
+@login_required
 def removecar(request):
     user = request.user
     book_id = request.POST.get('id')
@@ -30,6 +34,7 @@ def removecar(request):
         return HttpResponse('Add Successfully!')
 
 
+@login_required
 def info(request):
     purchased = False
     if request.user.username and Admin.objects.filter(username=request.user.username):
