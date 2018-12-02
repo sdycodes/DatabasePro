@@ -60,6 +60,10 @@ def market(request):
                           {'username': request.user.username, 'books': books, 'query': q, 'TYPE': "Success", 'msg': "Add to Cart Successfully!", 'balance': balance, 'saleSum': saleSum})
         if q is not None and books is None:
             return render(request, 'panel/market.html', {'username': request.user.username, 'books': books, 'query': q, 'balance': balance, 'saleSum': saleSum, 'TYPE': "Failure", 'msg': "Failed to find any related books!"})
+        elif q is not None and books is not None:
+            return render(request, 'panel/market.html',
+                          {'username': request.user.username, 'books': books, 'query': q, 'balance': balance,
+                           'saleSum': saleSum, 'TYPE': "Success", 'msg': "Browse books from recommended list!"})
         else:
             return render(request, 'panel/market.html',
                           {'username': request.user.username, 'books': books, 'query': q, 'balance': balance,
