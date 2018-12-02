@@ -403,71 +403,7 @@
 			 */
 			"fnInit": function ( oSettings, nPaging, fnCallbackDraw )
 			{
-				var nFirst = document.createElement( 'span' );
-				var nPrevious = document.createElement( 'span' );
-				var nList = document.createElement( 'span' );
-				var nNext = document.createElement( 'span' );
-				var nLast = document.createElement( 'span' );
-				
-				nFirst.innerHTML = oSettings.oLanguage.oPaginate.sFirst;
-				nPrevious.innerHTML = oSettings.oLanguage.oPaginate.sPrevious;
-				nNext.innerHTML = oSettings.oLanguage.oPaginate.sNext;
-				nLast.innerHTML = oSettings.oLanguage.oPaginate.sLast;
-				
-				var oClasses = oSettings.oClasses;
-				nFirst.className = oClasses.sPageButton+" "+oClasses.sPageFirst;
-				nPrevious.className = oClasses.sPageButton+" "+oClasses.sPagePrevious;
-				nNext.className= oClasses.sPageButton+" "+oClasses.sPageNext;
-				nLast.className = oClasses.sPageButton+" "+oClasses.sPageLast;
-				
-				nPaging.appendChild( nFirst );
-				nPaging.appendChild( nPrevious );
-				nPaging.appendChild( nList );
-				nPaging.appendChild( nNext );
-				nPaging.appendChild( nLast );
-				
-				$(nFirst).bind( 'click.DT', function () {
-					if ( oSettings.oApi._fnPageChange( oSettings, "first" ) )
-					{
-						fnCallbackDraw( oSettings );
-					}
-				} );
-				
-				$(nPrevious).bind( 'click.DT', function() {
-					if ( oSettings.oApi._fnPageChange( oSettings, "previous" ) )
-					{
-						fnCallbackDraw( oSettings );
-					}
-				} );
-				
-				$(nNext).bind( 'click.DT', function() {
-					if ( oSettings.oApi._fnPageChange( oSettings, "next" ) )
-					{
-						fnCallbackDraw( oSettings );
-					}
-				} );
-				
-				$(nLast).bind( 'click.DT', function() {
-					if ( oSettings.oApi._fnPageChange( oSettings, "last" ) )
-					{
-						fnCallbackDraw( oSettings );
-					}
-				} );
-				
-				/* Take the brutal approach to cancelling text selection */
-				$('span', nPaging)
-					.bind( 'mousedown.DT', function () { return false; } )
-					.bind( 'selectstart.DT', function () { return false; } );
-				
-				/* ID the first elements only */
-				if ( oSettings.sTableId !== '' && typeof oSettings.aanFeatures.p == "undefined" )
-				{
-					nPaging.setAttribute( 'id', oSettings.sTableId+'_paginate' );
-					nFirst.setAttribute( 'id', oSettings.sTableId+'_first' );
-					nPrevious.setAttribute( 'id', oSettings.sTableId+'_previous' );
-					nNext.setAttribute( 'id', oSettings.sTableId+'_next' );
-					nLast.setAttribute( 'id', oSettings.sTableId+'_last' );
-				}
+
 			},
 			
 			/*
@@ -966,7 +902,7 @@
 			 */
 			this.oLanguage = {
 				"sProcessing": "Processing...",
-				"sLengthMenu": "<span class='itemsPerPage'>Items per page:</span> _MENU_",
+				"sLengthMenu": " _MENU_",
 				"sZeroRecords": "No matching records found",
 				"sEmptyTable": "No data available in table",
 				"sLoadingRecords": "Loading...",
@@ -975,7 +911,7 @@
 				"sInfoFiltered": "(_MAX_ in total)",
 				"sInfoPostFix": "",
 				"sInfoThousands": ",",
-				"sSearch": "<span class='itemsPerPage'>Search:</span>",
+				"sSearch": "",
 				"sUrl": "",
 				"oPaginate": {
 					"sFirst":    "First",
@@ -3661,7 +3597,7 @@
 				{
 					/* New container div */
 					nNewNode = document.createElement( 'div' );
-					
+					nNewNode.setAttribute('style', 'display: none;');
 					/* Check to see if we should append an id and/or a class name to the container */
 					cNext = aDom[i+1];
 					if ( cNext == "'" || cNext == '"' )
@@ -3673,7 +3609,7 @@
 							sAttr += aDom[i+j];
 							j++;
 						}
-						
+
 						/* Replace jQuery UI constants */
 						if ( sAttr == "H" )
 						{
@@ -3683,7 +3619,7 @@
 						{
 							sAttr = "fg-toolbar ui-toolbar ui-widget-header ui-corner-bl ui-corner-br ui-helper-clearfix";
 						}
-						
+
 						/* The attribute can be in the format of "#id.class", "#id" or "class" This logic
 						 * breaks the string into parts and applies them as needed
 						 */
@@ -3701,10 +3637,10 @@
 						{
 							nNewNode.className = sAttr;
 						}
-						
+
 						i += j; /* Move along the position array */
 					}
-					
+
 					nInsertNode.appendChild( nNewNode );
 					nInsertNode = nNewNode;
 				}
@@ -4274,10 +4210,7 @@
 		function _fnFeatureHtmlFilter ( oSettings )
 		{
 			var sSearchStr = oSettings.oLanguage.sSearch;
-			sSearchStr = (sSearchStr.indexOf('_INPUT_') !== -1) ?
-			  sSearchStr.replace('_INPUT_', '<input type="text" />') :
-			  sSearchStr==="" ? '<input type="text" />' : sSearchStr+' <input type="text" placeholder="type here..." /><div class="srch"></div>';
-			
+
 			var nFilter = document.createElement( 'div' );
 			nFilter.className = oSettings.oClasses.sFilter;
 			nFilter.innerHTML = '<label>'+sSearchStr+'</label>';
