@@ -13,13 +13,22 @@ from bookdeal.functions_book import *
 from django.contrib.auth.decorators import login_required
 
 
+def getBalance():
+    sales = len(Order.objects.all())
+    balance = Order.objects.select_related('book_id').aggregate(Sum('book_id__price'))
+    balance = balance['book_id__price__sum'] if balance['book_id__price__sum'] else 0
+    return balance, sales
+
+
+# 三次 一次确定用户 一次确定购物车 一次确定书籍信息
 @login_required
 def purchase(request):
+    user = request.user
     if request.method == 'POST':
         purchased = False
         checks = request.POST.get('checkRow')
         if checks:
-            buyer = request.user.username
+            buyer = user.username
             for id in checks:
                 book = Book.objects.filter(id=id, isDelete=False).order_by('id')
                 if book:
@@ -27,21 +36,28 @@ def purchase(request):
                 book.isDelete = False
                 book.save()
                 Order.objects.create(buyer=buyer, book_id=book, isFinish=False)
-                useroutlet = Normal.objects.get(username=buyer)
+                useroutlet = user.normal
                 Car.objects.get(item=id, user=useroutlet).delete()
                 purchased = True
 
-        name = request.user.username
-        try:
-            useroutlet = Normal.objects.get(username=name)
-        except Normal.DoesNotExist:
-            try:
-                useroutlet = Retailer.objects.get(username=name)
-                return render(request, 'panel/info.html', {'username': request.user.username})
-            except Retailer.DoesNotExist:
-                return render(request, 'panel/index.html',
-                              {'username': request.user.username, 'TYPE': "Warning",
-                               'msg': "Please Login First!"})
+        name = user.username
+        # try:
+        #     useroutlet = Normal.objects.get(username=name)
+        # except Normal.DoesNotExist:
+        #     try:
+        #         useroutlet = Retailer.objects.get(username=name)
+        #         return render(request, 'panel/info.html', {'username': request.user.username})
+        #     except Retailer.DoesNotExist:
+        #         return render(request, 'panel/index.html',
+        #                       {'username': request.user.username, 'TYPE': "Warning",
+        #                        'msg': "Please Login First!"})
+        if not user or user.first_name == 'g':
+            return render(request, 'panel/index.html',
+                                    {'username': name, 'TYPE': "Warning",
+                                     'msg': "Please Login as a right identity!"})
+        if user.first_name == 'a':
+            return render(request, 'panel/info.html', {'username':name})
+        useroutlet = user.normal
         ids = Car.objects.filter(user=useroutlet)
         idset = []
         for idi in ids:
@@ -92,36 +108,35 @@ def purchase(request):
         return render(request, 'panel/info.html', {'username': request.user.username, 'books': books})
 
 
+# tql  貌似所有的交易全部在一个函数里实现了
+# 只会查一次  为了显示本次交易有多少次举报
+# 关键是以前代码风格不好 大量的重复
 @login_required
 def order(request, order_id, retail):
+    order = Order.objects.get(id=order_id)
+    balance, saleSum = getBalance()
     if request.method == 'POST':
         report = request.POST.get('report')
         comment = request.POST.get('comment')
+        # 用户提交了一个举报
         if report:
+            # 如果有举报详细内容 创建这条举报
             if comment:
-                order = Order.objects.get(id=order_id)
                 Report.objects.create(reporter=request.user, trans=order, isFinish=False, info=comment)
-                balance, saleSum = getBalance(request)
-                order_detail = Order.objects.get(id=order_id)
-                reports = Report.objects.filter(trans=order_detail)
-
-                return render(request, 'panel/order.html',
-                              {'username': request.user.username, 'TYPE': "Success",
-                                   'msg': "Successfully Submit Report Information!", 'order': order_detail, 'retail': retail,
-                               'balance': balance, 'saleSum': saleSum, 'reports': reports, 'reportSum': len(reports)})
+                Type = "Success"
+                msg = "Successfully Submit Report Information!"
             else:
-                balance, saleSum = getBalance(request)
-                order_detail = Order.objects.get(id=order_id)
-                reports = Report.objects.filter(trans=order_detail)
-                return render(request, 'panel/order.html',
-                              {'username': request.user.username, 'TYPE': "Failure",
-                               'msg': "Failed due to Empty Information!", 'order': order_detail,
-                               'retail': retail,
+                Type = "Failure"
+                msg = "Failed due to Empty Information!"
+
+            reports = Report.objects.filter(trans=order)
+            return render(request, 'panel/order.html',
+                            {'username': request.user.username, 'TYPE': Type,
+                               'msg': msg, 'order': order, 'retail': retail,
                                'balance': balance, 'saleSum': saleSum, 'reports': reports, 'reportSum': len(reports)})
+        # 处理评分
         else:
             star = request.POST.get('star')
-            order_id = request.POST.get('order_id')
-            order = Order.objects.get(id=order_id)
             if order and star:
                 if retail == "Retailer":
                     order.srate = star
@@ -132,79 +147,13 @@ def order(request, order_id, retail):
             if order and confirm:
                 order.isFinish = True
                 order.save()
-    balance, saleSum = getBalance(request)
-    order_detail = Order.objects.get(id=order_id)
 
-    if not order_detail:
+    if not order:
         return render(request, 'panel/order.html',
-                              {'username': request.user.username, 'TYPE': "Failure",
-                               'msg': "Unable to obtain order information!"})
-    reports = Report.objects.filter(trans=order_detail)
+                        {'username': request.user.username, 'TYPE': "Failure",
+                                           'msg': "Unable to obtain order information!"})
+    reports = Report.objects.filter(trans=order)
     return render(request, 'panel/order.html',
-                          {'username': request.user.username, 'order': order_detail, 'retail': retail, 'balance': balance, 'saleSum': saleSum, 'reports': reports, 'reportSum': len(reports)})
-
-
-@login_required
-def buy(request):
-    if request.method == 'POST':
-        buyer = request.user.name
-        book_id = request.POST.get["book_id"]
-        book = Book.objects.filter(id=book_id)
-        if book:
-            book = book[0]
-        book.isDelete = False
-        book.save()
-        Order.objects.create(buyer=buyer, book_id=book, isFinish=False)
-        return HttpResponse('successfully bought!')
-
-
-@login_required
-def buyer_confirm(request):
-    if request.method == 'GET':
-        return render('test/confirm.html')
-    if request.method == 'POST':
-        order_id = request.POST.get('order_id')
-        trans = Order.objects.filter(id=order_id)
-        if trans:
-            trans = trans[0]
-        brate = request.POST.get('rate')
-        if trans.buyer == request.user.username:
-            trans.brate = brate
-            trans.save()
-            book = trans.book_id
-            seller = book.owner
-            seller.credit = round((seller.credit*seller.sale + brate)/(seller.sale+1), 1)
-            seller.sale += 1
-            seller.save()
-            if trans.srate != 0:
-                trans.isFinish = True
-                trans.save()
-        else:
-            return HttpResponse('mind on your own business!')
-
-
-@login_required
-def seller_confirm(request):
-    if request.method == 'GET':
-        return render('test/confirm.html')
-    if request.method == 'POST':
-        order_id = request.POST.get('order_id')
-        trans = Order.objects.filter(id=order_id)
-        if trans:
-            trans = trans[0]
-        srate = request.POST.get('rate')
-        buyer_name = trans.buyer
-        buyer = Normal.objects.filter(username=buyer_name)
-        seller = trans.book_id.owner
-        if seller == request.user:
-            trans.srate = srate
-            trans.save()
-            buyer.credit = round((buyer.credit*buyer.sale + srate)/(buyer.sale+1), 1)
-            buyer.sale += 1
-            buyer.save()
-            if trans.brate != 0:
-                trans.isFinish = True
-                trans.save()
-            return HttpResponse('successful')
-        else:
-            return HttpResponse('mind on your own business!')
+                            {'username': request.user.username, 'order': order,
+                                    'retail': retail, 'balance': balance, 'saleSum': saleSum,
+                                    'reports': reports, 'reportSum': len(reports)})

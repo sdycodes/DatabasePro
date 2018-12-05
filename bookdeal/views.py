@@ -10,48 +10,46 @@ from bookdeal.functions_user import *
 from bookdeal.functions_book import *
 from bookdeal.functions_car import *
 from bookdeal.functions_trans import *
-from bookdeal.tests import *
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 
-
+# 优化了用户类型判断
 @login_required
 def list_myissue(request):
     if request.method == 'GET':
-        balance, saleSum = getBalance(request)
+        balance, saleSum = getBalance()
         name=request.user.username
-        try:
-            useroutlet = Normal.objects.get(username=name)
-        except Normal.DoesNotExist:
-            try:
-                useroutlet = Retailer.objects.get(username=name)
-                sale_books = Book.objects.filter(owner=useroutlet)
-                sales = Order.objects.filter(book_id__in=sale_books)
-                orders = []
-                sale_books = Book.objects.filter(owner=useroutlet)
-                books = Order.objects.filter(book_id__in=sale_books)
-                idset = []
-                for idi in books:
-                    idset.append(idi.buyer)
-                buyers = User.objects.filter(username__in=idset)
-                issues = Report.objects.filter(reporter__in=buyers)
+        if not request.user or request.user.first_name == 'g':
+            return render(request, 'panel/index.html',
+                          {'username': request.user.username, 'TYPE': "Warning",
+                           'msg': "Please Login First!"})
 
-                books = Order.objects.filter(buyer=useroutlet)
-                idset = []
-                for idi in books:
-                    idset.append(idi.book_id.owner)
-                print(idset)
-                owners = User.objects.filter(username__in=idset)
-                print(owners)
-                issues = issues | Report.objects.filter(reporter__in=owners)
-                reports = Report.objects.filter(reporter=request.user).order_by('id')
-                return render(request, 'panel/list_myissue.html',
+        elif request.user.first_name == 'a':
+            useroutlet = Retailer.objects.get(username=name)
+            sale_books = Book.objects.filter(owner=useroutlet)
+            sales = Order.objects.filter(book_id__in=sale_books)
+            orders = []
+            sale_books = Book.objects.filter(owner=useroutlet)
+            books = Order.objects.filter(book_id__in=sale_books)
+            idset = []
+            for idi in books:
+                idset.append(idi.buyer)
+            buyers = User.objects.filter(username__in=idset)
+            issues = Report.objects.filter(reporter__in=buyers)
+            books = Order.objects.filter(buyer=useroutlet)
+            idset = []
+            for idi in books:
+                idset.append(idi.book_id.owner)
+            print(idset)
+            owners = User.objects.filter(username__in=idset)
+            print(owners)
+            issues = issues | Report.objects.filter(reporter__in=owners)
+            reports = Report.objects.filter(reporter=request.user).order_by('id')
+            return render(request, 'panel/list_myissue.html',
                               {'username': request.user.username, 'retail': True, 'orders': orders, 'issues': issues,
                                'reports': reports, 'orderSum': len(orders), 'sales': sales, 'saleSum': saleSum, 'balance': balance})
-            except Retailer.DoesNotExist:
-                return render(request, 'panel/index.html',
-                              {'username': request.user.username, 'TYPE': "Warning",
-                               'msg': "Please Login First!"})
+
+        useroutlet = request.user.normal
         sale_books = Book.objects.filter(owner=useroutlet)
         books = Order.objects.filter(book_id__in=sale_books)
         idset = []
@@ -113,126 +111,65 @@ def issue(request, report_id):
                        'msg': "Unable to obtain report information!"})
 
 
-@login_required
-def report(request):
-    if request.method == 'GET':
-        return render(request, 'test/report.html')
-    if request.method == 'POST':
-        user_name = request.user.name
-        info = request.POST.get('info')
-        user = Normal.objects.filter(user_name=user_name)
-        trans_id = request.POST.get('id')
-        check = Order.objects.filter(id=trans_id, buyer=user)
-        if check:
-            Report.objects.create(reporter=user, trans=Order, info=info)
-            HttpResponse('report waiting for process')
-        else:
-            HttpResponse('you cannot report other transaction')
-
-
-@login_required
-def correct(request):
-    if request.method == 'GET':
-        return render(request, 'test/correct.html')
-    if request.method == 'POST':
-        corrector = request.user
-        info = request.POST.get('info')
-        Correct.objects.create(corrector=corrector, info=info)
-        return HttpResponse('corrections has been submitted')
-
-
-@login_required
-def get_recommend(request):
-    if request.method == 'GET':
-        user = request.user
-        normal = Normal.objects.get(user=user)
-        if normal.grade and normal.dept:
-            res = Rlist.objects.filter(grade=normal.grade, dept=normal.dept)
-            if res:
-                return HttpResponse(res[0])
-            else:
-                return HttpResponse('we have not build the recommend yet')
-        else:
-            return HttpResponse('please give us more your info')
-
-
-@login_required
-def handle_report(request):
-    if request.method == 'GET':
-        return render('test/handle_report.html')
-    if request.method == 'POST':
-        punish = request.POST.get('punish')
-        name = request.POST.get('name')
-        punished = User.objects.filter(username=name)
-        if punished:
-            punished = punished[0]
-        if punish <= 0.5:
-            punished.isDelete = True
-        else:
-            punished.credit = punish
-        return render('result.html', {'func': 'handle_request', 'res': 'successful'})
-
-
-@login_required
-def handle_correct(request):
-    if request.method == 'GET':
-        return render('test/handle_correct.html')
-    if request.method == 'POST':
-        dept = request.POST.get('dept')
-        grade = request.POST.get('grade')
-        names = request.POST.get('names')
-        res = Rlist.objects.filter(dept=dept, grade=grade)
-        if res:
-            res = res[0]
-        res.objects.update(names=names)
-        return HttpResponse('success')
-
-
 def front(request):
     return render(request, 'front/index.html')
 
 
 @login_required
 def panel(request):
-    balance, saleSum = getBalance(request)
+    balance, saleSum = getBalance()
     user = request.user
-    carnum = len(Car.objects.filter(user=user))
-    buy = Order.objects.select_related('book_id').filter(buyer=user.username).aggregate(Sum('book_id__price'))
-    buy = buy['book_id__price__sum'] if buy['book_id__price__sum'] else 0
-    sale = Order.objects.select_related('book_id__owner').filter(book_id__owner__username=user.username).aggregate(
-        Sum('book_id__price'))
-    sale = sale['book_id__price__sum'] if sale['book_id__price__sum'] else 0
-    names = ""
-    nuser = Normal.objects.filter(username=request.user.username)
-    if nuser:
-        nuser = nuser[0]
-        if nuser.dept and nuser.grade:
-            rlist = Rlist.objects.filter(dept=nuser.dept, grade=nuser.grade)
+    # 如果是一个普通用户
+    if user and user.first_name == 'n':
+        # 填写了院系和年级 推送推荐书单
+        names = ""
+        if user.normal.dept and user.normal.grade:
+            rlist = Rlist.objects.filter(dept=user.normal.dept, grade=user.normal.grade)
             if rlist:
                 names = rlist[0].names
-    if request.method == 'POST' and request.POST.get('correction'):
-        correct = request.POST.get('correction')
-        Correct.objects.create(corrector=request.user, info=correct)
-        return render(request, 'panel/index.html',
-                      {'username': request.user.username, 'res': request.user.username, 'user': user, 'carnum': carnum,
-                       'sale': sale, 'buy': buy, 'total': sale + buy, 'names': names,
-                       'msg': 'correction has been posted', 'TYPE': 'Success'})
 
-    if request.user.username and Admin.objects.filter(username=request.user.username):
+        # 搜索其购物车和成交额等信息
+        carnum = len(Car.objects.filter(user=user))
+        buy = Order.objects.select_related('book_id').filter(buyer=user.username).aggregate(Sum('book_id__price'))
+        buy = buy['book_id__price__sum'] if buy['book_id__price__sum'] else 0
+        sale = Order.objects.select_related('book_id__owner').filter(book_id__owner__username=user.username).aggregate(
+            Sum('book_id__price'))
+        sale = sale['book_id__price__sum'] if sale['book_id__price__sum'] else 0
+        msg = ""
+
+        # 如果此人传递了报错信息  将其记录下来 并返回报错成功
+        correct = request.POST.get('correction')
+        if request.method == 'POST' and correct:
+            Correct.objects.create(corrector=user, info=correct)
+            msg = 'correction has been posted'
+
+        return render(request, 'panel/index.html',
+                          {'username': user.username, 'res': user.username, 'user': user, 'carnum': carnum,
+                           'sale': sale, 'buy': buy, 'total': sale - buy, 'names': names, 'balance': balance,
+                           'saleSum': saleSum, 'msg': msg, 'TYPE': 'Success'})
+
+    # 如果是管理员 向其发送报错、举报和推荐书单信息
+    if user and user.first_name == 'g':
         reports = Report.objects.all()
         corrections = Correct.objects.all()
         lists = Rlist.objects.all()
-        return render(request, 'panel/index_admin.html', {'username': request.user.username, 'lists': lists,
-                                                              'reports': reports, 'corrections': corrections})
-    elif request.user.username:
-        return render(request, 'panel/index.html', {'username': request.user.username, 'TYPE': "Success", 'msg': "Welcome Back!",
-                                                    'balance': balance, 'saleSum': saleSum, 'names': names,
-                                                    'user': user, 'carnum': carnum,
-                                                    'sale': sale, 'buy': buy, 'total': sale + buy, })
+        return render(request, 'panel/index_admin.html', {'username': user.username, 'lists': lists, 'balance': balance,
+                           'saleSum': saleSum, 'reports': reports, 'corrections': corrections})
+    # 如果是商家
+    if user and user.first_name == 'a':
+        sale = Order.objects.select_related('book_id__owner').filter(book_id__owner__username=user.username).aggregate(
+            Sum('book_id__price'))
+        sale = sale['book_id__price__sum'] if sale['book_id__price__sum'] else 0
+        return render(request, 'panel/index.html', {'username': user.username, 'TYPE': "Success", 'msg': "Welcome Back!",
+                                                    'balance': balance, 'saleSum': saleSum,
+                                                    'user': user,
+                                                    'sale': sale, 'buy': 0, 'total': sale })
+    # 没有用户 发出警告信息
     else:
         return render(request, 'panel/index.html', {'TYPE': "Warning", 'msg': "Please Login First!"})
 
 
+# 最优
 @login_required
 def detail_report(request):
 
@@ -287,6 +224,7 @@ def detail_report(request):
                                                           'TYPE': "Success", 'corrections': corrections})
 
 
+# 最优
 @login_required
 def addrlist(request):
     reports = Report.objects.all()
