@@ -134,7 +134,12 @@
                     <td>{{ report.reporter.username }}</td>
                     <td>{{ report.trans.id }}</td>
                     <td>{{ report.info }}</td>
+                {% if not report.isFinish %}
                     <td class="actBtns"><a href="/detail/?d={{ report.id }}" title="Finish" class="tipS" type="submit"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a></td>
+                {% else %}
+                    <td class="actBtns"><a href="#" title="Over" class="tipS" type="submit"><img src="{% static 'images/icons/dropped.png' %}" alt="" /></a></td>
+
+                {% endif %}
                 </tr>
             {% endfor %}
             </tbody>
@@ -161,7 +166,12 @@
                 {% endif %}
                     <td><a href="/detail/?ci={{ correct.id }}">{{ correct.id }}</a></td>
                     <td>{{ correct.corrector.username }}</td>
+                {% if not correct.isFinish %}
                     <td class="actBtns"><a href="/detail/?cd={{ correct.id }}" title="Finish" class="tipS" type="submit"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a></td>
+                {% else %}
+                    <td class="actBtns"><a href="#" title="Over" class="tipS" type="submit"><img src="{% static 'images/icons/dropped.png' %}" alt="" /></a></td>
+
+                {% endif %}
                 </tr>
             {% endfor %}
             </tbody>

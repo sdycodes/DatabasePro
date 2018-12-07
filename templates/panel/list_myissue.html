@@ -58,7 +58,7 @@
                                 <td class="{% if not report.isFinish %}taskP{% elif report.brate == 0 %}taskD{% else %}taskPr{% endif %}"><a href="/report/{{ report.id }}/" title="">《{{ report.trans.book_id.name }}》{{ report.info }}</a></td>
                                 <td><a href="#" title="">{{ report.trans.date }}</a></td>
                                 <td><span class="{% if not report.isFinish %}grey{% else %}green{% endif %} f11">{% if not report.isFinish %}In Progress{% else %}Finished{% endif %}</span></td>
-                                <td class="actBtns"><a href="?del={{ report.id }}/" title="Delete" class="tipS" type="submit"><img src="{% static 'images/icons/remove.png' %}" alt="" /></a></td>
+                                <td class="actBtns"><a href="/report/{{ report.id }}/?del={{ report.id }}" title="Delete" class="tipS" type="submit"><img src="{% static 'images/icons/remove.png' %}" alt="" /></a></td>
                             </tr>
                         {% endfor %}
                         </tbody>

@@ -5,6 +5,26 @@
 {% include 'panel/header.html' %}
 {% include 'panel/loader.html' %}
     <style type="text/css">.CRZ{table-layout:fixed;}.CRZ td,.CRZ th{overflow:hidden}.CRC{height:0px;position:relative;}.CRG{margin-left:-5px;position:absolute;z-index:5;}.CRG .CRZ{position:absolute;background-color:red;filter:alpha(opacity=1);opacity:0;width:10px;height:100%;top:0px}.CRL{position:absolute;width:1px}.CRD{ border-left:1px dotted black}</style>
+<script>
+    function serve(){
+        var type = $('select option:selected').val();
+        if(type == 'n'){
+            document.getElementById('dep').hidden = false;
+            document.getElementById('deptname').innerHTML = "Department:";
+            document.getElementById('grd').hidden = false;
+        }
+        else if(type == 'a'){
+            document.getElementById('dep').hidden = true;
+            document.getElementById('deptname').innerHTML = "Department:";
+            document.getElementById('grd').hidden = true;
+        }
+        else if(type == 'g'){
+            document.getElementById('dep').hidden = false;
+            document.getElementById('deptname').innerHTML = "Invitation Code:";
+            document.getElementById('grd').hidden = true;
+        }
+    }
+</script>
 <body>
 <!-- Left side content -->
 <div id="leftSide">
@@ -63,7 +83,7 @@
                         <label>Identity:<span class="req">*</span></label>
                         <div class="formRight">
                             <div class="floatL">
-                                <select name="typ" id="selectReq" class="validate[required]">
+                                <select name="typ" id="type" class="validate[required]" onchange="serve()">
                                     <option value="n">Customer</option>
                                     <option value="a">Retailer</option>
                                     <option value="g">Admin</option>
@@ -72,11 +92,11 @@
 
                         </div><div class="clear"></div>
                     </div>
-                    <div class="formRow">
-                        <label>Department:</label>
+                    <div class="formRow" id="dep">
+                        <label id="deptname">Department:</label>
                         <div class="formRight"><input type="text" class="" name="dept" id="req"/></div><div class="clear"></div>
                     </div>
-                    <div class="formRow">
+                    <div class="formRow" id="grd">
                         <label>Grade:</label>
                         <div class="formRight">
                             <div class="floatL">

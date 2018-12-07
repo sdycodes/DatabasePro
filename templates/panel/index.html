@@ -214,7 +214,7 @@
                         </div>
                         
                         <div class="cLine"></div>
-                        <div class="totalAmount"><h6 class="floatL blue">Total:</h6><h6 class="floatR blue">{{ total }}</h6><div class="clear"></div></div>
+                        <div class="totalAmount"><h6 class="floatL blue">Total:</h6><h6 class="{% if total >= 0 %}floatR blue{% else %}floatR red{% endif %}">{{ total }}</h6><div class="clear"></div></div>
                     </div>
                 </div>                
         

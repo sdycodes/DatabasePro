@@ -93,7 +93,21 @@ def list_myissue(request):
 
 @login_required
 def issue(request, report_id):
+    if request.method == 'GET':
+        delid = request.GET.get('del')
+        deli = Report.objects.filter(id=delid)
+        if deli:
+            Report.objects.get(id=delid).delete()
+
     report = Report.objects.filter(id=report_id)
+    if report_id == delid:
+        return list_mysell(request)
+
+    if request.method == 'POST':
+        if request.POST.get('confirm') and report:
+            report[0].isFinish = True
+            report[0].save()
+
     if report:
         report = report[0]
         if report.trans.buyer == request.user.username:
@@ -162,7 +176,7 @@ def panel(request):
         sale = sale['book_id__price__sum'] if sale['book_id__price__sum'] else 0
         return render(request, 'panel/index.html', {'username': user.username, 'TYPE': "Success", 'msg': "Welcome Back!",
                                                     'balance': balance, 'saleSum': saleSum,
-                                                    'user': user,
+                                                    'user': user, 'carnum': 0,
                                                     'sale': sale, 'buy': 0, 'total': sale })
     # 没有用户 发出警告信息
     else:

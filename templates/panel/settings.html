@@ -58,7 +58,7 @@
                     <div class="loginInput"><input type="password" name="password2" class="validate[required,equals[password1]]" id="password2" /></div>
                     <div class="clear"></div>
                 </div>
-
+                {%  ifequal typ 'n' %}
                 <div class="formRow">
                     <label for="login">Department:</label>
                     <div class="loginInput"><input type="text" name="dept" value="{{ dept }}"  id="dept"/></div>
@@ -67,10 +67,18 @@
 
                 <div class="formRow">
                     <label for="login">Grade:</label>
-                    <div class="loginInput"><input type="text" name="grade" value="{{ grade }}"  id="grade"/></div>
+                    <div class="loginInput">
+                    <select name="grade" id="selectReq" class="validate[required]" >
+                                    <option value="1" {% ifequal grade 1 %}selected="selected"{% endifequal %}>1</option>
+                                    <option value="2" {% ifequal grade 2 %}selected="selected"{% endifequal %}>2</option>
+                                    <option value="3" {% ifequal grade 3 %}selected="selected"{% endifequal %}>3</option>
+                                    <option value="4" {% ifequal grade 4 %}selected="selected"{% endifequal %}>4</option>
+                                    <option value="5" {% ifequal grade 5 %}selected="selected"{% endifequal %}>5</option>
+                                </select>
+                    </div>
                     <div class="clear"></div>
                 </div>
-
+            {% endifequal %}
                 <div class="loginControl">
                     <input type="submit" value="Edit" class="dredB logMeIn" />
                     <div class="clear"></div>

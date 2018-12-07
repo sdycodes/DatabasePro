@@ -128,6 +128,8 @@ def signup(request):
                            "username": request.user.username})
 
         # sign up
+        Type = "Success"
+        msg = 'User ' + name + ' Successfully Added!'
         if typ == "a":
             Retailer.objects.create_user(username=name, password=passwd1, first_name=typ)
         elif typ=="n":
@@ -140,9 +142,15 @@ def signup(request):
             else:
                 Normal.objects.create_user(username=name, password=passwd1, first_name=typ)
         else:
-            Admin.objects.create_user(username=name, password=passwd1, first_name=typ)
+            if dept=="HELLO":
+                Admin.objects.create_user(username=name, password=passwd1, first_name=typ)
+                Type = "Success"
+                msg = 'User ' + name + ' Successfully Added!'
+            else:
+                Type = "Failure"
+                msg = 'Wrong Invitation Code!'
         return render(request, 'panel/adduser.html',
-                      {'TYPE': "Success", 'msg': 'User ' + name + ' Successfully Added!',
+                      {'TYPE': Type, 'msg': msg,
                        "username": request.user.username})
 
 
@@ -175,8 +183,9 @@ def settings(request):
     if request.method == 'GET':
         dept = request.user.normal.dept if request.user.first_name == 'n' else ""
         grade = request.user.normal.grade if request.user.first_name == 'n' else ""
+        typ = request.user.first_name
         return render(request, 'panel/settings.html', {'username': request.user.username, 'user': request.user,
-                                                       'balance': balance, 'saleSum': saleSum,
+                                                       'balance': balance, 'saleSum': saleSum, 'typ': typ,
                                                        'dept': dept, 'grade': grade})
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -190,11 +199,14 @@ def settings(request):
                 current.set_password(passwd)
                 dept = request.POST.get('dept')
                 grade = request.POST.get('grade')
-                if current.first_name == 'n' and dept:
+                if current.first_name == 'n':
                     current.normal.dept = dept
-                if current.first_name == 'n' and grade:
                     current.normal.grade = grade
-                current.normal.save()
+                    current.normal.save()
+                elif current.first_name == 'a':
+                    current.retailer.save()
+                elif current.first_name == 'g':
+                    current.admin.save()
                 return render(request, 'panel/index.html',
                               {'TYPE': "Success", 'msg': 'Successfully Modified Password for User ' + name + '!',
                                "username": request.user.username, 'balance': balance, 'saleSum': saleSum})
@@ -222,8 +234,7 @@ def info(request):
                 book.isDelete = False
                 book.save()
                 Order.objects.create(buyer=buyer, book_id=book, isFinish=False)
-                useroutlet = Normal.objects.get(username=buyer)
-                Car.objects.get(item=id, user=useroutlet).delete()
+                Car.objects.get(item=id, user=request.user.normal).delete()
                 purchased = True
 
     name = request.user.username
@@ -234,8 +245,7 @@ def info(request):
                       {'username': request.user.username, 'TYPE': "Warning",
                        'msg': "Please Login First!"})
     elif request.user.first_name == 'a':
-
-        sale_books = Book.objects.filter(owner=useroutlet)
+        sale_books = Book.objects.filter(owner=request.user.retailer)
         sales = Order.objects.filter(book_id__in=sale_books)
         return render(request, 'panel/info.html',
                       {'username': request.user.username, 'retail': True, 'orders': orders, 'orderSum': len(orders),

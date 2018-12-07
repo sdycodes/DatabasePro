@@ -22,6 +22,7 @@ def getBalance():
 
 
 # 用户类型判断优化
+@login_required
 def market(request):
     tar = request.POST.get('name')
     q = request.GET.get('q')
