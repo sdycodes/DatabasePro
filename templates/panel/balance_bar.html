@@ -6,7 +6,12 @@
             <span class="balanceAmount">¥ {{ balance }}</span>
         </a>
         <a href="#" title="" class="amChanges">
-            <strong class="sPositive">+0.6%</strong>
+            <strong class="{% ifequal user.first_name 'n' %}{% if user.normal.credit >= 3.0 %}sPositive{% else %}sNegative{% endif %}{% endifequal %}
+                            {% ifequal user.first_name 'a' %}{% if user.retailer.credit >= 3.0 %}sPositive{% else %}sNegative{% endif %}{% endifequal %}
+                            {% ifequal user.first_name 'g' %}sPositive{% endifequal %}">
+                {% ifequal user.first_name 'n' %}{{ user.normal.credit }}{% endifequal %}
+                {% ifequal user.first_name 'a' %}{{ user.retailer.credit }}{% endifequal %}
+                {% ifequal user.first_name 'g' %}{{ 5.0 }}{% endifequal %}</strong>
         </a>
     </div>
 {% endif %}

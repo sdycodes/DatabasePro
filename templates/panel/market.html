@@ -64,6 +64,7 @@
                         <td class="sortCol"><div>Name<span></span></div></td>
                         <td class="sortCol"><div>Info<span></span></div></td>
                         <td>Price</td>
+                        <td>Credit</td>
                         <td>Actions</td>
                     </tr>
                 </thead>
@@ -105,7 +106,8 @@
                         <td style="width:50px;text-align:center"><a href="#" title="">{{ book.name }}</a></td>
                         <td align="center">{{ book.info }}</td>
                         <td class="fileInfo"><span><strong>¥ </strong> {{ book.price }}</span></td>
-
+                        <td align="center">{% ifequal book.owner.first_name 'n' %}{{ book.owner.normal.credit }}{% endifequal %}
+                                            {% ifequal book.owner.first_name 'a' %}{{ book.owner.retailer.credit }}{% endifequal %}</td>
                        <td class="actBtns"><a href="?add={{ book.id }}&q={{ query }}&page={{ books.number }}" title="Add to Cart" class="tipS" type="submit"><img src="{% static 'images/icons/edit.png' %}" alt="" /></a></td>
 
                    </tr>
