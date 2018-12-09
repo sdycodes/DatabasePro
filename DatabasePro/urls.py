@@ -22,7 +22,6 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^$', views.login),
-    url('front', views.front),
     url('panel', views.panel),
     url('detail', views.detail_report),
     url(r'^market/$', views.market),
@@ -38,12 +37,7 @@ urlpatterns = [
     url('report', views.list_myissue),
     url('addbook', views.addbook),
     url('addrlist', views.addrlist),
-    # url('deletebook', views.delete_book),
     url('list_mysell', views.list_mysell)
-    # url('deletebook/', views.delete_book),
-    # url('index/', views.index),
-    # url('newbook/', views.add_book),
-    # url('list_mysell', views.list_mysell),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

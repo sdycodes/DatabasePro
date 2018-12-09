@@ -121,10 +121,6 @@ def issue(request, report_id):
                        'msg': "Unable to obtain report information!"})
 
 
-def front(request):
-    return render(request, 'front/index.html')
-
-
 @login_required
 def panel(request):
     balance, saleSum = getBalance()
