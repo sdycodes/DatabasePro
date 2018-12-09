@@ -226,7 +226,6 @@ def info(request):
         checks = request.POST.getlist('checkRow')
         if checks:
             buyer = request.user.username
-            print(checks)
             for id in checks:
                 book = Book.objects.filter(id=id, isDelete=False).order_by('id')
                 if book:

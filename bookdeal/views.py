@@ -40,9 +40,7 @@ def list_myissue(request):
             idset = []
             for idi in books:
                 idset.append(idi.book_id.owner)
-            print(idset)
             owners = User.objects.filter(username__in=idset)
-            print(owners)
             issues = issues | Report.objects.filter(reporter__in=owners)
             reports = Report.objects.filter(reporter=request.user).order_by('id')
             return render(request, 'panel/list_myissue.html',
@@ -62,9 +60,7 @@ def list_myissue(request):
         idset = []
         for idi in books:
             idset.append(idi.book_id.owner)
-        print(idset)
         owners = User.objects.filter(username__in=idset)
-        print(owners)
         issues = issues | Report.objects.filter(reporter__in=owners)
         report_id = request.GET.get('del')
         if report_id is not None:
