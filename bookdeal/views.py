@@ -13,6 +13,15 @@ from bookdeal.functions_trans import *
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 
+
+def page_not_found(request):
+    return render_to_response("panel/404.html")
+
+
+def page_error(request):
+    return render_to_response("panel/500.html")
+
+
 # 优化了用户类型判断
 @login_required
 def list_myissue(request):
