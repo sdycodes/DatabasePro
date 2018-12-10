@@ -14,6 +14,14 @@ from django.contrib.auth.decorators import login_required
 from bookdeal.error_handler import *
 
 
+# 最优 一次查表 计算总交易额
+def getBalance():
+    sales = len(Order.objects.all())
+    balance = Order.objects.select_related('book_id').aggregate(Sum('book_id__price'))
+    balance = balance['book_id__price__sum'] if balance['book_id__price__sum'] else 0
+    return balance, sales
+
+
 # 优化了用户类型判断
 @login_required
 def list_myissue(request):

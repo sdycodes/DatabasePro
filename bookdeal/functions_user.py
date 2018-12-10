@@ -99,7 +99,7 @@ def manage(request):
 
     else:
         return render(request, 'panel/index.html',
-                      {'TYPE': "Failure", 'msg': 'User ' + name + ' is not Administrator!',
+                      {'TYPE': "Failure", 'msg': 'Not Administrator!',
                        "username": request.user.username})
 
 

@@ -7,6 +7,9 @@ from django.views import generic
 from django.contrib import auth
 from bookdeal.models import *
 from bookdeal.views import *
+from bookdeal.functions_trans import *
+from bookdeal.functions_car import *
+from bookdeal.functions_user import *
 from django.contrib.auth.decorators import login_required
 
 
