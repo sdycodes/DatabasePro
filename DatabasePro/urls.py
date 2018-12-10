@@ -24,6 +24,10 @@ from django.conf.urls import handler404, handler500
 handler404 = views.page_not_found
 handler500 = views.page_error
 
+handler403 = views.forbidden
+handler405 = views.method_not_allowed
+handler503 = views.service_unavailable
+
 
 urlpatterns = [
     url(r'^static/(?P<path>.*)$', static.serve, {'document_root': settings.STATIC_ROOT}),
