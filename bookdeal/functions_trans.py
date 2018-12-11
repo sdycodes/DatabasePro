@@ -138,13 +138,16 @@ def order(request, order_id, retail):
         else:
             star = request.POST.get('star')
             if order and star:
-                if retail == "Retailer":
+                if retail == "Retailer" and order.book_id.owner.username == request.user.username:
                     order.srate = star
-                else:
+                    order.save()
+                elif order.buyer == request.user.username:
                     order.brate = star
-                order.save()
+                    order.save()
+                else:
+                    return HttpResponse("you are not in the order")
             confirm = request.POST.get('confirm')
-            if order and confirm:
+            if order and confirm and order.buyer == request.user.username:
                 order.isFinish = True
                 order.save()
 
