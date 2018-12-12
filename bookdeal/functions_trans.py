@@ -11,6 +11,7 @@ from bookdeal.functions_user import *
 from bookdeal.functions_car import *
 from bookdeal.functions_book import *
 from django.contrib.auth.decorators import login_required
+from django.db.models import Avg, Sum, Q
 
 
 def getBalance():
@@ -141,13 +142,26 @@ def order(request, order_id, retail):
                 if retail == "Retailer" and order.book_id.owner.username == request.user.username:
                     order.srate = star
                     order.save()
+                    buyer = Normal.objects.get(username=order.buyer)
+                    credit = Order.objects.filter(~Q(srate=0), buyer=buyer.username).aggregate(Avg('srate'))
+                    credit = credit['srate__avg'] if credit['srate__avg'] else 5.0
+                    buyer.credit = credit
+                    buyer.save()
                 elif order.buyer == request.user.username:
                     order.brate = star
                     order.save()
+                    seller = order.book_id.owner
+                    credit = Order.objects.select_related('book_id__owner').filter(~Q(brate=0), book_id__owner=seller).aggregate(Avg('brate'))
+                    credit = credit['brate__avg'] if credit['brate__avg'] else 5.0
+                    if seller.first_name=='n':
+                        Normal.objects.filter(username=seller.username).update(credit=credit)
+                    else:
+                        Retailer.objects.filter(username=seller.username).update(credit=credit)
+
                 else:
                     return HttpResponse("you are not in the order")
             confirm = request.POST.get('confirm')
-            if order and confirm and order.buyer == request.user.username:
+            if order and confirm and order.book_id.owner.username == request.user.username:
                 order.isFinish = True
                 order.save()
 

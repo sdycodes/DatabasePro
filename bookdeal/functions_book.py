@@ -47,7 +47,7 @@ def market(request):
             books = paginator.page(paginator.num_pages)
         add = request.GET.get('add')
         if add:
-            if not user or user.first_name=='g':
+            if not user or user.first_name == 'g':
                 return render(request, 'panel/index.html',
                               {'username': request.user.username, 'TYPE': "Warning",
                                'msg': "Please Login As User First!"})
@@ -96,7 +96,7 @@ def addbook(request):
             rlist = Rlist.objects.filter(dept=user.normal.dept, grade=user.normal.grade)
             if rlist:
                 names = rlist[0].names
-        if book_name == "" or len(info) < 10 or price > 10000 or price < 0:
+        if book_name == "" or len(info) < 10 or price > 10000 or price < 0 or book_name > 12:
             return render(request, 'panel/index.html', {'names': names, 'TYPE':"Failure", 'msg': "Way too expensive or too little info given!", "username": request.user.username, 'balance': balance, 'saleSum': saleSum})
         if cover is None or cover.name.split('.')[-1].lower() not in ['jpeg', 'jpg', 'png'] or cover.size > 10000000:
             return render(request, 'panel/index.html', {'names': names, 'TYPE': "Warning", 'msg': "illegal cover", "username":request.user.username, 'balance': balance, 'saleSum': saleSum})
