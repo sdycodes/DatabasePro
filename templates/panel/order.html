@@ -278,7 +278,7 @@
                                     <input type="hidden" name="confirm" value="True" />
 
                                         <input type="hidden" name="order_id" value="{{ order.id }}" />
-                                    <input class="greenB ml10" value="CONFIRM" type="submit" />
+                                    {% ifequal retail "Retailer" %}<input class="greenB ml10" value="CONFIRM" type="submit" />{% endifequal %}
                                     </form>
                                     {% endif %}
                                 </span>

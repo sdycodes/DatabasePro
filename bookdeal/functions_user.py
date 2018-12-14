@@ -149,6 +149,8 @@ def signup(request):
             else:
                 Type = "Failure"
                 msg = 'Wrong Invitation Code!'
+        if Type == "Success":
+            return HttpResponseRedirect('login/')
         return render(request, 'panel/adduser.html',
                       {'TYPE': Type, 'msg': msg,
                        "username": request.user.username})
@@ -275,7 +277,7 @@ def info(request):
         check = Car.objects.filter(user=useroutlet, item=delete)
         if not check:
             return render(request, 'panel/info.html',
-                          {'username': request.user.username, 'books': books, 'query': q, 'TYPE': "Failure",
+                          {'username': request.user.username, 'books': books, 'TYPE': "Failure",
                            'msg': "Remove from Cart Failed, Book Not Exists!", 'orders': orders, 'orderSum': len(orders), 'sales': sales, 'saleSum': len(sales), 'bookSum': len(sale_books), 'balance': balance})
         Car.objects.get(item=delete, user=useroutlet).delete()
         ids = Car.objects.filter(user=useroutlet)

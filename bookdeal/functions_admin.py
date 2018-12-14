@@ -104,10 +104,11 @@ def issue(request, report_id):
         if deli:
             Report.objects.get(id=delid).delete()
 
-    report = Report.objects.filter(id=report_id)
-    if report_id == delid:
-        return list_mysell(request)
+        report = Report.objects.filter(id=report_id)
+        if report_id == delid:
+            return list_myissue(request)
 
+    report = Report.objects.filter(id=report_id)
     if request.method == 'POST':
         if request.POST.get('confirm') and report:
             report[0].isFinish = True

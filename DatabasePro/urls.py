@@ -19,14 +19,14 @@ from django.conf.urls import url
 from bookdeal import views
 from django.views import static
 from django.conf import settings
-from django.conf.urls import handler404, handler500
+from django.conf.urls import handler403, handler404, handler500
 
 handler404 = views.page_not_found
 handler500 = views.page_error
 
 handler403 = views.forbidden
-handler405 = views.method_not_allowed
-handler503 = views.service_unavailable
+# handler405 = views.method_not_allowed
+# handler503 = views.service_unavailable
 
 
 urlpatterns = [

@@ -329,8 +329,8 @@ ul.sub li ul li { padding-left: 10px; }
 .genBalance .amount { width: 124px; float: left; margin-right: 1px; border-right: 1px solid #3b4751; padding: 10px 14px; border-left: 1px solid #3b4751; }
 .genBalance .amChanges { width: 39px; float: left; border-left: 1px solid #3b4751; border-right: 1px solid #3b4751; padding: 9px 10px; }
 .sNegative, .sPositive, .sZero { padding: 26px 0 2px 0; text-align: center; display: block; font-size: 14px; }
-.sNegative { color: #e77575; }
-.sPositive { color: #90c254; background: url(../images/backgrounds/sidebarPositiveArrow.png) no-repeat 14px 10px; }
+.sNegative { color: #e77575; background: url(../images/sidebarNeg.png) no-repeat 14px 10px; }
+.sPositive { color: #90c254; background: url(../images/sidebarPos.png) no-repeat 14px 10px; }
 .sZero {  }
 
 
